@@ -1,0 +1,134 @@
+.profile {
+    &-settings {
+        background: $snow-white;
+
+        &__container {
+            padding: 50px 25px;
+
+            @media screen and (max-width: $screen-md) {
+                padding: 15px;
+            }
+        }
+
+        &-menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &__item {
+                width: auto !important;
+            }
+
+            @media screen and (max-width: $screen-sm) {
+                justify-content: flex-start;
+            }
+        }
+    }
+}
+
+.table-consultation {
+    .table-flex--col {
+        @media only screen and (max-width: $screen-sm) {
+            width: 100% !important;
+        }
+    }
+
+    .table-flex--col:first-child {
+        width: 15%;
+
+        @media only screen and (max-width: $screen-sm) {
+            order: 1;
+        }
+    }
+
+    .table-flex--col:nth-child(2) {
+        width: 15%;
+
+        @media only screen and (max-width: $screen-sm) {
+            order: 2;
+        }
+    }
+
+    .table-flex--col:nth-child(3) {
+        width: 40%;
+
+        @media only screen and (max-width: $screen-sm) {
+            order: 3;
+        }
+    }
+
+    .table-flex--col:nth-child(4) {
+        width: 15%;
+
+        @media only screen and (max-width: $screen-sm) {
+            order: 4;
+        }
+    }
+
+    .table-flex--col:nth-child(5) {
+        width: 15%;
+
+        @media only screen and (max-width: $screen-sm) {
+            order: 5;
+        }
+    }
+
+    &__status {
+        font-family: Gilroy;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.01em;
+        color: $dark-gray;
+
+        &--green {
+            color: $mint;
+        }
+
+        &--red {
+            color: $red;
+        }
+    }
+
+    &__duration {
+        font-weight: bold;
+    }
+}
+
+.finances-form {
+    width: 686px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media only screen and (max-width: $screen-sm) {
+        width: 100%;
+    }
+}
+
+.consult-text {
+    font-family: $gilroy-font;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: $dark-mint;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: nowrap;
+
+    span {
+        a {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+    }
+}

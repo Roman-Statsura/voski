@@ -1,0 +1,77 @@
+$screen-xl: 1920px;
+$screen-xl-min: 1600px;
+$screen-lg-ret: 1440px;
+$screen-lg-md: 1280px;
+$screen-lg: 1200px;
+$screen-md-max: 1024px;
+$screen-md: 992px;
+$screen-sm: 768px;
+$screen-smm: 640px;
+$screen-xs: 414px;
+$screen-xxs: $screen-xs - 1;
+
+$grid-columns: 12;
+$gutter: 12;
+$grid-gutter-width: 10px;
+
+$container-xl: 1280px;
+$container-lg: 960px;
+$container-md: 822px;
+$container-sm: 100%;
+$container-xs: 100%;
+$container-xxs: 100%;
+
+@mixin col(
+  $screen:  xs,
+  $column:  $grid-columns,
+  $columns: $grid-columns,
+  $gutter:  $gutter
+) {
+  @if ($screen == xxs) {
+    @include make-col($column, $columns, $gutter);
+  }
+
+  @if ($screen == xs) {
+    @media (min-width: $screen-xs) {
+      @include make-col($column, $columns, $gutter);
+    }
+  }
+
+  @if ($screen == sm) {
+    @media (min-width: $screen-sm) {
+      @include make-col($column, $columns, $gutter);
+    }
+  }
+
+  @if ($screen == md) {
+    @media (min-width: $screen-md) {
+      @include make-col($column, $columns, $gutter);
+    }
+  }
+
+  @if ($screen == lg) {
+    @media (min-width: $screen-lg) {
+      @include make-col($column, $columns, $gutter);
+    }
+  }
+
+  @if ($screen == xl) {
+    @media (min-width: $screen-xl) {
+      @include make-col($column, $columns, $gutter);
+    }
+  }
+}
+
+@mixin get-width ($column: 1, $columns: $grid-columns) {
+  $width: (100% / $columns) * $column;
+  flex: 0 0 $width;
+  width: $width;
+}
+
+@mixin make-col (
+  $column:  1,
+  $columns: $grid-columns,
+  $gutter:  $grid-gutter-width
+) {
+  @include get-width($column, $columns);
+}

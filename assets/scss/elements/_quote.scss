@@ -1,0 +1,63 @@
+.quote-element {
+    max-width: 968px;
+
+    &__text {
+        position: relative;
+        padding: 32px 0;
+
+        p {
+            font-family: $gilroy-font;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 26px;
+            line-height: 30px;
+            text-align: center;
+            letter-spacing: 0.01em;
+            color: $dark-mint;
+
+            @media screen and (max-width: $screen-md) {
+                font-size: 18px;
+                line-height: 21px;
+            }
+        }
+
+        &::before {
+            content: '';
+            background: url('/assets/img/blocks/quote-open.svg') no-repeat 50% 50%;
+            width: 32px;
+            height: 24px;
+            position: absolute;
+            top: 0;
+
+            @media only screen and (max-width: $screen-md) {
+                left: calc(50% - 16px);
+            }
+        }
+
+        &::after {
+            content: '';
+            background: url('/assets/img/blocks/quote-open.svg') no-repeat 50% 50%;
+            width: 32px;
+            height: 24px;
+            transform: rotate(180deg);
+            position: absolute;
+            bottom: 0;
+            right: 0;
+
+            @media only screen and (max-width: $screen-md) {
+                right: calc(50% - 16px);
+            }
+        }
+    }
+
+    &__name {
+        font-family: $gilroy-font;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 32px;
+        text-align: center;
+        color: $mint;
+        margin-top: 5px;
+    }
+}

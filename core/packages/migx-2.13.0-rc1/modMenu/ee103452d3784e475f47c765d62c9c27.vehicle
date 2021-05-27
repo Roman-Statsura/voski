@@ -1,0 +1,30 @@
+<?php return array (
+  'preserve_keys' => true,
+  'update_object' => true,
+  'unique_key' => 'text',
+  'related_objects' => true,
+  'related_object_attributes' => 
+  array (
+    'Action' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 
+      array (
+        0 => 'namespace',
+        1 => 'controller',
+      ),
+    ),
+  ),
+  'namespace' => 'migx',
+  'resolve' => NULL,
+  'validate' => NULL,
+  'vehicle_package' => 'transport',
+  'vehicle_class' => 'xPDOObjectVehicle',
+  'guid' => '1a2addf7f76fdadc7db74c22867211ae',
+  'package' => 'modx',
+  'class' => 'modMenu',
+  'signature' => 'ee103452d3784e475f47c765d62c9c27',
+  'native_key' => 'MIGX',
+  'object' => '{"text":"MIGX","parent":"components","action":"index","description":"","icon":"","menuindex":1,"params":"&configs=migxconfigs||packagemanager||setup","handler":"","permissions":"","namespace":"migx"}',
+);

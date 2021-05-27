@@ -1,0 +1,157 @@
+.faq {
+    &-container {
+        padding: 90px 25px;
+
+        @media only screen and (max-width: $screen-md) {
+            padding: 32px 15px;
+        }
+    }
+
+    &-content {
+        &__body {
+            display: flex;
+            justify-content: space-between;
+
+            @media only screen and (max-width: $screen-md) {
+                flex-direction: column;
+            }
+        }
+
+        &__block {
+            @media only screen and (max-width: $screen-md) {
+                padding-top: 24px;
+            }
+        }
+
+        &__left {
+            width: 275px;
+
+            @media only screen and (max-width: $screen-md) {
+                width: 100%;
+            }
+
+            &-title {
+                grid-area: title;
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                color: $dark-gray;
+                margin-bottom: 15px;
+
+                @media only screen and (max-width: $screen-md) {
+                    margin-bottom: 32px;
+                }
+            }
+
+            &-desc {
+                grid-area: desc;
+                font-family: $gilroy-font;
+                font-style: normal;
+                font-weight: 300;
+                font-size: 16px;
+                line-height: 26px;
+                color: $dark-mint;
+                margin-bottom: 32px;
+            }
+
+            &-image {
+                grid-area: image;
+                picture {
+                    margin-bottom: 32px;
+                }
+            }
+
+            &-button {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        &__right {
+            grid-area: content;
+            width: calc(100% - 400px);
+
+            @media only screen and (max-width: $screen-lg-md) {
+                width: calc(100% - 325px);
+            }
+
+            @media only screen and (max-width: $screen-md) {
+                width: 100%;
+            }
+        }
+
+        &__item {
+            border-top: 2px solid $milk;
+            padding: 24px 48px;
+
+            @media only screen and (max-width: $screen-md) {
+                padding-right: 0;
+            }
+
+            &:last-child {
+                border-bottom: 2px solid $milk;
+            }
+
+            &.hidden {
+                .faq-content__item-answer {
+                    display: none;
+                }
+
+                .faq-content__item-question {
+                    &::after {
+                        content: "+";
+                    }
+                }
+            }
+
+            &-question {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 33px;
+                letter-spacing: 0.01em;
+                color: $dark-gray;
+                position: relative;
+                cursor: pointer;
+
+                @media only screen and (max-width: $screen-md) {
+                    font-size: 20px;
+                    line-height: 27px;
+                }
+
+                &::after {
+                    content: "-";
+                    position: absolute;
+                    left: -43px;
+                    color: #e6e6e6;
+                    font-size: 30px;
+                    display: flex;
+                    align-items: center;
+                    top: -3px;
+                }
+            }
+
+            &-answer {
+                margin-top: 10px;
+
+                p {
+                    font-family: $gilroy-font;
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 26px;
+                    letter-spacing: 0.01em;
+                    color: $dark-mint;
+
+                    @media only screen and (max-width: $screen-md) {
+                        font-size: 14px;
+                        line-height: 22px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+.guarantees {
+    background: $snow-white;
+
+    @media screen and (max-width: $screen-md) {
+        padding: 24px 0;
+    }
+    
+    &-content {
+        &__header {
+            margin-bottom: 25px;
+            
+            &--title {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                text-align: center;
+                color: $dark-gray;
+            }
+        }
+
+        &__block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    &-swiper {
+        &__wrapper {
+            @media screen and (max-width: $screen-md) {
+                margin-bottom: 24px;
+            }
+        }
+
+        &__pagination {
+            position: relative !important;
+            bottom: 0 !important;
+
+            .swiper-pagination-bullet {
+                background: $light-cyan;
+                border-radius: 2px;
+                opacity: 1;
+                transition: .3s;
+
+                &.swiper-pagination-bullet-active {
+                    width: 20px;
+                    background: $mint;
+                }
+            }
+        }
+    }
+}

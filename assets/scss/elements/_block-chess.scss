@@ -1,0 +1,69 @@
+.block-chess {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+
+    @media screen and (max-width: $screen-smm) {
+        flex-direction: column;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &__block {
+        &--title {
+            font-family: $nunito-font;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 24px;
+            line-height: 26px;
+            color: $dark-gray;
+            margin-bottom: 25px;
+
+            @media screen and (max-width: $screen-md) {
+                margin-bottom: 16px;
+            }
+        }
+
+        &--desc {
+            font-family: $gilroy-font;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 32px;
+            color: $dark-mint;
+            
+            @media screen and (max-width: $screen-md) {
+                font-size: 16px;
+                line-height: 26px;
+            }
+        }
+    }
+
+    &__image {
+        margin-left: 0;
+        margin-right: 25px;
+
+        @media screen and (max-width: $screen-md) {
+            margin: 0;
+        }
+    }
+
+    &:nth-child(2n) {
+        flex-direction: row-reverse;
+
+        @media screen and (max-width: $screen-smm) {
+            flex-direction: column;
+        }
+
+        .block-chess__image {
+            margin-left: 25px;
+            margin-right: 0;
+
+            @media screen and (max-width: $screen-md) {
+                margin: 0;
+            }
+        }
+    }
+}

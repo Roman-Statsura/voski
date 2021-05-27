@@ -1,0 +1,31 @@
+.contacts-block {
+    &-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &__title {
+            font-family: $nunito-font;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 26px;
+            text-align: center;
+            color: $dark-gray;
+            margin-bottom: 16px;
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+
+        &__socials {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

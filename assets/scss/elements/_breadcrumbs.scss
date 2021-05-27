@@ -1,0 +1,61 @@
+.breadcrumbs {
+    &__container {
+        padding-bottom: 0;
+    }
+
+    @media screen and (max-width: $screen-md) {
+        padding-bottom: 25px;
+    }
+}
+
+.breadcrumb {
+    padding: 0;
+    margin: 0;
+    font-family: $gilroy-font;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0.04em;
+    list-style-type: none;
+
+    li {
+        display: inline-block;
+        margin-bottom: 0;
+
+        &:first-child {
+            a {
+                color: $mint;
+                text-decoration: none;
+
+                &:hover {
+                    color: $light-green;
+                }
+            }
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        + li {
+            margin-left: 6px;
+        }
+    }
+}
+
+.svg-inline--fa {
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -.125em;
+
+    &.fa-w-8 {
+        width: .5em;
+    }
+}
+
+svg:not(:root).svg-inline--fa {
+    overflow: visible;
+}

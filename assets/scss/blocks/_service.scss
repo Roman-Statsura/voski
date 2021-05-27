@@ -1,0 +1,50 @@
+.service {
+    background: $snow-white;
+
+    @media screen and (max-width: $screen-md) {
+        padding: 24px 0;
+    }
+    
+    &-content {
+        &__header {
+            margin-bottom: 90px;
+
+            @media screen and (max-width: $screen-sm) {
+                margin-bottom: 40px;
+            }
+            
+            &--title {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                text-align: center;
+                color: $dark-gray;
+            }
+        }
+
+        &__body {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &__block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column;
+            margin-bottom: 48px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &-item {
+        width: 109px;
+    }
+}

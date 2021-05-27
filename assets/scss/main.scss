@@ -1,0 +1,36 @@
+@import "grid";
+@import "variables";
+@import "globals";
+
+@import "globals/header";
+@import "globals/footer";
+
+@import "blocks/main-header";
+@import "blocks/why";
+@import "blocks/guarantees";
+@import "blocks/tarolog";
+@import "blocks/service";
+@import "blocks/just-block";
+@import "blocks/helped-slider";
+@import "blocks/socials";
+@import "blocks/success";
+@import "blocks/faq";
+@import "blocks/contacts-block";
+@import "blocks/articles-list";
+@import "blocks/articles-detailed";
+@import "blocks/messages";
+@import "blocks/tarot-readers";
+@import "blocks/select-tarot";
+@import "blocks/calendar";
+@import "blocks/tarologist";
+
+@import "blocks/login";
+@import "blocks/profile";
+
+@import "elements/cart";
+@import "elements/block-chess";
+@import "elements/quote";
+@import "elements/social";
+@import "elements/breadcrumbs";
+@import "elements/pagination";
+@import "elements/block-list";

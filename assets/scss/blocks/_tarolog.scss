@@ -1,0 +1,62 @@
+.tarolog {    
+    &-content {
+        &__header {
+            margin-bottom: 40px;
+            
+            &--title {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                text-align: center;
+                color: $dark-gray;
+            }
+        }
+
+        &__body {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &__block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 48px;
+
+            @media screen and (max-width: $screen-md) {
+                margin-bottom: 40px;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        &__items {
+            @media screen and (max-width: $screen-md) {
+                position: relative;
+                left: -10px;
+            }
+        }
+    }
+
+    &-item {
+        width: 109px;
+
+        @media screen and (max-width: $screen-md) {
+            width: 42px;
+        }
+
+        &__block {
+            &_image {
+                @media screen and (max-width: $screen-md) {
+                    width: 60px;
+                }
+            }
+        }
+    }
+}

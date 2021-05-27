@@ -1,0 +1,90 @@
+.just-block {
+    &-container {
+        padding: 50px 25px;
+
+        @media only screen and (max-width: $screen-md) {
+            padding: 25px 15px;
+        }
+    }
+
+    &__direction {
+        &--row {
+            flex-direction: row;
+        }
+        &--column {
+            flex-direction: column;
+        }
+    }
+
+    &-content {
+        &__header {
+            margin-bottom: 40px;
+
+            @media only screen and (max-width: $screen-md) {
+                margin-bottom: 16px;
+            }
+
+            &--title {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                text-align: center;
+                color: $dark-gray;
+
+                @media screen and (max-width: $screen-md) {
+                    font-size: 24px;
+                    line-height: 26px;
+                }
+            }
+        }
+
+        &__picture {
+            margin-bottom: 32px;
+
+            @media screen and (max-width: $screen-md) {
+                margin-bottom: 12px;
+            }
+        }
+
+        &__image {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        &__body {
+            display: flex;
+            justify-content: center;
+
+            h3 {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 24px;
+                line-height: 31px;
+                color: $dark-gray;
+            }
+
+            &.paragraph--no-margin {
+                p {
+                    margin-bottom: 0;
+                }
+            }
+
+            p {
+                font-family: $gilroy-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 20px;
+                line-height: 32px;
+                color: $dark-mint;
+
+                @media only screen and (max-width: $screen-md) {
+                    font-size: 16px;
+                    line-height: 26px;
+                }
+            }
+        }
+    }
+}
