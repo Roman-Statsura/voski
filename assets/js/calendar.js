@@ -1035,7 +1035,6 @@ function getCurrentDate(action = "") {
                     eventModal.classList.remove("show");
                     document.querySelector(".calendar-modal--overlay").classList.remove("shown");
                 } else if (this.dataset.action === "remove") {
-                    console.log(this.dataset.action);
                     callback(formSchedule, eventModal, "remove");
                     document.querySelector(".calendar-modal--overlay").classList.remove("shown");
                 } else if (this.dataset.action === "save") {
@@ -1077,7 +1076,6 @@ function getCurrentDate(action = "") {
                 eventModal.classList.remove("show");
                 document.querySelector(".calendar-modal--overlay").classList.remove("shown");
             } else if (this.dataset.action === "remove") {
-                console.log(this.dataset.action);
                 callback(formSchedule, eventModal, "remove");
                 document.querySelector(".calendar-modal--overlay").classList.remove("shown");
             } else if (this.dataset.action === "save") {

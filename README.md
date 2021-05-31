@@ -23,6 +23,9 @@
     - core/export 777
     - core/packages 777
     - assets/components 777
+6. Установить Composer
+    - composer install
+    - Настроить крон на выполнение скрипта /assets/php/websocket.php
 
 ## Если сайт выдает ошибки или не пускает на сайт
 Скачайте с сайта MODX Revolution 2.8.1-pl и пересите папку setup в корень вашего сайта и проведите повторную установку.

@@ -57,8 +57,8 @@
 
                 {set $consultations = '!pdoResources' | snippet : [
                     'parents' => 36,
-                    'sortby' => 'publishedon',
-                    'sortdir' => 'DESC',
+                    'sortby' => 'consultDatetime',
+                    'sortdir' => 'ASC',
                     'includeTVs' => 'consultDatetime, consultIDClient, consultIDTarot, consultZoomID, consultZoomLink, consultZoomStartLink, 
                                     consultDesc, consultStatusSession, consultDuration, consultSended',
                     'includeContent' => '1',
@@ -179,7 +179,69 @@
         nModalInitedRow = document.querySelector(`[data-nmodal="consultDetailed"]`),
         ajaxContainerSelector = `.ajax-container`,
         currentUser = `'~$userQuestResourse~'`,
-        curUserGroup = `'~$_modx->user.extended.usertype~'`;
+        curUserGroup = `'~$_modx->user.extended.usertype~'`,
+        intervalId = 0;
+
+    var socket = new WebSocket("ws://localhost:8080");
+
+    socket.onopen = function() {};
+
+    socket.onmessage = function(e) {
+        if (e.data !== "nothingSave") {
+            let newConsult = JSON.parse(e.data);
+            
+            newConsult.forEach(element => {
+                if (element["tv.consultIDTarot"] === currentUser || element["tv.consultIDClient"] === currentUser) {
+                    let idCon = element["id"];
+                    let listConsultStatus = document.querySelector(`[data-consultation="cnsid-${idCon}"] [data-info="statusSession"]`),
+                        listConsultDuration = document.querySelector(`[data-consultation="cnsid-${idCon}"] [data-info="duration"]`);
+
+                    if (Number(element["tv.consultStatusSession"]) === 0) {
+                        listConsultStatus.innerHTML = "В ожидании";
+                        if (listConsultStatus.classList.contains("table-consultation__status--green")) {
+                            listConsultStatus.classList.remove("table-consultation__status--green");
+                        }
+                        listConsultDuration.innerHTML = secToTime(Number(element["tv.consultDuration"]));
+
+                        if (intervalId > 0) {
+                            clearInterval(intervalId);
+                            intervalId = 0;
+                        }
+                    }
+                    if (Number(element["tv.consultStatusSession"]) === 1) {
+                        listConsultStatus.innerHTML = "Проведен";
+                        listConsultStatus.classList.add("table-consultation__status--green");
+                        listConsultDuration.innerHTML = secToTime(Number(element["tv.consultDuration"]));
+
+                        if (intervalId > 0) {
+                            clearInterval(intervalId);
+                            intervalId = 0;
+                        }
+                    }
+                    if (Number(element["tv.consultStatusSession"]) === 4) {
+                        listConsultStatus.innerHTML = "Проводится";
+                        if (listConsultStatus.classList.contains("table-consultation__status--green")) {
+                            listConsultStatus.classList.remove("table-consultation__status--green");
+                        }
+                        listConsultDuration.innerHTML = secToTime(Number(element["tv.consultDuration"]));
+                    }
+
+                    alerts({state: "success", message: "Консультации обновлены"});
+                }
+            });
+        }
+    };
+
+    socket.onclose = function(event) {
+        if (event.wasClean) {
+        } else {
+            alerts({state: "error", message: "Обрыв соединения"});
+        }
+    };
+
+    socket.onerror = function(error) {
+        //console.log(error);
+    };
 
     document.addEventListener("DOMContentLoaded", function () {        
         nModal.init({
@@ -203,9 +265,13 @@
                 if (Number(element["tv.consultStatusSession"]) === 4) {
                     let listConsultDuration = document.querySelector(`[data-consultation="cnsid-${element.id}"] [data-info="duration"]`);
                     intervalId = setInterval(function() {
-                        seconds = updateTimer(element.id, element["tv.consultZoomID"], element["tv.consultDuration"]);
+                        seconds = updateTimer(element.id, element["tv.consultZoomID"]);
                         listConsultDuration.innerHTML = secToTime(seconds);
-                    }, 1000);
+
+                        if (socket.readyState === 1) {
+                            socket.send(`{"resID": ${element.id}}`);
+                        }
+                    }, 60000);
                 }
             });
         }
@@ -342,7 +408,7 @@
         return hours + " ч " + minutes + " мин";
     }
 
-    function updateTimer(migxid, zoomID, dur) {
+    function updateTimer(migxid, zoomID) {
         var xhr = new XMLHttpRequest();
         var params = "id=" + migxid + 
                      "&meetingId=" + zoomID;
@@ -359,50 +425,49 @@
     }
 
     function startMeeting(form, event) {
-        var xhrConsult = new XMLHttpRequest();
-        var result = "";
+        document.body.classList.remove("loaded");
+        var xhr = new XMLHttpRequest();
+        let zoomID = event.dataset.zoomid,
+            duration = event.dataset.duration,
+            migxid = event.dataset.migxid,
+            callback = event.dataset.nmodalCallback,
+            cnsID = event.dataset.cnsid;
+            listConsultStatus = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="statusSession"]`),
+            listConsultDuration = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="duration"]`),
+            intervalId = 0;
 
-        xhrConsult.open("GET", "/assets/php/getConsultationList.php", true);
-        xhrConsult.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhrConsult.onreadystatechange = function() {
+        xhr.open("GET", "/assets/php/zoomGetMeeting.php?id=" + migxid + "&meetingId=" + zoomID, true);
+        xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
-            newConsult = JSON.parse(this.responseText);
-            let cnsID = event.dataset.cnsid;
+            let result = JSON.parse(this.responseText);
+            alerts(result);
 
-            var xhr = new XMLHttpRequest();
-            let zoomID = event.dataset.zoomid,
-                duration = event.dataset.duration,
-                migxid = event.dataset.migxid,
-                callback = event.dataset.nmodalCallback,
-                listConsultStatus = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="statusSession"]`),
-                listConsultDuration = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="duration"]`);
+            if (result.state === "success") {
+                event.innerHTML = "Закончить консультацию";
+                event.classList.remove("button-theme--mint");
+                event.classList.add("button-theme--red");
+                event.dataset.nmodalCallback = "stopMeeting";
+                listConsultStatus.innerHTML = "Проводится";
 
-            xhr.open("GET", "/assets/php/zoomGetMeeting.php?id=" + migxid + "&meetingId=" + zoomID, true);
-            xhr.onreadystatechange = function() {
-                if (this.readyState != 4) return;
-                let result = JSON.parse(this.responseText);
-                alerts(result);
+                intervalId = setInterval(function() {
+                    seconds = updateTimer(migxid, zoomID);
+                    listConsultDuration.innerHTML = secToTime(seconds);
 
-                if (result.state === "success") {
-                    let dur = Number(newConsult[cnsID]["tv.consultDuration"]);
-                    event.innerHTML = "Закончить консультацию";
-                    event.classList.remove("button-theme--mint");
-                    event.classList.add("button-theme--red");
-                    event.dataset.nmodalCallback = "stopMeeting";
-                    listConsultStatus.innerHTML = "Проводится";
+                    if (socket.readyState === 1) {
+                        socket.send(`{"resID": ${migxid}}`);
+                    }
+                }, 60000);
 
-                    intervalId = setInterval(function() {
-                        dur = updateTimer(migxid, zoomID, dur);
-                        listConsultDuration.innerHTML = secToTime(dur);
-                    }, 1000);
-
-                    window.open(event.href, "_blank");
-                    document.body.classList.add("loaded");
+                if (socket.readyState === 1) {
+                    socket.send(`{"resID": ${migxid}}`);
                 }
+
+                window.open(event.href, "_blank");
+                document.body.classList.add("loaded");
+                nModal.close();
             }
-            xhr.send();
         }
-        xhrConsult.send();
+        xhr.send();
     }
 
     function stopMeeting(form, event) {
@@ -414,28 +479,31 @@
             listConsultStatus = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="statusSession"]`),
             listConsultDuration = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="duration"]`);
 
-        if (intervalId > 0) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/assets/php/zoomGetMeeting.php?id=" + migxid + "&meetingId=" + zoomID + "&action=end", true);
-            xhr.onreadystatechange = function() {
-                let result = JSON.parse(this.responseText);
-                alerts(result);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/assets/php/zoomGetMeeting.php?id=" + migxid + "&meetingId=" + zoomID + "&action=end", true);
+        xhr.onreadystatechange = function() {
+            let result = JSON.parse(this.responseText);
+            alerts(result);
 
-                if (result.state === "success") {
-                    clearInterval(intervalId);
-                    intervalId = 0;
+            if (result.state === "success") {
+                clearInterval(intervalId);
+                intervalId = 0;
 
-                    event.innerHTML = "Начать консультацию";
-                    event.classList.remove("button-theme--red");
-                    event.classList.add("button-theme--mint");
-                    event.dataset.nmodalCallback = "startMeeting";
-                    listConsultStatus.innerHTML = "Проведен";
-                    document.body.classList.add("loaded");
+                seconds = updateTimer(migxid, zoomID);
+                listConsultDuration.innerHTML = secToTime(seconds);
+
+                if (socket.readyState === 1) {
+                    socket.send(`{"resID": ${migxid}}`);
                 }
+
+                event.remove();
+                listConsultStatus.innerHTML = "Проведен";
+                document.body.classList.add("loaded");
+                nModal.close();
             }
-            
-            xhr.send();
         }
+        
+        xhr.send();
     }
 
     function changeTab(checkbox) {

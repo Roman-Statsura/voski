@@ -40,7 +40,7 @@
         if (!$sended) {
             if (time() >= $sendTime) {
                 $nothingSend = false;
-                $respTest = $jwt->cURLQueries("https://api.zoom.us/v2/meetings/{$consultationItem->zoomID}", $jwtToken, "", "GET");
+                $respTest = $jwt->cURLQueries("https://api.zoom.us/v2/meetings/{$zoomID}", $jwtToken, "", "GET");
                 $respTest = json_decode($respTest);
 
                 if (isset($zoomLink) && !empty($zoomLink)) {
@@ -96,4 +96,5 @@
         }
     } else {
         echo "Nothing Send!";
+        $modx->log(xPDO::LOG_LEVEL_ERROR, "Nothing Send!");
     }

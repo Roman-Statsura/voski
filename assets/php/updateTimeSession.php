@@ -11,14 +11,19 @@
     $consultations = $resource->getTVValue('consultations');
     $zoomID = $resource->getTVValue('consultZoomID');
     $duration = $resource->getTVValue('consultDuration');
+    $status = $resource->getTVValue('consultStatusSession');
     $startTime = $resource->getTVValue('consultStartTime');
-    $currentDiffTime = time() - strtotime($startTime);
     $changed = false;
 
-    if (strval($zoomID) == $meetingId) {
-        $duration = $currentDiffTime;
-        $duration += 1;
-        $changed = true;
+    if ($status == 1 || $status == 4) {
+        if (!empty($startTime)) {
+            $currentDiffTime = time() - strtotime($startTime);
+
+            if (strval($zoomID) == $meetingId) {
+                $duration = $currentDiffTime;
+                $changed = true;
+            }
+        }
     }
 
     if ($changed) {

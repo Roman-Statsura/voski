@@ -15,8 +15,8 @@
 
     $resource = $modx->getObject('modResource', $idRes);
     $zoomID = $resource->getTVValue('consultZoomID');
-    $statusSession = $resource->getTVValue('consultStatusSession');
-    $startTime = $resource->getTVValue('consultStartTime');
+    $statusSessionField = $resource->getTVValue('consultStatusSession');
+    $startTimeField = $resource->getTVValue('consultStartTime');
 
     if (empty($action)) {
         if (strval($zoomID) == $meetingId) {
@@ -27,16 +27,16 @@
                 if ($zoomMeeting->status == "started") {
                     $statusSession = 4;
 
-                    if (empty($startTime)) {
+                    if (empty($startTimeField)) {
                         $startTime = date("Y-m-d H:i:s", time());
                     }
                 } else {
-                    if ($statusSession == 4) {
+                    if ($statusSessionField == 4) {
                         $statusSession = 1;
                     } else {
                         $statusSession = 4;
 
-                        if (empty($startTime)) {
+                        if (empty($startTimeField)) {
                             $startTime = date("Y-m-d H:i:s", time());
                         }
                     }
@@ -45,34 +45,38 @@
         }
 
         $resource->setTVValue('consultStatusSession', $statusSession);
-        if (empty($startTime)) {
+        if (!empty($startTime)) {
             $resource->setTVValue('consultStartTime', $startTime);
         }
 
         if (!$resource->save()) {
+            $modx->log(xPDO::LOG_LEVEL_ERROR, "Ошибка в сохранений ресурса! ID: {$idRes}.");
             $result = [
                 'state' => 'error',
                 'message' => 'Something Error!'
             ];
         } else {
+            $modx->log(xPDO::LOG_LEVEL_ERROR, "S'all good man! ID: {$idRes} || Status: {$idRes} || Start Time {$startTime}.");
             $result = [
                 'state' => 'success',
                 'message' => 'Консультация успешно началась'
             ];
         }
     } else if ($action == "end") {
-        if ($statusSession == 4) {
+        if ($statusSessionField == 4) {
             $zoomMeeting = $jwt->cURLQueries("https://api.zoom.us/v2/meetings/{$meetingId}/status", $jwtToken, ["action" => "end"], "PUT");
             $zoomMeeting = json_decode($zoomMeeting);
 
             $resource->setTVValue('consultStatusSession', 1);
 
             if (!$resource->save()) {
+                $modx->log(xPDO::LOG_LEVEL_ERROR, "Ошибка в сохранений ресурса при завершении! ID: {$idRes}.");
                 $result = [
                     'state' => 'error',
                     'message' => 'Something Error!'
                 ];
             } else {
+                $modx->log(xPDO::LOG_LEVEL_ERROR, "S'all good man! ID: {$idRes} || Status: {$idRes} || Start Time {$startTime}.");
                 $result = [
                     'state' => 'success',
                     'message' => 'Консультация завершена'

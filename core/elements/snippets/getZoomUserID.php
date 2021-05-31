@@ -5,34 +5,36 @@
     $jwtToken = $jwt->JWTTokenGenerate();
 
     $resource = $modx->getObject('modResource', $currentUser);
-    $statusInviteZoom = $resource->getTVValue('statusInviteZoom');
-    $zoomID = $resource->getTVValue('zoomID');
+    if ($resource) {
+        $statusInviteZoom = $resource->getTVValue('statusInviteZoom');
+        $zoomID = $resource->getTVValue('zoomID');
 
-    if (empty($zoomID)) {
-        $activeZoomUser = $jwt->cURLQueries("https://api.zoom.us/v2/users/{$currentEmail}", $jwtToken, false, "GET");
-        $activeZoomUser = json_decode($activeZoomUser);
+        if (empty($zoomID)) {
+            $activeZoomUser = $jwt->cURLQueries("https://api.zoom.us/v2/users/{$currentEmail}", $jwtToken, false, "GET");
+            $activeZoomUser = json_decode($activeZoomUser);
 
-        if ($activeZoomUser->id) {
-            if ($activeZoomUser->status == "active") {
-                if ($statusInviteZoom == 2) {
-                    $resource->setTVValue('statusInviteZoom', 3);
+            if ($activeZoomUser->id) {
+                if ($activeZoomUser->status == "active") {
+                    if ($statusInviteZoom == 2) {
+                        $resource->setTVValue('statusInviteZoom', 3);
+                    }
+                    $resource->setTVValue('zoomID', $activeZoomUser->id);
+                    return $activeZoomUser->id;
+                } elseif ($activeZoomUser->status == "pending") {
+                    if ($statusInviteZoom == 1) {
+                        $resource->setTVValue('statusInviteZoom', 2);
+                    }
+                    return "pending";
                 }
-                $resource->setTVValue('zoomID', $activeZoomUser->id);
-                return $activeZoomUser->id;
-            } elseif ($activeZoomUser->status == "pending") {
+            } else {
                 if ($statusInviteZoom == 1) {
-                    $resource->setTVValue('statusInviteZoom', 2);
+                    return "sendRequest";
+                } else {
+                    $resource->setTVValue('statusInviteZoom', 0);
+                    return false;
                 }
-                return "pending";
             }
         } else {
-            if ($statusInviteZoom == 1) {
-                return "sendRequest";
-            } else {
-                $resource->setTVValue('statusInviteZoom', 0);
-                return false;
-            }
+            return $zoomID;
         }
-    } else {
-        return $zoomID;
     }

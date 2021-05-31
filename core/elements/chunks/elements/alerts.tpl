@@ -8,7 +8,6 @@
     var timeoutCount = '~ $noHiding ~';
 
     let alerts = function(result) {
-        console.log(result);
         clearTimeout(closeAlert);
         let alertDOM = document.querySelector(`[data-action="alert"]`);
         

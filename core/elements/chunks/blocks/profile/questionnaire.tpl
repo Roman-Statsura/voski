@@ -36,6 +36,8 @@
     {set $price = $userQuestResourse | resource : 'price-pre'}
     {set $certs = $userQuestResourse | resource : 'certs-pre'}
     {set $statusInviteZoom = $userQuestResourse | resource : 'statusInviteZoom'}
+{else}
+    {set $certs = ""}
 {/if}
 
 {set $zoomUserID = '@FILE snippets/getZoomUserID.php' | snippet : [
@@ -70,7 +72,7 @@
                     </div>
                 {/if}
                 
-                <div data-action="alert" class="alert">
+                <div data-action="alert" class="alert alert--fixed">
                     Анкета отправлена на модерацию
                 </div>
                 <div class="login-content__header--subtitle">
@@ -220,7 +222,7 @@
         alertDOM = document.querySelector(`[data-action="alert"]`),
         specializationDOM = document.querySelector("#specialization"),
         photosBlock = document.querySelector(`#certs`),
-        uploadedCerts = '~ $certs ~',
+        uploadedCerts = `'~ $certs ~'`,
         specList = '~ $specList ~',
         currentSpec = "'~$specialization~'",
         currentSpecArray = currentSpec.split(","),
@@ -244,7 +246,7 @@
         onChange: value => { 
             specializationDOM.value = value;
         },
-        value: currentSpecArray,
+        value: currentSpecArray == "" ? "" : currentSpecArray,
         classNames: {
             select: "select-pure__select",
             dropdownShown: "select-pure__select--opened",
@@ -304,7 +306,7 @@
 
         for (var i in files) {
             if (files.hasOwnProperty(i)) {
-                name = "file" + i;
+                name = "file" + i + "-certs";
                 reader[i] = new FileReader();
                 reader[i].readAsDataURL(photosBlock.files[i]);
                 
@@ -330,14 +332,17 @@
     });
 
     if (document.querySelector(".form__label--photo")) {
-        document.querySelector("#uploaded-certs").value = JSON.stringify(uploadedCerts);
-
-        document.querySelectorAll(".form__label--photo").forEach(function(element, i, arr) {
+        let currCertArray = JSON.parse(uploadedCerts),
+            photoLabelList = document.getElementsByClassName("form__label--photo"),
+            idUploadedCerts = document.querySelector("#uploaded-certs");
+        
+        idUploadedCerts.value = JSON.stringify(uploadedCerts);
+        Array.prototype.forEach.call(photoLabelList, function (element, i) {
             element.addEventListener("click", function() {
-                uploadedCerts.splice(i, 1);
-                document.querySelector("#uploaded-certs").value = JSON.stringify(uploadedCerts);
+                currCertArray.splice(i, 1, "");
+                idUploadedCerts.value = JSON.stringify(currCertArray);
                 this.remove();
-            })
+            });
         });
     }
 
@@ -349,7 +354,6 @@
 
         xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
-            console.log(this.responseText);
             let result = JSON.parse(this.responseText);
 
             alertDOM.classList.add("alert--" + result.state);
@@ -366,24 +370,26 @@
 
     let sendInvite = document.querySelector(`a[data-action="sendInvite"]`);
 
-    sendInvite.addEventListener("click", function (e) {
-        let	id_product = 321;
-        let qty_product = 2;
+    if (sendInvite) {
+        sendInvite.addEventListener("click", function (e) {
+            let	id_product = 321;
+            let qty_product = 2;
 
-        const request = new XMLHttpRequest();
-        const url = "/assets/php/addUserInZoom.php";
-        const params = `tarotEmail='~$_modx->getPlaceholder('upd.email')~'&tarotName='~$_modx->getPlaceholder('upd.fullname')~'&tarotID='~$_modx->getPlaceholder('upd.id')~'&questTarotID='~$userQuestResourse~'`
+            const request = new XMLHttpRequest();
+            const url = "/assets/php/addUserInZoom.php";
+            const params = `tarotEmail='~$_modx->getPlaceholder('upd.email')~'&tarotName='~$_modx->getPlaceholder('upd.fullname')~'&tarotID='~$_modx->getPlaceholder('upd.id')~'&questTarotID='~$userQuestResourse~'`
 
-        request.open("POST", url, true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.addEventListener("readystatechange", () => {
-            if(request.readyState === 4 && request.status === 200) {
-                document.querySelector(`[data-alert="invite"]`).innerHTML = "Ваша заявка успешно отправлена! После того, как ваша заявка обработается, вы получите на вашу электронную почту приглашение добавление в учетную запись Zoom.";
-            }
+            request.open("POST", url, true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.addEventListener("readystatechange", () => {
+                if(request.readyState === 4 && request.status === 200) {
+                    document.querySelector(`[data-alert="invite"]`).innerHTML = "Ваша заявка успешно отправлена! После того, как ваша заявка обработается, вы получите на вашу электронную почту приглашение добавление в учетную запись Zoom.";
+                }
+            });
+            
+            request.send(params);
+            e.preventDefault();
         });
-        
-        request.send(params);
-        e.preventDefault();
-    });
+    }
 
 </script>')}

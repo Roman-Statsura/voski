@@ -14,6 +14,9 @@
 /manager/config.core.php
 !/manager/example.config.core.php
 
+/vendor/
+composer.phar
+
 !/assets
 /assets/*
 !/assets/components

@@ -7,8 +7,8 @@
 
     $params = array(
         'parents' => 36,
-        'sortby' => 'publishedon',
-        'sortdir' => 'DESC',
+        'sortby' => 'consultDatetime',
+        'sortdir' => 'ASC',
         'includeTVs' => 'consultDatetime, consultIDClient, consultIDTarot, consultZoomID, consultZoomLink, consultZoomStartLink, 
                          consultDesc, consultStatusSession, consultDuration, consultSended',
         'includeContent' => '1',

@@ -373,7 +373,6 @@ class LoginLoginController extends LoginController {
  
                         // Раскомментить при продакшене
                         $this->smsService->sendMessageStream($username, $this->generateSMSCode(6));
-                        // $this->smsService->sendMessageStream($username, "000000");
 
                         // cURL - Send Message (Рабочий - Раскомментить, когда будет боевой)
                             /*$ch = curl_init();
@@ -436,6 +435,18 @@ class LoginLoginController extends LoginController {
                         // End: cURL - Send Message
                     } else {
                         $this->smsService->sendMessageStream($username, $this->generateSMSCode(6));
+
+                        // cURL - Send Message (Рабочий - Раскомментить, когда будет боевой)
+                            /*$ch = curl_init();
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/x-www-form-urlencoded'));
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($ch, CURLOPT_CRLF, true);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_URL, $this->smsService->sendMessageStream($username, $this->generateSMSCode(6)));
+                            $result = curl_exec($ch);
+                            curl_close($ch);*/
+                        // End: cURL - Send Message
+
                         $_SESSION['error'] = [
                             'state' => 'error',
                             'message' => 'Введен неверный код! Повторите попытку'

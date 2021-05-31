@@ -77,7 +77,13 @@
 
         if ($certs && !empty($certs[0])) {
             $certsArray = json_decode($_POST['uploaded-certs']);
-            $i = count($certsArray);
+            $newCleanArray = [];
+            foreach ($certsArray as $key => $elem) {
+                if ($elem != "") {
+                    $newCleanArray[] = $elem;
+                }
+            }
+            $i = count($newCleanArray);
 
             foreach ($certs as $key => $cert) {
                 $filename = "maxpreview";
@@ -92,7 +98,7 @@
                 $pathIMG = "/assets/img/tarolog/" . $resourceID . "/certs/" . $filename . ".jpg";
 
                 if (move_uploaded_file($cert, $fullPathIMG)) {
-                    $certsArray[] = [
+                    $newCleanArray[] = [
                         'MIGX_id' => $i + 1,
                         'photo' => $pathIMG,
                         'thumbnail' => '',
@@ -110,16 +116,25 @@
             }
 
             if ($premoderateSetting) {
-                $resource->setTVValue('certs-pre', json_encode($certsArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                $resource->setTVValue('certs-pre', json_encode($newCleanArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
             } else {
-                $resource->setTVValue('certs', json_encode($certsArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                $resource->setTVValue('certs', json_encode($newCleanArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
             }
         } else {
             if (!empty($_POST['uploaded-certs'])) {
+                $certsArray = json_decode($_POST['uploaded-certs']);
+                $newCleanArray = [];
+                foreach ($certsArray as $key => $elem) {
+                    if ($elem != "") {
+                        $newCleanArray[] = $elem;
+                    }
+                }
+                $certsArray = json_encode($newCleanArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                
                 if ($premoderateSetting) {
-                    $resource->setTVValue('certs-pre', $_POST['uploaded-certs']);
+                    $resource->setTVValue('certs-pre', $certsArray);
                 } else {
-                    $resource->setTVValue('certs', $_POST['uploaded-certs']);
+                    $resource->setTVValue('certs', $certsArray);
                 }
             }
         }
@@ -150,6 +165,7 @@
         $newResource->set('published', 0);
         $newResource->set('template', 16);
         $newResource->set('parent', 2);
+        $newResource->set('cacheable', 0);
         $newResource->set('publishedon', time());
 
         if (!$newResource->save()) {
@@ -168,6 +184,15 @@
             $tvs->setTVValue('gender', $_POST['gender']);
             $tvs->setTVValue('specialization', $_POST['specialization']);
 
+            $resource->setTVValue('fio-pre', $_POST['fullname']);
+            $resource->setTVValue('content-pre', $_POST['about']);
+            $resource->setTVValue('city-pre', $_POST['city']);
+            $resource->setTVValue('experience-pre', $_POST['experience']);
+            $resource->setTVValue('price-pre', $_POST['price']);
+            $resource->setTVValue('specialization-pre', $_POST['specialization']);
+            $resource->setTVValue('gender-pre', $_POST['gender']);
+            $resource->setTVValue('isModerate', '1');
+
             if (!empty($file)) {
                 $fullPath = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/tarolog/" . $newTarolog;
                 $fullPathIMG = $fullPath . "/maxpreview.jpg";
@@ -179,7 +204,11 @@
 
                 if (!file_exists($fullPathIMG)) {
                     if (move_uploaded_file($file, $fullPathIMG)) {
-                        $tvs->setTVValue('photo', $pathIMG);
+                        if ($premoderateSetting) {
+                            $resource->setTVValue('photo-pre', $pathIMG);
+                        } else {
+                            $resource->setTVValue('photo', $pathIMG);
+                        }
                     } else {
                         $result = [
                             'state' => 'error',
@@ -245,7 +274,13 @@
                     }
                 }
 
-                $tvs->setTVValue('certs', json_encode($certsArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                // $tvs->setTVValue('certs', json_encode($certsArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+                if ($premoderateSetting) {
+                    $tvs->setTVValue('certs-pre', json_encode($certsArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                } else {
+                    $tvs->setTVValue('certs', json_encode($certsArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
             }
             
             if (!$tvs->save()) {

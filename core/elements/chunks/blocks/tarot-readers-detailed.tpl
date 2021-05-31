@@ -37,6 +37,11 @@
 {$swiperBundleJSPreload | htmlToHead: true}
 {$swiperBundle | htmlToHead: true}
 
+{set $tarotScheduleNew = '!scheduleNew' | snippet : [
+    'worktime' => $_modx->resource.worktime
+    'schedule' => $_modx->resource.schedule
+]}
+
 <div class="tarot-readers">
     <div class="tarot-readers-container container">
         <div class="tarot-readers-container__content tarot-readers-content">
@@ -53,10 +58,17 @@
                         {if $modx->user->isAuthenticated()}
                             {if $_modx->user.id != $_modx->resource.idUser}
                                 {if $_modx->user.extended.usertype != 3}
-                                    {'@FILE chunks/elements/button.tpl' | chunk : [
-                                        'buttonTitle' => 'Записаться к специалисту'
-                                        'dataAttr' => 'data-nmodal="tarotSignUp" data-nmodal-size="largest"'
-                                    ]}
+                                    {if count($tarotScheduleNew) > 0}
+                                        {'@FILE chunks/elements/button.tpl' | chunk : [
+                                            'buttonTitle' => 'Записаться к специалисту'
+                                            'dataAttr' => 'data-nmodal="tarotSignUp" data-nmodal-size="largest"'
+                                        ]}
+                                    {else}
+                                        {'@FILE chunks/elements/button.tpl' | chunk : [
+                                            'buttonTitle' => 'Записаться к специалисту'
+                                            'dataAttr' => 'disabled'
+                                        ]}
+                                    {/if}
                                 {else}
                                     {'@FILE chunks/elements/button.tpl' | chunk : [
                                         'buttonTitle' => 'Записаться к специалисту'
@@ -167,6 +179,7 @@
                     'sortby' => 'publishedon'
                     'sortdir' => 'DESC'
                     'includeTVs' => 'experience, price, photo'
+                    'tvFilters' => "zoomID!=''"
                     'includeContent' => '1'
                     'return' => 'json'
                     'limit' => $limit == '' ? 3 : $limit
@@ -211,33 +224,32 @@
             <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
         </div>
         <div class="nModal-body">
-            {set $tarotScheduleNew = '!scheduleNew' | snippet : [
-                'worktime' => $_modx->resource.worktime
-                'schedule' => $_modx->resource.schedule
-            ]}
-
             <div class="schedule-block__date">
-                {foreach $tarotScheduleNew as $schDate => $tarotScheduleItem}
-                    <div class="schedule-block__content">
-                        <div class="schedule-block__date--title">
-                            {$schDate | strtotime | rusDate}
-                        </div>
-                        <div class="schedule-block__date--list swiper-container swiper-schedule--{$schDate | date: 'dmY'}">
-                            <div class="swiper-wrapper">
-                                {foreach $tarotScheduleItem as $schItem}
-                                    {set $newDateTime = $schDate ~ $schItem}
-                                    <div class="schedule-block__item swiper-slide">
-                                        <input id="time-{$newDateTime | date: 'dmYHi'}" class="schedule-block__item--radio" type="radio" name="schTime" value="{$schDate} {$schItem}">
-                                        <label for="time-{$newDateTime | date: 'dmYHi'}" class="schedule-block__item--label">
-                                            {$schItem}
-                                        </label>
-                                    </div>
-                                {/foreach}
+                {if count($tarotScheduleNew) > 0}
+                    {foreach $tarotScheduleNew as $schDate => $tarotScheduleItem}
+                        <div class="schedule-block__content">
+                            <div class="schedule-block__date--title">
+                                {$schDate | strtotime | rusDate}
                             </div>
-                            <div class="swiper-scrollbar"></div>
+                            <div class="schedule-block__date--list swiper-container swiper-schedule--{$schDate | date: 'dmY'}">
+                                <div class="swiper-wrapper">
+                                    {foreach $tarotScheduleItem as $schItem}
+                                        {set $newDateTime = $schDate ~ $schItem}
+                                        <div class="schedule-block__item swiper-slide">
+                                            <input id="time-{$newDateTime | date: 'dmYHi'}" class="schedule-block__item--radio" type="radio" name="schTime" value="{$schDate} {$schItem}">
+                                            <label for="time-{$newDateTime | date: 'dmYHi'}" class="schedule-block__item--label">
+                                                {$schItem}
+                                            </label>
+                                        </div>
+                                    {/foreach}
+                                </div>
+                                <div class="swiper-scrollbar"></div>
+                            </div>
                         </div>
-                    </div>
-                {/foreach}
+                    {/foreach}
+                {else}
+                    У специалиста, еще не указано расписание для записи. Вернитесь в другое время
+                {/if}
             </div>
         </div>
         <div class="nModal-buttons nModal-buttons-align_right">

@@ -44,16 +44,19 @@
         </div> 
         
         <div class="profile-body wawe-container wawe-container-theme--white wawe-container--onlytop">
-            {if $_modx->user.extended.usertype == 2}
-                {if $_modx->user.extended.cardname == "" || $_modx->user.extended.creditnumber == "" ||
-                    $_modx->user.extended.datefinished == "" || $_modx->user.extended.cvc == ""}
-                    <div class="login-container login-container--wide container">
-                        <div class="alert alert--error" style="display: block;">
+            {if $_modx->user.extended.cardname == "" || $_modx->user.extended.creditnumber == "" ||
+                $_modx->user.extended.datefinished == "" || $_modx->user.extended.cvc == ""}
+                <div class="login-container login-container--wide container">
+                    <div class="alert alert--error" style="display: block;">
+                        {if $_modx->user.extended.usertype == 2}
                             Уважаемый клиент! Чтобы начать полноценно пользоваться нашим сервисом, для записи на консультацию к специалистам, 
                             необходимо привязать вашу банковскую карту во вкладке <a href="/profile/finances">Финансы</a> в настройках вашего профиля.
-                        </div>
+                        {else}
+                            Уважаемый таролог! Чтобы начать полноценно пользоваться нашим сервисом и получать заявки на консультации,
+                            необходимо привязать вашу банковскую карту во вкладке <a href="/profile/finances">Финансы</a> в настройках вашего профиля.
+                        {/if}
                     </div>
-                {/if}
+                </div>
             {/if}
 
             {if $_modx->makeUrl($_modx->resource.id) == "profile/settings"}
