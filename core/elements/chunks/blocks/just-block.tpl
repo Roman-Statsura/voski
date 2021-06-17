@@ -32,7 +32,7 @@
                     <h1 class="just-block-content__header--title {$textAlign ? 'text-align_'~$textAlign~'' : ''}">{$title}</h1>
                 </div>
             {/if}
-            <div class="just-block-content__body {$fontSize ? 'font-size_'~$fontSize~'' : ''} {$pNoMargin ? 'paragraph--no-margin' : ''} just-block__direction--{$direction == '' ? 'row' : $direction}">
+            <div class="just-block-content__body {$fontSize ? 'font-size_'~$fontSize~'' : ''} {$pNoMargin ? 'paragraph--no-margin' : ''} just-block__justify--{$justifyAlign == '' ? 'center' : $justifyAlign} just-block__direction--{$direction == '' ? 'row' : $direction}">
                 {$block}
             </div>
         </div>

@@ -777,6 +777,8 @@ function setModalPosition(evElem, modal, evAction) {
                 modal.style.top = `calc(50% - ${modal.offsetHeight / 2}px)`;
             }
         } else {
+            posX = evElem.offsetParent.offsetLeft + evElem.offsetParent.offsetWidth;
+
             if (elementHidesDown) {
                 offsetBottom = window.innerHeight - elementRect.bottom;
                 posY = evElem.offsetParent.offsetTop - (modal.offsetHeight / 2 - evElem.offsetParent.offsetHeight / 2) + offsetBottom;

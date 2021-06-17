@@ -16,6 +16,15 @@
         }
     }
 
+    &__justify {
+        &--center {
+            justify-content: center !important;
+        }
+        &--flex-start {
+            justify-content: flex-start !important;
+        }
+    }
+
     &-content {
         &__header {
             margin-bottom: 40px;

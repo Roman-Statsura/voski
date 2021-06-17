@@ -33,7 +33,7 @@
                     </div>
                     <div class="footer-item__list">
                         <a href="/privacy-policy" class="footer-item__list--item">Политика конфиденциальности</a>
-                        <a href="#" class="footer-item__list--item">Пользовательское соглашение</a>
+                        <a href="/terms-of-use" class="footer-item__list--item">Пользовательское соглашение</a>
                         <a href="/rekvizityi" class="footer-item__list--item">Реквизиты компании и порядок оплаты</a>
                     </div>
                     <div class="footer-item__list">

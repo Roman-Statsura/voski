@@ -383,6 +383,10 @@ li {
   }
 }
 
+.font-weight--300 {
+  font-weight: 300 !important;
+}
+
 .button {
   font-family: "Nunito", sans-serif;
   font-style: normal;
@@ -1297,6 +1301,16 @@ li {
     line-height: 22px !important;
   }
 }
+.font-size_20 p, .font-size_20 li {
+  font-size: 20px !important;
+  line-height: 32px !important;
+}
+@media screen and (max-width: 992px) {
+  .font-size_20 p, .font-size_20 li {
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+}
 
 .noUi-connect {
   background: #4DDBDB !important;
@@ -1958,6 +1972,12 @@ li {
 }
 .just-block__direction--column {
   flex-direction: column;
+}
+.just-block__justify--center {
+  justify-content: center !important;
+}
+.just-block__justify--flex-start {
+  justify-content: flex-start !important;
 }
 .just-block-content__header {
   margin-bottom: 40px;
@@ -3218,6 +3238,9 @@ th {
   letter-spacing: 0.04em;
   color: #FFFFFF;
   cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 .calendar-date__time:disabled {
   opacity: 1;
@@ -3758,6 +3781,114 @@ th {
   font-size: 16px;
   line-height: 26px;
   color: #516472;
+}
+
+.page-detailed-container {
+  padding: 90px 25px;
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-container {
+    padding: 32px 15px;
+  }
+}
+.page-detailed-content__body {
+  display: flex;
+  justify-content: space-between;
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content__body {
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content__block {
+    padding-top: 24px;
+  }
+}
+.page-detailed-content-sidebar {
+  width: 275px;
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content-sidebar {
+    width: 100%;
+  }
+}
+.page-detailed-content-sidebar__title {
+  grid-area: title;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 33px;
+  color: #2E3133;
+  margin-bottom: 15px;
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content-sidebar__title {
+    margin-bottom: 32px;
+  }
+}
+.page-detailed-content-sidebar__desc {
+  grid-area: desc;
+  font-family: "Gilroy", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 26px;
+  color: #516472;
+  margin-bottom: 32px;
+}
+.page-detailed-content-sidebar__picture {
+  grid-area: image;
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content-sidebar__picture {
+    display: flex;
+    justify-content: center;
+  }
+}
+.page-detailed-content-sidebar__picture picture {
+  margin-bottom: 32px;
+}
+@media only screen and (max-width: 414px) {
+  .page-detailed-content-sidebar__image {
+    width: 100%;
+  }
+}
+.page-detailed-content-sidebar__button {
+  display: flex;
+  justify-content: center;
+}
+.page-detailed-content-section {
+  grid-area: content;
+  width: calc(100% - 400px);
+}
+@media only screen and (max-width: 1280px) {
+  .page-detailed-content-section {
+    width: calc(100% - 325px);
+  }
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content-section {
+    width: 100%;
+  }
+}
+.page-detailed-content-section li {
+  margin-bottom: 24px;
+}
+@media only screen and (max-width: 992px) {
+  .page-detailed-content-section li {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+.page-detailed-content-section li::marker {
+  color: #4DDBDB;
+  font-size: 16px;
+}
+.page-detailed-content-section li span {
+  display: block;
+  margin-left: 10px;
 }
 
 .login-container {
@@ -4590,6 +4721,16 @@ svg:not(:root).svg-inline--fa {
 .block-list-container {
   padding: 32px 25px;
 }
+.block-list__col--3 .block-list-element {
+  width: calc((100% / 3) - 25px);
+  margin-bottom: 50px;
+}
+@media only screen and (max-width: 992px) {
+  .block-list__col--3 .block-list-element {
+    width: 100%;
+    margin-bottom: 32px;
+  }
+}
 .block-list-content__header {
   margin-bottom: 32px;
 }
@@ -4648,6 +4789,17 @@ svg:not(:root).svg-inline--fa {
   line-height: 26px;
   color: #000000;
   margin-bottom: 12px;
+}
+.block-list-element__title--special {
+  font-family: "Gilroy", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.01em;
+  color: #4DDBDB;
 }
 .block-list-element__desc {
   font-family: "Gilroy", sans-serif;

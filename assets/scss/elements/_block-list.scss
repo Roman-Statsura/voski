@@ -26,6 +26,20 @@
         padding: 32px 25px;
     }
 
+    &__col {
+        &--3 {
+            .block-list-element {
+                width: calc((100% / 3) - 25px);
+                margin-bottom: 50px;
+
+                @media only screen and (max-width: $screen-md) {
+                    width: 100%;
+                    margin-bottom: 32px;
+                }
+            }
+        }
+    }
+
     &-content {
         &__header {
             margin-bottom: 32px;
@@ -92,6 +106,18 @@
             line-height: 26px;
             color: $black;
             margin-bottom: 12px;
+
+            &--special {
+                font-family: $gilroy-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 26px;
+                line-height: 30px;
+                display: flex;
+                align-items: center;
+                letter-spacing: 0.01em;
+                color: $mint;
+            }
         }
 
         &__desc {

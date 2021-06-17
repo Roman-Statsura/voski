@@ -65,6 +65,9 @@ th {
             letter-spacing: 0.04em;
             color: $white;
             cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
 
             &:disabled {
                 opacity: 1;

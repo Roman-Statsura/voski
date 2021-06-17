@@ -7,13 +7,14 @@
                 </div>
             {/if}
             <div class="block-list-content__body">
-                <div class="block-list-content__list">
+                <div class="block-list-content__list block-list__col--{$columns != '' ? $columns : '4'}">
                     {foreach $elements as $elem}
                         {'@FILE chunks/elements/block-list-element.tpl' | chunk : [
                             'icon' => $elem.icon
                             'iconType' => $elem.iconType
                             'title' => $elem.title
                             'desc' => $elem.desc
+                            'specialTitle' => $elem.specialTitle
                             'countElem' => count($elements)
                         ]}
                     {/foreach}

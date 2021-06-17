@@ -1,0 +1,116 @@
+.page-detailed {
+    &-container {
+        padding: 90px 25px;
+
+        @media only screen and (max-width: $screen-md) {
+            padding: 32px 15px;
+        }
+    }
+
+    &-content {
+        &__body {
+            display: flex;
+            justify-content: space-between;
+
+            @media only screen and (max-width: $screen-md) {
+                flex-direction: column;
+            }
+        }
+
+        &__block {
+            @media only screen and (max-width: $screen-md) {
+                padding-top: 24px;
+            }
+        }
+
+        &-sidebar {
+            width: 275px;
+
+            @media only screen and (max-width: $screen-md) {
+                width: 100%;
+            }
+
+            &__title {
+                grid-area: title;
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                color: $dark-gray;
+                margin-bottom: 15px;
+
+                @media only screen and (max-width: $screen-md) {
+                    margin-bottom: 32px;
+                }
+            }
+
+            &__desc {
+                grid-area: desc;
+                font-family: $gilroy-font;
+                font-style: normal;
+                font-weight: 300;
+                font-size: 16px;
+                line-height: 26px;
+                color: $dark-mint;
+                margin-bottom: 32px;
+            }
+
+            &__picture {
+                grid-area: image;
+
+                @media only screen and (max-width: $screen-md) {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                picture {
+                    margin-bottom: 32px;
+                }
+            }
+
+            &__image {
+                @media only screen and (max-width: $screen-xs) {
+                    width: 100%;
+                }
+            }
+
+            &__button {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        &-section {
+            grid-area: content;
+            width: calc(100% - 400px);
+
+            @media only screen and (max-width: $screen-lg-md) {
+                width: calc(100% - 325px);
+            }
+
+            @media only screen and (max-width: $screen-md) {
+                width: 100%;
+            }
+
+            li {
+                margin-bottom: 24px;
+
+                @media only screen and (max-width: $screen-md) {
+                    font-size: 16px;
+                    line-height: 26px;
+                }
+
+                &::marker {
+                    color: $mint;
+                    font-size: 16px;
+                }
+
+                span {
+                    display: block;
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}

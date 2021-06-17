@@ -3,15 +3,7 @@
 {else}
     {set $description = $_modx->resource.description}
 {/if}
-{if $_modx->resource.newsPreview != ''}
-    {set $preview = $_modx->resource.newsPreview}
-{/if}
-{if $_modx->resource.boxArt != ''}
-    {set $preview = $_modx->resource.boxArt}
-{/if}
-{if $_modx->resource.videoPreview != ''}
-    {set $preview = $_modx->resource.videoPreview}
-{/if}
+
 <meta charset="{$_modx->config['modx_charset']}">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
 <meta name="description" content="{$description}">
