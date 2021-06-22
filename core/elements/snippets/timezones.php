@@ -6,10 +6,13 @@
 
     foreach ($timezone_identifiers as $key => $timezone) {
         $dtz = new DateTimeZone($timezone);
+        /* Fix This
         $tz = IntlTimeZone::createTimeZone($timezone);
-
         if ($tz->getID() === 'Etc/Unknown' or $timezone === 'UTC') $name = $timezone;
-        else $name = $tz->getDisplayName(false, 3, $locale);
+        else $name = $tz->getDisplayName(false, 3, $locale);*/
+
+        $name = $dtz->getName();
+
         // time offset
         $offset = $dtz->getOffset(new DateTime());
         $sign   = ($offset < 0) ? '-' : '+';
