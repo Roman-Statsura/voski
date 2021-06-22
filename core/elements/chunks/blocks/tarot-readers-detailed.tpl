@@ -42,6 +42,18 @@
     'schedule' => $_modx->resource.schedule
 ]}
 
+{set $tvFilters = 'consultIDTarot=='~$_modx->resource.id~',consultStatusSession==1'}
+{set $consultationsList = '!pdoResources' | snippet : [
+    'parents' => 36
+    'sortby' => 'publishedon'
+    'sortdir' => 'DESC'
+    'includeTVs' => 'consultIDTarot, consultStatusSession'
+    'includeContent' => '1'
+    'tvFilters' => $tvFilters
+    'return' => 'json'
+    'limit' => 0
+] | json_decode : true}
+
 <div class="tarot-readers">
     <div class="tarot-readers-container container">
         <div class="tarot-readers-container__content tarot-readers-content">
@@ -118,6 +130,22 @@
                     <h1 class="tarot-readers-content__name">
                         {$_modx->resource.pagetitle}
                     </h1>
+
+                    <div class="tarot-readers-block__info--list">
+                        <div class="tarot-readers-block__item--label">
+                            {'@FILE chunks/elements/rating.tpl' | chunk : [
+                                'count' => 5,
+                                'number' => '@FILE snippets/avgRating.php' | snippet : ['idTarot' => $_modx->resource.id]
+                            ]}
+                        </div>
+                        <div class="tarot-readers-block__item--text font-weight--500">
+                            {count($consultationsList)} 
+                            {'@FILE snippets/word.php' | snippet : [
+                                'number' => count($consultationsList),
+                                'titles' => ["сессия", "сессий"]
+                            ]}
+                        </div>
+                    </div>
 
                     {if $_modx->resource.experience != ""}
                         <div class="tarot-readers-content__item">

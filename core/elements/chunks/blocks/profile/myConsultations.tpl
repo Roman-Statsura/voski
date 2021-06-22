@@ -506,6 +506,22 @@
         xhr.send();
     }
 
+    function debugMeeting(form, event) {
+        let zoomID = event.dataset.zoomid,
+            duration = event.dataset.duration,
+            migxid = event.dataset.migxid,
+            callback = event.dataset.nmodalCallback,
+            listConsultStatus = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="statusSession"]`),
+            listConsultDuration = document.querySelector(`[data-consultation="cnsid-${migxid}"] [data-info="duration"]`);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/assets/php/zoomGetMeeting.php?id=" + migxid + "&meetingId=" + zoomID + "&action=debug", true);
+        xhr.onreadystatechange = function() {
+            console.log(this.responseText);
+        }
+        xhr.send();
+    }
+
     function changeTab(checkbox) {
         financesTabs.forEach(element => {
             element.classList.remove("active");

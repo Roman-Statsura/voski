@@ -386,6 +386,9 @@ li {
 .font-weight--300 {
   font-weight: 300 !important;
 }
+.font-weight--500 {
+  font-weight: 500 !important;
+}
 
 .button {
   font-family: "Nunito", sans-serif;
@@ -2787,6 +2790,7 @@ li {
   font-size: 30px;
   line-height: 39px;
   color: #2E3133;
+  margin: 0 0 10px 0;
 }
 @media screen and (max-width: 768px) {
   .tarot-readers-content__name {
@@ -2939,7 +2943,7 @@ li {
   align-items: center;
   letter-spacing: 0.01em;
   color: #2E3133;
-  margin: 20px 0;
+  margin: 20px 0 10px 0;
 }
 @media screen and (max-width: 768px) {
   .tarot-readers-block__name {
@@ -3891,6 +3895,113 @@ th {
   margin-left: 10px;
 }
 
+.consultation {
+  margin: auto;
+}
+.consultation-block {
+  width: 916px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.consultation-block-body__title {
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 33px;
+  text-align: center;
+  color: #2E3133;
+}
+.consultation-block--stars svg {
+  margin-right: 20px !important;
+}
+.consultation-block--stars svg:last-child {
+  margin-right: 0 !important;
+}
+.consultation-block__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.consultation-block__picture {
+  margin-top: 32px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+.consultation-block__image {
+  border-radius: 50%;
+}
+.consultation-block__name {
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 39px;
+  text-align: center;
+  color: #2E3133;
+  margin-bottom: 22px;
+}
+.consultation-block__item {
+  font-family: "Gilroy", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 32px;
+  text-align: center;
+  color: #516472;
+  margin-bottom: 12px;
+}
+.consultation-block__item:last-child {
+  margin-bottom: 0;
+}
+.consultation-block__buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.rating-css input {
+  display: none;
+  transform: 0.3s;
+}
+.rating-css input:disabled + label {
+  cursor: default;
+}
+.rating-css input:checked + label {
+  background-image: url("/assets/img/icons/star-full.svg");
+}
+.rating-css input:checked + label ~ label {
+  background-image: url("/assets/img/icons/star-full.svg");
+}
+.rating-css input:checked + label ~ label:hover {
+  background-image: url("/assets/img/icons/star-full.svg");
+}
+.rating-css--icon {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.rating-css--star {
+  background: url("/assets/img/icons/star-empty.svg") no-repeat 50% 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  transform: 0.3s;
+}
+.rating-css--star-1:hover, .rating-css--star-2:hover, .rating-css--star-3:hover, .rating-css--star-4:hover, .rating-css--star-5:hover {
+  background-image: url("/assets/img/icons/star-full.svg");
+}
+.rating-css--star-1:hover ~ label, .rating-css--star-2:hover ~ label, .rating-css--star-3:hover ~ label, .rating-css--star-4:hover ~ label, .rating-css--star-5:hover ~ label {
+  background-image: url("/assets/img/icons/star-full.svg");
+}
+.rating-css--star:last-child {
+  margin-left: 0;
+}
+
 .login-container {
   width: 573px;
   display: flex;
@@ -4811,6 +4922,37 @@ svg:not(:root).svg-inline--fa {
 }
 .block-list-element__desc a {
   display: inline;
+}
+
+.rating-element {
+  display: flex;
+  align-items: center;
+  margin-right: 7px;
+}
+.rating-element--number {
+  margin-right: 10px;
+}
+.rating-element--stars {
+  display: flex;
+  align-items: center;
+}
+.rating-element--stars svg {
+  margin-right: 4px;
+}
+.rating-element--stars svg:last-child {
+  margin-right: 0;
+}
+.rating-element span {
+  padding: 0;
+  font-size: 20px;
+  line-height: 1;
+  color: lightgrey;
+}
+.rating-element span.active {
+  color: gold;
+}
+.rating-element span:before {
+  content: "★";
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,5 +1,18 @@
 {set $arr = []}
 {set $arr[] = $price}
+
+{set $tvFilters = 'consultIDTarot=='~$id~',consultStatusSession==1'}
+{set $consultationsList = '!pdoResources' | snippet : [
+    'parents' => 36
+    'sortby' => 'publishedon'
+    'sortdir' => 'DESC'
+    'includeTVs' => 'consultIDTarot, consultStatusSession'
+    'includeContent' => '1'
+    'tvFilters' => $tvFilters
+    'return' => 'json'
+    'limit' => 0
+] | json_decode : true}
+
 <div class="tarot-readers-block__item ajax-item">
     <div class="tarot-readers-block__photo">
         {'@FILE chunks/elements/tarolog-photo.tpl' | chunk : [
@@ -12,6 +25,23 @@
         <h3 class="tarot-readers-block__name">
             {$pagetitle}
         </h3>
+
+        <div class="tarot-readers-block__info--list">
+            <div class="tarot-readers-block__item--label">
+                {'@FILE chunks/elements/rating.tpl' | chunk : [
+                    'count' => 5,
+                    'number' => '@FILE snippets/avgRating.php' | snippet : ['idTarot' => $id]
+                ]}
+            </div>
+            <div class="tarot-readers-block__item--text font-weight--500">
+                {count($consultationsList)} 
+                {'@FILE snippets/word.php' | snippet : [
+                    'number' => count($consultationsList),
+                    'titles' => ["сессия", "сессий"]
+                ]}
+            </div>
+        </div>
+
         {if $experience != ""}
             <div class="tarot-readers-block__info--list">
                 <div class="tarot-readers-block__item--label">Опыт консультрования:</div>

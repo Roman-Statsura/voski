@@ -2,6 +2,7 @@
     require_once '../../core/model/modx/modx.class.php';
     require_once './zoomJWT/jwtTokenGenerator.php';
     require_once './sendMail.php';
+    require_once './uniqueAliasGenerator.php';
 
     $modx = new modX();
     $modx->initialize('web');
@@ -122,7 +123,7 @@
 
         $newResource->set('pagetitle', $title);
         $newResource->set('content', $description);
-        $newResource->set('alias', translit($title . "-" . date("Ymd-his")));
+        $newResource->set('alias', uniqueAliasGenerator());
         $newResource->set('published', 1);
         $newResource->set('template', 20);
         $newResource->set('parent', 36);

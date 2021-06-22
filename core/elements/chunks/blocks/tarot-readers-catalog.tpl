@@ -95,7 +95,7 @@
                         'parents' => 2
                         'sortby' => 'publishedon'
                         'sortdir' => 'DESC'
-                        'includeTVs' => 'experience, price, photo, zoomID'
+                        'includeTVs' => 'specialization, experience, price, photo, gender, zoomID, rating'
                         'includeContent' => '1'
                         'tpl' => '@FILE chunks/elements/tarot-element.tpl'
                         'limit' => 0

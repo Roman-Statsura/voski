@@ -1,0 +1,138 @@
+.consultation {
+    margin: auto;
+    
+    &-block {
+        width: 916px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        &-body {
+            &__title {
+                font-family: $nunito-font;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 30px;
+                line-height: 33px;
+                text-align: center;
+                color: $dark-gray;
+            }
+        }
+
+        &--stars {
+            svg {
+                margin-right: 20px !important;
+
+                &:last-child {
+                    margin-right: 0 !important;
+                }
+            }
+        }
+
+        &__list {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        &__picture {
+            margin-top: 32px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        &__image {
+            border-radius: 50%;
+        }
+
+        &__name {
+            font-family: $nunito-font;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 30px;
+            line-height: 39px;
+            text-align: center;
+            color: $dark-gray;
+            margin-bottom: 22px;
+        }
+
+        &__item {
+            font-family: $gilroy-font;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 32px;
+            text-align: center;
+            color: $dark-mint;
+            margin-bottom: 12px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        &__buttons {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+.rating-css {
+    input {
+        display: none;
+        transform: .3s;
+
+        &:disabled {
+            + label {
+                cursor: default;
+            }
+        }
+
+        &:checked {
+            + label {
+                background-image: url('/assets/img/icons/star-full.svg');
+
+                ~ label {
+                    background-image: url('/assets/img/icons/star-full.svg');
+
+                    &:hover {
+                        background-image: url('/assets/img/icons/star-full.svg');
+                    }
+                }   
+            }     
+        }
+    }
+
+    &--icon {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    &--star {
+        background: url('/assets/img/icons/star-empty.svg') no-repeat 50% 50%;
+        width: 20px;
+        height: 20px;
+        margin-left: 20px;
+        cursor: pointer;
+        transform: .3s;
+
+        &-1, &-2, &-3, &-4, &-5 {
+            &:hover {
+                background-image: url('/assets/img/icons/star-full.svg');
+
+                ~ label {
+                    background-image: url('/assets/img/icons/star-full.svg');
+                }
+            }
+        }
+
+        &:last-child {
+            margin-left: 0;
+        }
+    }
+}
