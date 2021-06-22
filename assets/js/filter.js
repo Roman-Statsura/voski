@@ -23,10 +23,11 @@ $(function() {
     }ajaxCount();
  
     function ajaxMainFunction() {
+        document.body.classList.remove("loaded");
+        
         $.ajax({
             data: $(ajaxFormSelector).serialize()
         }).done(function(response) {
-            document.body.classList.remove("loaded");
             var $response = $(response);
             $(ajaxContainerSelector).fadeOut(fadeSpeed);
             setTimeout(function() {
