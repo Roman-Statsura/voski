@@ -3034,6 +3034,9 @@ li {
   text-align: center;
   color: #516472;
 }
+.tarot-content__body {
+  position: relative;
+}
 .tarot-content-filter {
   padding: 70px 0;
 }

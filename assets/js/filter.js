@@ -26,9 +26,11 @@ $(function() {
         $.ajax({
             data: $(ajaxFormSelector).serialize()
         }).done(function(response) {
+            document.body.classList.remove("loaded");
             var $response = $(response);
             $(ajaxContainerSelector).fadeOut(fadeSpeed);
             setTimeout(function() {
+                document.body.classList.add("loaded");
                 $(ajaxContainerSelector).html($response.find(ajaxContainerSelector).html()).fadeIn(fadeSpeed);
                 ajaxCount();
             }, fadeSpeed);
