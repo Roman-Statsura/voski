@@ -13,7 +13,7 @@
 {/if}
 
 <div class="{$class}">
-    <a href="" class="{$class != '' ? $class ~ '__link' : ''}">
+    <a href="{$link == '' ? '#' : $link == '/' ? '/' : '/' ~ $link}" class="{$class != '' ? $class ~ '__link' : ''}">
         <picture>
             <source srcset="{$thumbFromPhotoWebP}" type="image/webp">
             <img class="{$class != '' ? $class ~ '__block_image' : ''}" src="{$thumbFromPhoto}" alt="" />

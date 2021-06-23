@@ -18,6 +18,7 @@
                 <div class="tarolog-content__block tarolog-content__items">
                     {foreach $objs as $item}
                         {'@FILE chunks/elements/tarolog-photo.tpl' | chunk : [
+                            'link' => $item.uri,
                             'imageField' => $item['tv.photo']
                         ]}
                     {/foreach}
