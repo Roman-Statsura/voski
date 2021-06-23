@@ -1,0 +1,10 @@
+.tarolog {
+    &-item {
+        &__block {
+            &_image {
+                border-radius: 50%;
+                border: 2px solid $mint;
+            }
+        }
+    }
+}

@@ -148,24 +148,6 @@
                 $modx->log(xPDO::LOG_LEVEL_ERROR, "Ошибка сохранения дополнительных полей в id: {$docId}");
             }
         }
-
-        /*$cnsNewSubArray = [];
-        $cnsNewSubArray["MIGX_id"] = end($cnsCurrentArray)->MIGX_id + 1;
-        $cnsNewSubArray["datetime"] = $_POST['schTime'];
-        $cnsNewSubArray["idUser"] = $_POST['idUser'];
-        $cnsNewSubArray["idTarot"] = $_POST['idTarot'];
-        $cnsNewSubArray["zoomID"] = $respTest->id;
-        $cnsNewSubArray["zoomLink"] = $respTest->join_url;
-        $cnsNewSubArray["zoomStartLink"] = $respTest->start_url;
-        $cnsNewSubArray["desc"] = $description;
-        $cnsNewSubArray["statusSession"] = 0;
-        $cnsNewSubArray["duration"] = "0";
-        $cnsNewSubArray["sended"] = 0;
-        $cnsNewSubArray["active"] = '1';
-    
-        $cnsCurrentArray[] = $cnsNewSubArray;
-
-        $resConsultation->setTVValue('consultations', json_encode($cnsCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));*/
         
         $cnsDateTime = new DateTime($_POST['schTime']);
 

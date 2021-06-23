@@ -14,45 +14,37 @@
 {$swiperBundleJSPreload | htmlToHead: true}
 {$swiperBundle | htmlToHead: true}
 
+{set $reviews = 1 | resource : 'tv.reviews' | json_decode: true}
+
 <div class="helped-slider">
     <div class="helped-slider-container container">
         <div class="helped-slider-container__content helped-slider-content">
             <div class="helped-slider-content__header">
                 <h2 class="helped-slider-content__header--title">
-                    <span>Мы уже помогли 564 нашим клиентам,</span>
+                    <span>Мы уже помогли {count($reviews)} нашим клиентам,</span>
                     и вот что они говорят о нас
                 </h2>
             </div>
             <div class="helped-slider-content__body helped-slider-swiper">
                 <div class="swiper-container helped-slider__wrapper slider-thumbs">
                     <div class="swiper-wrapper slider-thumbs__wrapper">
-                        {'@FILE chunks/elements/slider-images.tpl' | chunk : [
-                            'image' => '/assets/img/blocks/review_1.png'
-                        ]}
-                        {'@FILE chunks/elements/slider-images.tpl' | chunk : [
-                            'image' => '/assets/img/blocks/review_1.png'
-                        ]}
+                        {foreach $reviews as $review}
+                            {'@FILE chunks/elements/slider-images.tpl' | chunk : [
+                                'image' =>  $review.photo
+                            ]}
+                        {/foreach}
                     </div>
                 </div>
 
                 <div class="helped-slider-swiper__container swiper-container">
                     <div class="swiper-wrapper helped-slider-swiper__wrapper">
-                        {'@FILE chunks/elements/slider-item.tpl' | chunk : [
-                            'image' => '/assets/img/blocks/review_1.png'
-                            'text' => '
-                                Я благодарю данный сервис за удобство и возможность получить профессиональную консультацию. Когда я общалась с Тарологом, мне помогли неожиданно, эффективно понять, что происходит в моей ситуации. И что с этим делать. Обращусь ещё.
-                                Спасибо вашей программе 🌹🌹🌹
-                            '
-                            'name' => 'Милошникова Дарья'
-                        ]}
-                        {'@FILE chunks/elements/slider-item.tpl' | chunk : [
-                            'image' => '/assets/img/blocks/review_1.png'
-                            'text' => '
-                                Я благодарю данный сервис за удобство и возможность получить профессиональную консультацию. Когда я общалась с Тарологом, мне помогли неожиданно, эффективно понять, что происходит в моей ситуации. И что с этим делать. Обращусь ещё.
-                                Спасибо вашей программе 🌹🌹🌹
-                            '
-                            'name' => 'Милошникова Дарья'
-                        ]}
+                        {foreach $reviews as $review}
+                            {'@FILE chunks/elements/slider-item.tpl' | chunk : [
+                                'image' => $review.photo,
+                                'text' => $review.desc,
+                                'name' => $review.name
+                            ]}
+                        {/foreach}
                     </div>
                     <div class="helped-slider-content__buttons">
                         <div class="helped-slider-content__buttons--prev">

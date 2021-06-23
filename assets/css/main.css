@@ -2137,6 +2137,7 @@ li {
   }
 }
 .swiper-slide__info {
+  width: 100%;
   margin-left: 24px;
 }
 @media only screen and (max-width: 992px) {
@@ -2152,6 +2153,7 @@ li {
   line-height: 32px;
   color: #516472;
   margin-bottom: 24px;
+  width: 100%;
 }
 @media only screen and (max-width: 992px) {
   .swiper-slide__info--text {
@@ -4990,6 +4992,11 @@ svg:not(:root).svg-inline--fa {
 }
 .rating-element span:before {
   content: "★";
+}
+
+.tarolog-item__block_image {
+  border-radius: 50%;
+  border: 2px solid #4DDBDB;
 }
 
 /*# sourceMappingURL=main.css.map */
