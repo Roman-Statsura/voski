@@ -81,7 +81,6 @@ $filter = array();
 	);
 
 	$prices = array();
-
 	$resPrices = json_decode($modx->runSnippet('pdoResources', $params_count));
 
 	foreach ($resPrices as $resPricesItem) {
@@ -89,25 +88,83 @@ $filter = array();
 	}
 
 	$maxPrice = max($prices);
-	
 	$modx->setPlaceholder('maxPrice', $maxPrice);
 
 	$count = $modx->runSnippet('pdoResources', $params_count);
 	$count = count(explode(',', $count))-1;
 	$modx->setPlaceholder('count', $count);
 
+	/**
+	* Подсчитываем среднее количество консультации за неделю
+	* Array $arrayTarotConsult - массив тарологов
+	**/
+	$tarotParams = array(
+		'parents' => 2,
+		'limit' => $limit,
+		'select' => 'id',
+		'includeTVs' => 'rating',
+		'tvPrefix' => '',
+		'showHidden' => '1',
+		'return' => 'json',
+		'tvFilters' => implode(',', $filter)
+	);
+
+	$tarotList = json_decode($modx->runSnippet('pdoResources', $tarotParams));
+	$arrayTarotConsult = [];
+
+	$consultOnWeek = json_decode($modx->runSnippet('pdoResources', array(
+		'parents' => 36,
+		'select' => 'id',
+		'includeTVs' => 'consultDatetime, consultIDClient, consultIDTarot, consultZoomID, consultZoomLink, consultZoomStartLink, 
+		consultDesc, consultStatusSession, consultDuration, consultSended',
+		'tvPrefix' => '',
+		'includeContent' => 1,
+		'sortby' => 'consultDatetime',
+		'sortdir' => 'ASC',
+		'return' => 'json',
+		'tvFilters' => 'consultDatetime>=' . date("Y-m-d") . '%,consultDatetime<=' . date("Y-m-d", strtotime("+7 days")) . '%',
+		'limit' => 0
+	)));
+
+	foreach ($tarotList as $tarotItem) {
+		$countConsult = 0;
+		$sumRating = 0;
+		$avgRating = 0;
+
+        foreach ($tarotItem->rating as $ratingItem) {
+            $sumRating += $ratingItem->rating;
+        }
+
+		foreach ($consultOnWeek as $consultItem) {
+			if ($consultItem->consultIDTarot == $tarotItem->id) {
+				$countConsult++;
+			}
+
+			$arrayTarotConsult[$tarotItem->id] = [
+				'avgConsult' => $countConsult / 7,
+				'avgRating' => $sumRating / count($tarotItem->rating)
+			];
+		}
+	}
+	asort($arrayTarotConsult);
+
+	$idsTarot = [];
+	foreach ($arrayTarotConsult as $key => $arrayTarotItem) {
+		$idsTarot[] = $key;
+	}
+
 	$params = array(
 		'parents' => $parents,
-		'limit' => $limit,
+		'resources' => implode(", ", $idsTarot),
 		'includeTVs' => $includeTVs,
 		'tvPrefix' => '',
 		'tpl' => $tpl,
 		'includeContent' => $includeContent,
-		'sortby' => $sortby,
-		'sortdir' => $sortdir,
+		'sortby' => false,
+		'sortdir' => false,
 		'return' => $return,
 		'tvFilters' => implode(',', $filter),
-		'limit' => 0
+		'limit' => $limit ? 0 : $limit
 	);
 
 	$more = $count - $offset - $limit;

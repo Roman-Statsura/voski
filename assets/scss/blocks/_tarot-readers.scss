@@ -329,6 +329,14 @@
 
     &__body {
         position: relative;
+
+        .preloader {
+            margin: 0 -25px;
+
+            @media screen and (max-width: $screen-sm) {
+                margin: 0 -15px;
+            }
+        }
     }
 
     &-filter {

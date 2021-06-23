@@ -37,7 +37,7 @@
                 {count($consultationsList)} 
                 {'@FILE snippets/word.php' | snippet : [
                     'number' => count($consultationsList),
-                    'titles' => ["сессия", "сессий"]
+                    'titles' => ["сессия", "сессий", "сессий"]
                 ]}
             </div>
         </div>

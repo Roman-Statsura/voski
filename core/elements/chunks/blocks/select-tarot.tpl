@@ -277,7 +277,7 @@
                                 'includeTVs' => 'specialization, experience, price, photo, gender, zoomID, rating'
                                 'includeContent' => '1'
                                 'tpl' => '@FILE chunks/elements/tarot-element.tpl'
-                                'limit' => 8
+                                'limit' => 5
                             ]}
                             <div class="tarot-readers-block__item ajax-item">
                                 <div class="tarot-readers-block__info">

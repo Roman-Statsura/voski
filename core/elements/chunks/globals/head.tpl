@@ -15,6 +15,13 @@
     'input' => '/assets/css/main.css'
 ]}
 
+<link rel="preload" as="font" crossorigin="anonymous" href="/assets/fonts/Nunito/Nunito-Regular.woff2">
+<link rel="preload" as="font" crossorigin="anonymous" href="/assets/fonts/Nunito/Nunito-SemiBold.woff2">
+<link rel="preload" as="font" crossorigin="anonymous" href="/assets/fonts/Gilroy/Gilroy-Regular.woff">
+<link rel="preload" as="font" crossorigin="anonymous" href="/assets/fonts/Gilroy/Gilroy-SemiBold.woff">
+<link rel="preload" as="font" crossorigin="anonymous" href="/assets/fonts/Gilroy/Gilroy-Medium.woff">
+<link rel="preload" as="font" crossorigin="anonymous" href="/assets/fonts/Nunito/Nunito-Light.woff2">
+
 <link rel="preload" as="style" href="{$mainCSS}">
 
 <!--<link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Regular.woff" as="font" crossorigin="anonymous">-->
