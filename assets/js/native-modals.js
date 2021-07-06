@@ -8,6 +8,10 @@ var nModal = (function () {
             swiper: {
                 init: false,
                 classEvent: ""
+            },
+            alerts: {
+                init: false,
+                msg: ""
             }
         };
 
@@ -114,6 +118,11 @@ var nModal = (function () {
                     $modalContainer.classList.remove("hidden");
                 }, 200);
 
+                if (options.alerts.init) {
+                    document.body.classList.add("loaded");
+                    alerts({state: "error", message: options.alerts.msg});
+                }
+
                 document.body.style.overflow = null;
             }
         });
@@ -155,6 +164,18 @@ var nModal = (function () {
                     childList: true
                 });
             }
+
+            /*var newObserver = new MutationObserver(function(mutationsList) {
+                for (var mutation of mutationsList) {
+                    if (mutation.type == 'attributes') {
+                        isOpened(mutation.target.classList.contains("active"));
+                    }
+                }
+            });
+            
+            newObserver.observe($modalContainer, {
+                "attributes": true
+            });*/
         }
 
         document.addEventListener("keydown", function (event) {

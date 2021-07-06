@@ -1,0 +1,1 @@
+{'@FILE snippets/cardValidate.php' | snippet}

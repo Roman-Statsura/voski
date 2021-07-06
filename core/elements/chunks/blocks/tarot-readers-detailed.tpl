@@ -281,7 +281,8 @@
             </div>
         </div>
         <div class="nModal-buttons nModal-buttons-align_right">
-            <a href="" class="nModal-button button button-size--normal button-theme--mint" data-nmodal-callback="callback">Записаться </a>
+            <a href="#" class="nModal-button button button-size--normal button-theme--mint" data-nmodal-callback="callback">Записаться </a>
+            <a href="#" class="nModal-button button button-size--normal button-theme--mint" data-nmodal-callback="testPayment">Test Payment</a>
         </div>
     </form>
 </div>
@@ -323,6 +324,18 @@
     lightGallery(document.querySelector("#lightgallery"), {
         selector: ".tarot-readers-certs--photo-link"
     });
+
+    function testPayment(formElement) {
+        let formData = new FormData(document.forms.consultations),
+            xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/assets/php/payment.php", true);
+        xhr.onreadystatechange = function() {
+            if (this.readyState != 4) return;
+            console.log(this.responseText);
+        }
+        xhr.send(formData);
+    }
 
     function callback(formElement) {        
         document.body.classList.remove("loaded");
