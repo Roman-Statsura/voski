@@ -63,12 +63,32 @@
                     ]
                 ];
 
+                $clientPhone = $profile->get('username');
                 $clientUserName = $profile->get('fullname');
                 $clientEmail = $profile->get('email');
+                $message = "Запись на консультацию от $clientUserName (id: {$_POST['idUser']}) на дату {$weekDay} {$dateWithTime}, к тарологу - {$resource->get('pagetitle')} (id: {$_POST['idTarot']})";    
+
+                $paymentReceipt = [
+                    "customer" => [
+                        "full_name" => $clientUserName,
+                        "phone" => $clientPhone,
+                    ],
+                    "items" => [
+                        [
+                            "description" => $message,
+                            "quantity" => 1.0,
+                            "amount" => [
+                                "value" => number_format(floatval($_POST["subjectSum"]), 1, '.', ''),
+                                "currency" => "RUB"
+                            ],
+                            "vat_code" => "2",
+                            "payment_mode" => "full_payment",
+                            "payment_subject" => "service"
+                        ]
+                    ]
+                ];
             }
         }
-    
-        $message = "Запись на консультацию от $clientUserName (id: {$_POST['idUser']}) на дату {$weekDay} {$dateWithTime}, к тарологу - {$resource->get('pagetitle')} (id: {$_POST['idTarot']})";    
     }
 
     switch ($_GET["type"]) {
@@ -86,14 +106,14 @@
 
     switch ($_GET["action"]) {
         case "createPayment":
-            $payment = $paymentClass->createPayment($subjectTitle, $price, $paymentCard, $capture);
+            $payment = $paymentClass->createPayment($subjectTitle, $price, $paymentCard, $paymentReceipt, $capture);
             echo json_encode($payment, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         case "capturePayment":
-            $payment = $paymentClass->capturePayment("2874e23a-000f-5000-8000-1dbf854bc854", 100.0);
+            $payment = $paymentClass->capturePayment($_POST["paymentID"], $_POST["paymentPrice"]);
             break;
         case "cancelPayment":
-            $payment = $paymentClass->cancelPayment("2874e23a-000f-5000-8000-1dbf854bc854");
+            $payment = $paymentClass->cancelPayment($_POST["paymentID"]);
             break;
         case "createRefund":
             $payment = $paymentClass->createRefund($_POST["paymentID"], 1.0);

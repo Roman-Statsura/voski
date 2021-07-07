@@ -28,7 +28,7 @@
          * @param [bool] $capture (Удержание оплаты)
          * @return String confirmation_url (3-D Secure Link)
          */
-        public function createPayment($name, $value, $paymentMethodData = [], $capture = true) {
+        public function createPayment($name, $value, $paymentMethodData = [], $paymentReceipt = [], $capture = true) {
             // Проверяем валидность карты по Luhn Algorithm
             $luhn = new Luhn();
             $vnumber = $paymentMethodData["card"]["number"];
@@ -55,6 +55,10 @@
 
                 if ($paymentMethodData) {
                     $request["payment_method_data"] = $paymentMethodData;
+                }
+
+                if ($paymentReceipt) {
+                    $request["receipt"] = $paymentReceipt;
                 }
                 
                 $payment = $this->client->createPayment($request, uniqid('', true));
@@ -102,7 +106,7 @@
          * @param [float] $value
          * @return Object $response
          */
-        public function createRefund($paymentId, $value) {
+        public function createRefund($paymentId, $value, $paymentReceipt = []) {
             $response = $this->client->createRefund(
                 array(
                     'payment_id' => $paymentId,
@@ -113,6 +117,10 @@
                 ),
                 uniqid('', true)
             );
+
+            if ($paymentReceipt) {
+                $request["receipt"] = $paymentReceipt;
+            }
 
             return $response;
         }
@@ -128,7 +136,6 @@
             return $response;
         }
 
-        
         /**
          * Список чеков
          *
@@ -136,6 +143,16 @@
          */
         public function getReceipts() {
             $response = $this->client->getReceipts();
+            return $response;
+        }
+
+        /**
+         * Информация о чеке
+         *
+         * @return Object $response
+         */
+        public function getReceiptInfo($receiptId) {
+            $response = $this->client->getReceiptInfo($receiptId);
             return $response;
         }
     }
