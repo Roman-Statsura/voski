@@ -19,7 +19,7 @@
 {$nativeModalsCSSLink | htmlToHead: true}
 
 <div class="login">
-    <div class="login-container login-container--full container">
+    <div class="login-container login-container--100 container">
         <div class="login-container__content login-content">
             <div class="preloader">
                 <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -130,7 +130,26 @@
                     </div>
                 </div>
                 <div class="login-finances__tab login-tab tab" data-id="2">
-                    <div class="table-flex">
+                    {if $_modx->user.extended.usertype == 3}
+                        {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
+                            'id' => $_modx->getPlaceholder('upd.id')
+                        ]}
+                    {else}
+                        {set $userQuestResourse = $_modx->getPlaceholder('upd.id')}
+                    {/if}
+
+                    {set $consultations = '!pdoResources' | snippet : [
+                        'parents' => 36,
+                        'sortby' => 'consultDatetime',
+                        'sortdir' => 'ASC',
+                        'includeTVs' => 'consultDatetime, consultIDClient, consultIDTarot, consultZoomID, consultZoomLink, consultZoomStartLink, 
+                                        consultDesc, consultStatusSession, consultDuration, consultSended, consultPaymentID',
+                        'includeContent' => '1',
+                        'return' => 'json',
+                        'limit' => 0
+                    ] | json_decode : true}
+
+                    <div class="table-flex table-consultation">
                         <div class="table-flex--row table-flex--head">
                             <div class="table-flex--col">Дата</div>
                             <div class="table-flex--col">Получатель</div>
@@ -139,13 +158,66 @@
                             <div class="table-flex--col">Сумма</div>
                             <div class="table-flex--col">Чек</div>
                         </div>
+                        {if count($consultations) > 0}
+                            {foreach $consultations as $key => $consultItem}
+                                {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.id'))}
+                                    {if $consultItem['tv.consultPaymentID'] != ""}
+                                        {set $paymentInfo = '@FILE snippets/getPaymentInfo.php' | snippet : [
+                                            'paymentID' => $consultItem['tv.consultPaymentID']
+                                        ]}                                     
+
+                                        <div class="login-finances__tab login-tab tab" data-id="2">
+                                            {if $consultItem.published}
+                                                {if $consultItem['tv.consultStatusSession'] != 3}
+                                                    {if $_modx->user.extended.usertype == 3}
+                                                        {set $userFullname = '@FILE snippets/getUserNameByID.php' | snippet : [
+                                                            'id' => $consultItem['tv.consultIDClient']
+                                                            'field' => 'fullname'
+                                                        ]}
+                                                    {else}
+                                                        {set $userFullname = $consultItem['tv.consultIDTarot'] | resource : 'pagetitle'}
+                                                    {/if}
+
+                                                    <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-usergroup="{$_modx->user.extended.usertype}" data-nmodal-callback="clickTest" data-nmodal="consultDetailed" data-nmodal-size="large">
+                                                        <div class="table-flex--item">
+                                                            <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
+                                                            <div class="table-flex--col">{$userFullname}</div>
+                                                            <div class="table-flex--col consult-text">
+                                                                {$paymentInfo["description"]}
+                                                            </div>
+                                                            <div class="table-flex--col">
+                                                                <span class="table-consultation__status {if $paymentInfo['status'] == 'Оплачен'}table-consultation__status--green{/if}{if $paymentInfo['status'] == 'Отменен'}table-consultation__status--red{/if}">
+                                                                    {$paymentInfo["status"]}
+                                                                </span>
+                                                            </div>
+                                                            <div class="table-flex--col table-consultation__duration">
+                                                                {$paymentInfo["price"]} Р
+                                                            </div>
+                                                            
+                                                            <div class="table-flex--col">
+                                                                <a href="" download="">
+                                                                    {'@FILE chunks/icons/icon-download.tpl' | chunk}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {/if}
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                {/if}
+                            {/foreach}
+                        {else}
+                            <div class="table-flex--row table-flex--body">
+                                <div class="table-flex--col table-flex--col--full">Вы еще не проводили оплату</div>
+                            </div>
+                        {/if}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <div id="financesSecure" class="nModal">
     <form id="financesSecure-form" action="">
@@ -231,7 +303,6 @@
         if (xhr.status != 200) {
             alerts({state: "error", message: "XMLHttpRequest status not 200"});
         } else {
-            console.log(xhr.responseText);
             if (xhr.responseText !== "false") {
                 let response = JSON.parse(xhr.responseText);
                 modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
@@ -245,7 +316,6 @@
                             ) {
                                 newXhr.open("POST", "/assets/php/payment.php?action=createRefund", false);
                                 let formDataNew = new FormData();
-                                console.log(response.id, response.amount.value);
                                 formDataNew.append("paymentID", response.id);
                                 formDataNew.append("paymentValue", response.amount.value);
                                 newXhr.send(formDataNew);

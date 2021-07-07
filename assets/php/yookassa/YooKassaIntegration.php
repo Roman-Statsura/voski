@@ -125,6 +125,17 @@
          */
         public function getPaymentInfo($paymentId) {
             $response = $this->client->getPaymentInfo($paymentId);
-            return $response->status;
+            return $response;
+        }
+
+        
+        /**
+         * Список чеков
+         *
+         * @return Object $response
+         */
+        public function getReceipts() {
+            $response = $this->client->getReceipts();
+            return $response;
         }
     }

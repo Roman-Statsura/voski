@@ -58,6 +58,10 @@
         align-items: center;
         justify-content: space-between;
 
+        @media screen and (max-width: $screen-smm) {
+            padding: 24px 16px !important;
+        }
+
         &__title {
             font-family: $nunito-font;
             font-style: normal;
@@ -67,6 +71,11 @@
             display: flex;
             align-items: center;
             color: $dark-gray;
+
+            @media screen and (max-width: $screen-smm) {
+                font-size: 20px;
+                line-height: 22px;
+            }
         }
 
         &__subtitle {
@@ -77,10 +86,20 @@
             line-height: 26px;
             color: $dark-mint;
             margin-top: 24px;
+
+            @media screen and (max-width: $screen-smm) {
+                font-size: 12px;
+                line-height: 17px;
+                margin-top: 8px;
+            }
         }
     }
     &-body {
         padding: 0 40px !important;
+
+        @media screen and (max-width: $screen-smm) {
+            padding: 0 16px !important;
+        }
 
         &__form {
             &--item {
@@ -105,6 +124,34 @@
                     color: $dark-gray;
                     margin-bottom: 8px;
                 }
+            }
+        }
+    }
+
+    &-buttons {
+        @media screen and (max-width: $screen-smm) {
+            flex-direction: column;
+            padding: 24px 16px !important;
+        }
+    }
+
+    &-button {
+        @media screen and (max-width: $screen-smm) {
+            text-align: center;
+            width: 100%;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            margin-bottom: 15px;
+
+            &--close {
+                width: auto;
+                position: absolute;
+                right: 5px;
+                top: 5px;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
             }
         }
     }

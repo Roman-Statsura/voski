@@ -50,7 +50,7 @@
     }
 
     .table-flex--col:nth-child(3) {
-        width: 40%;
+        width: 35%;
 
         @media only screen and (max-width: $screen-sm) {
             order: 3;
@@ -68,8 +68,24 @@
     .table-flex--col:nth-child(5) {
         width: 15%;
 
+        ~ .table-flex--col:nth-child(6) {
+            width: 5%;
+        }
+
         @media only screen and (max-width: $screen-sm) {
+            width: 50% !important;
+            margin-bottom: 0;
             order: 5;
+
+            ~ .table-flex--col:nth-child(6) {
+                width: auto !important;
+            }
+        }
+    }
+
+    .table-flex--col:nth-child(6) {
+        @media only screen and (max-width: $screen-sm) {
+            order: 6;
         }
     }
 
@@ -122,6 +138,8 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     white-space: nowrap;
+    display: flex;
+    justify-content: center;
 
     span {
         a {

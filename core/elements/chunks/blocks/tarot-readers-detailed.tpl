@@ -56,6 +56,9 @@
 
 <div class="tarot-readers">
     <div class="tarot-readers-container container">
+        {'@FILE chunks/elements/alerts.tpl' | chunk : [
+            'fixed' => true
+        ]}
         <div class="tarot-readers-container__content tarot-readers-content">
             <div class="tarot-readers-content__body">
                 <div class="tarot-readers-content__left">
@@ -230,7 +233,11 @@
 
 {'@FILE chunks/elements/button.tpl' | chunk : [
     'buttonTitle' => 'success'
-    'dataAttr' => 'style="display: none;" data-nmodal="signUpSuccess" data-nmodal-size="largest"'
+    'dataAttr' => 'style="display: none;position:absolute;left:-9999px;" data-nmodal="signUpSuccess" data-nmodal-size="largest"'
+]}
+{'@FILE chunks/elements/button.tpl' | chunk : [
+    'buttonTitle' => 'success'
+    'dataAttr' => 'style="display: none;position:absolute;left:-9999px;" data-nmodal-new="financesSecure" data-nmodal-size="large"'
 ]}
 
 <div id="tarotSignUp" class="nModal">
@@ -244,6 +251,7 @@
         </div>
         <input type="hidden" name="idTarot" value="{$_modx->resource.id}">
         <input type="hidden" name="idUser" value="{$_modx->user.id}">
+        <input type="hidden" name="subjectSum" value="{$_modx->resource.price}">
         <div class="nModal-header">
             <div>
                 <div class="nModal-header__title">Выберите дату и время сессии</div>
@@ -295,6 +303,20 @@
     ]}
 </div>
 
+<div id="financesSecure" class="nModal">
+    <form id="financesSecure-form" action="">
+        <div class="nModal-header">
+            <div>
+                <div class="nModal-header__title">Подтвердите оплату консультации</div>
+            </div>
+            <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModalNew">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
+        </div>
+        <div class="nModal-body">
+            <iframe src="" width="100%" height="400" frameborder="0"></iframe>
+        </div>
+    </form>
+</div>
+
 {$_modx->regClientScript('@FILE snippets/fileVersion.php' | snippet : [
     'input' => '/assets/js/lightgallery.min.js' 
 ])}
@@ -308,7 +330,20 @@
 ])}
 
 {$_modx->regClientScript('<script>
-    document.addEventListener("DOMContentLoaded", function () {        
+    document.addEventListener("DOMContentLoaded", function () {   
+        nModalNew.init({
+            watch: true,
+            backdrop: true,
+            swiper: {
+                init: true,
+                classEvent: ".schedule-block__date--list"
+            },
+            alerts: {
+                init: true,
+                msg: "Операция отменена"
+            }
+        });
+        
         nModal.init({
             watch: true,
             backdrop: true,
@@ -326,44 +361,97 @@
     });
 
     function testPayment(formElement) {
-        let formData = new FormData(document.forms.consultations),
-            xhr = new XMLHttpRequest();
+        if (document.querySelector(`[name="schTime"]:checked`)) {
+            document.body.classList.remove("loaded");
+            document.querySelector(`[data-nmodal-new="financesSecure"]`).click();
 
-        xhr.open("POST", "/assets/php/payment.php", true);
-        xhr.onreadystatechange = function() {
-            if (this.readyState != 4) return;
-            console.log(this.responseText);
+            let formData = new FormData(document.forms.consultations),
+                xhr = new XMLHttpRequest(),
+                newXhr = new XMLHttpRequest(),
+                modalFormFrame = document.querySelector("#financesSecure-form .nModal-body iframe");
+            
+            xhr.open("POST", "/assets/php/payment.php?action=createPayment", false);
+            xhr.send(formData);
+
+            if (xhr.status != 200) {
+                alerts({state: "error", message: "XMLHttpRequest status not 200"});
+            } else {
+                console.log(xhr.responseText);
+                modalFormFrame.setAttribute("src", "https://3ds-gate.yoomoney.ru/card-auth?acsUri=https%3A%2F%2Fyookassa.ru%2Fsandbox%2Fbank-card%2F3ds&MD=1************-*****997089024260581&PaReq=Q1VSUkVOQ1k9UlVCJk9SREVSPTI4Nzc4YjM3LTAwMGYtNTAwMC1hMDAwLTFkNjI3ZGY4MWNiNSZURVJNSU5BTD05OTk5OTgmRVhQX1lFQVI9MjQmQU1PVU5UPTM1MDAuMDAmQ0FSRF9UWVBFPVBBTiZUUlRZUEU9MCZFWFA9MDMmQ1ZDMj01ODEmQ0FSRD01NTU1NTU1NTU1NTU0NDc3Jk5BTUU9TVIrQ0FSREhPTERFUg%3D%3D&TermUrl=https%3A%2F%2Fpaymentcard.yoomoney.ru%3A443%2F3ds%2Fchallenge%2F241%2FmxpUYnGAQwUntAyXkadjk-9keFsZ..001.202107");
+            }
+        } else {
+            alerts({state: "error", message: "Выберите время для записи"});
         }
-        xhr.send(formData);
     }
 
-    function callback(formElement) {        
-        document.body.classList.remove("loaded");
+    function callback(formElement) {
+        if (document.querySelector(`[name="schTime"]:checked`)) {
+            document.body.classList.remove("loaded");
+            document.querySelector(`[data-nmodal-new="financesSecure"]`).click();
 
-        let formData = new FormData(document.forms.consultations),
-            xhr = new XMLHttpRequest(),
-            signUpModal = document.querySelector("#tarotSignUp"),
-            signUpSuccess = document.querySelector("#signUpSuccess"),
-            signUpSuccessText = document.querySelector("#signUpSuccess .success-info__text");
+            let formData = new FormData(document.forms.consultations),
+                xhr = new XMLHttpRequest(),
+                newXhr = new XMLHttpRequest(),
+                modalFormFrame = document.querySelector("#financesSecure-form .nModal-body iframe");
+            
+            xhr.open("POST", "/assets/php/payment.php?action=createPayment", false);
+            xhr.send(formData);
 
-        xhr.open("POST", "/assets/php/addConsultation.php", true);
-        xhr.onreadystatechange = function() {
-            if (this.readyState != 4) return;
-            let result = JSON.parse(this.responseText);
-            signUpSuccessText.innerHTML = result.message;
-            document.body.classList.add("loaded");
+            if (xhr.status != 200) {
+                alerts({state: "error", message: "XMLHttpRequest status not 200"});
+            } else {
+                let response = JSON.parse(xhr.responseText);
+                modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
 
-            nModal.closeWithoutAnim();
-            document.querySelector(`[data-nmodal="signUpSuccess"]`).click();
+                var $modalContainer = document.querySelector("#nModal-container-new");
+                var newObserver = new MutationObserver(function(mutationsList) {
+                    for (var mutation of mutationsList) {
+                        if (mutation.type == "attributes") {
+                            if (!mutation.target.classList.contains("active") && 
+                                !mutation.target.classList.contains("hidden")
+                            ) {
+                                let xhrMew = new XMLHttpRequest(),
+                                    signUpModal = document.querySelector("#tarotSignUp"),
+                                    signUpSuccess = document.querySelector("#signUpSuccess"),
+                                    signUpSuccessText = document.querySelector("#signUpSuccess .success-info__text");
 
-            setTimeout(() => {
-                nModal.close();
-            }, 4000);
+                                formData.append("paymentID", response.id);
+
+                                xhrMew.open("POST", "/assets/php/addConsultation.php", true);
+                                xhrMew.onreadystatechange = function() {
+                                    if (this.readyState != 4) return;
+                                    let result = JSON.parse(this.responseText);
+                                    signUpSuccessText.innerHTML = result.message;
+                                    document.body.classList.add("loaded");
+
+                                    nModal.closeWithoutAnim();
+                                    document.querySelector(`[data-nmodal="signUpSuccess"]`).click();
+
+                                    setTimeout(() => {
+                                        nModal.close();
+                                    }, 4000);
+                                }
+                                xhrMew.send(formData);
+                            }
+                        }
+                    }
+                });
+                
+                newObserver.observe($modalContainer, {
+                    "attributes": true
+                });
+            }
+        } else {
+            alerts({state: "error", message: "Выберите время для записи"});
         }
-        xhr.send(formData);
     }
 
     function closeModal() {
         nModal.close();
+    }
+
+    function closeModalNew() {
+        nModalNew.close();
+        document.body.classList.add("loaded");
     }
 </script>',true)}

@@ -140,6 +140,7 @@
             $tvs->setTVValue('consultZoomLink', $respTest->join_url);
             $tvs->setTVValue('consultZoomStartLink', $respTest->start_url);
             $tvs->setTVValue('consultDesc', $description);
+            $tvs->setTVValue('consultPaymentID', $_POST['paymentID']);
             $tvs->setTVValue('consultStatusSession', 0);
             $tvs->setTVValue('consultDuration', 0);
             $tvs->setTVValue('consultSended', 0);

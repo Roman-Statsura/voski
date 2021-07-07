@@ -1113,7 +1113,7 @@ li {
 }
 .alert--fixed {
   position: fixed;
-  z-index: 999;
+  z-index: 9999;
   width: 300px;
   right: 15px;
   top: 15px;
@@ -2718,6 +2718,11 @@ li {
   align-items: center;
   justify-content: space-between;
 }
+@media screen and (max-width: 640px) {
+  .nModal-header {
+    padding: 24px 16px !important;
+  }
+}
 .nModal-header__title {
   font-family: "Nunito", sans-serif;
   font-style: normal;
@@ -2728,6 +2733,12 @@ li {
   align-items: center;
   color: #2E3133;
 }
+@media screen and (max-width: 640px) {
+  .nModal-header__title {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}
 .nModal-header__subtitle {
   font-family: "Gilroy", sans-serif;
   font-style: normal;
@@ -2737,8 +2748,20 @@ li {
   color: #516472;
   margin-top: 24px;
 }
+@media screen and (max-width: 640px) {
+  .nModal-header__subtitle {
+    font-size: 12px;
+    line-height: 17px;
+    margin-top: 8px;
+  }
+}
 .nModal-body {
   padding: 0 40px !important;
+}
+@media screen and (max-width: 640px) {
+  .nModal-body {
+    padding: 0 16px !important;
+  }
 }
 .nModal-body__form--item {
   display: flex;
@@ -2760,6 +2783,30 @@ li {
   letter-spacing: 0.01em;
   color: #2E3133;
   margin-bottom: 8px;
+}
+@media screen and (max-width: 640px) {
+  .nModal-buttons {
+    flex-direction: column;
+    padding: 24px 16px !important;
+  }
+}
+@media screen and (max-width: 640px) {
+  .nModal-button {
+    text-align: center;
+    width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 15px;
+  }
+  .nModal-button--close {
+    width: auto;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+  .nModal-button:last-child {
+    margin-bottom: 0;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -4445,7 +4492,7 @@ th {
   }
 }
 .table-consultation .table-flex--col:nth-child(3) {
-  width: 40%;
+  width: 35%;
 }
 @media only screen and (max-width: 768px) {
   .table-consultation .table-flex--col:nth-child(3) {
@@ -4463,9 +4510,22 @@ th {
 .table-consultation .table-flex--col:nth-child(5) {
   width: 15%;
 }
+.table-consultation .table-flex--col:nth-child(5) ~ .table-flex--col:nth-child(6) {
+  width: 5%;
+}
 @media only screen and (max-width: 768px) {
   .table-consultation .table-flex--col:nth-child(5) {
+    width: 50% !important;
+    margin-bottom: 0;
     order: 5;
+  }
+  .table-consultation .table-flex--col:nth-child(5) ~ .table-flex--col:nth-child(6) {
+    width: auto !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .table-consultation .table-flex--col:nth-child(6) {
+    order: 6;
   }
 }
 .table-consultation__status {
@@ -4514,6 +4574,8 @@ th {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   white-space: nowrap;
+  display: flex;
+  justify-content: center;
 }
 .consult-text span a {
   overflow: hidden;

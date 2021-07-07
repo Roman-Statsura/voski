@@ -1,4 +1,5 @@
-#nModal-container {
+#nModal-container, #nModal-container-new {
+  text-align: center;
   display: none;
   position: fixed;
   top: 0;
@@ -7,10 +8,12 @@
   height: 100%;
   overflow: auto;
   z-index: 9999; }
-  #nModal-container *, #nModal-container *:before, #nModal-container *:after {
+  #nModal-container *, #nModal-container *:before, #nModal-container *:after, #nModal-container-new *, #nModal-container-new *:before, #nModal-container-new *:after {
     box-sizing: border-box; }
-  #nModal-container.active {
-    display: block;
+  #nModal-container.active, #nModal-container-new.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     -webkit-animation: fadein 200ms;
     /* Safari, Chrome and Opera > 12.1 */
     -moz-animation: fadein 200ms;
@@ -20,13 +23,13 @@
     -o-animation: fadein 200ms;
     /* Opera < 12.1 */
     animation: fadein 200ms; }
-    #nModal-container.active.backdrop {
+    #nModal-container.active.backdrop, #nModal-container-new.active.backdrop {
       background-color: rgba(0, 0, 0, 0.2);
       pointer-events: all; }
-    #nModal-container.active:not(.backdrop) {
+    #nModal-container.active:not(.backdrop), #nModal-container-new.active:not(.backdrop) {
       background: none;
       pointer-events: none; }
-    #nModal-container.active #nModal-placeholder {
+    #nModal-container.active #nModal-placeholder, #nModal-container-new.active #nModal-placeholder-new {
       -webkit-animation: fadein 200ms;
       /* Safari, Chrome and Opera > 12.1 */
       -moz-animation: fadein 200ms;
@@ -38,8 +41,10 @@
       animation: fadein 200ms;
       pointer-events: all;
       box-sizing: border-box; }
-    #nModal-container.hidden {
-      display: block;
+    #nModal-container.hidden, #nModal-container-new.hidden {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       -webkit-animation: fadeout 200ms;
       /* Safari, Chrome and Opera > 12.1 */
       -moz-animation: fadeout 200ms;
@@ -49,7 +54,7 @@
       -o-animation: fadeout 200ms;
       /* Opera < 12.1 */
       animation: fadeout 200ms; }
-    #nModal-container.hidden #nModal-placeholder {
+    #nModal-container.hidden #nModal-placeholder, #nModal-container-new.hidden #nModal-placeholder-new {
       display: block;
       -webkit-animation: fadeout 200ms;
       /* Safari, Chrome and Opera > 12.1 */
@@ -62,45 +67,43 @@
       animation: fadeout 200ms;
       pointer-events: all;
       box-sizing: border-box; }
-  #nModal-container #nModal-placeholder {
+  #nModal-container #nModal-placeholder, #nModal-container-new #nModal-placeholder-new {
+    position: relative;
+    text-align: left;
     display: block;
     box-shadow: 0 3px 10px 0 rgba(84, 84, 84, 0.3);
-    position: relative;
-    top: 50%;
-    left: 50%;
-    margin-top: auto;
-    margin-bottom: auto;
-    -webkit-transform: translateY(-50%) translateX(-50%);
-    transform: translateY(-50%) translateX(-50%);
+    display: inline-block;
+    vertical-align: middle;
     background-color: #fff;
     border-radius: 3px;
     overflow: hidden;
     font-family: inherit, sans-serif;
+    margin: 25px;
     width: 300px; }
-    #nModal-container #nModal-placeholder.small {
+    #nModal-container #nModal-placeholder.small, #nModal-container-new #nModal-placeholder-new.small {
       width: 300px; }
-    #nModal-container #nModal-placeholder.large {
+    #nModal-container #nModal-placeholder.large, #nModal-container-new #nModal-placeholder-new.large {
       width: 653px; }
-    #nModal-container #nModal-placeholder.largest {
+    #nModal-container #nModal-placeholder.largest, #nModal-container-new #nModal-placeholder-new.largest {
       width: 1051px; }
-    #nModal-container #nModal-placeholder.max {
+    #nModal-container #nModal-placeholder.max, #nModal-container-new #nModal-placeholder-new.max {
       width: 100%;
       height: 100%; }
-    #nModal-container #nModal-placeholder .nModal-header {
+    #nModal-container #nModal-placeholder .nModal-header, #nModal-container-new #nModal-placeholder-new .nModal-header {
       background: #f0f0f0;
       padding: 20px;
       width: 100%; }
-    #nModal-container #nModal-placeholder .nModal-body {
+    #nModal-container #nModal-placeholder .nModal-body, #nModal-container-new #nModal-placeholder-new .nModal-body {
       padding: 20px; }
-    #nModal-container #nModal-placeholder .nModal-buttons.nModal-buttons-align_right {
+    #nModal-container #nModal-placeholder .nModal-buttons.nModal-buttons-align_right, #nModal-container-new #nModal-placeholder-new .nModal-buttons.nModal-buttons-align_right {
       justify-content: flex-end;
     }
-    #nModal-container #nModal-placeholder .nModal-buttons {
+    #nModal-container #nModal-placeholder .nModal-buttons, #nModal-container-new #nModal-placeholder-new .nModal-buttons {
       padding: 32px 40px;
       text-align: left;
       display: flex;
       align-items: center; }
-      #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button {
+      #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button {
         display: inline-block;
         border-radius: 3px;
         padding: 10px 14px;
@@ -108,19 +111,19 @@
         text-decoration: none;
         margin-left: 3px;
         margin-right: 3px; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:first-of-type {
+        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:first-of-type, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:first-of-type {
           margin-left: 0px; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:last-of-type {
+        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:last-of-type, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:last-of-type {
           margin-right: 0px; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok {
+        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__ok {
           background-color: #8BC34A; }
-          #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok:hover {
+          #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok:hover, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__ok:hover {
             background-color: #7CB342; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel {
+        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__cancel {
           background-color: #F44336; }
-          #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel:hover {
+          #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel:hover, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__cancel:hover {
             background-color: #E53935; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:focus {
+        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:focus, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:focus {
           box-shadow: 0 3px 10px 0 rgba(84, 84, 84, 0.3); }
 
 .nModal {
@@ -151,6 +154,21 @@
 .nModal-body__record:last-child {
   font-weight: normal;
   margin-right: 0;
+}
+
+@media screen and (max-height: 720px) {
+  #nModal-container.active, #nModal-container-new.active {
+    align-items: flex-start;
+  }
+  #nModal-container.hidden, #nModal-container-new.hidden {
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #nModal-container #nModal-placeholder, #nModal-container-new #nModal-placeholder-new {
+    margin: 15px;
+  }
 }
 
 @keyframes fadein {
