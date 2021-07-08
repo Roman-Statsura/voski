@@ -429,7 +429,6 @@
     }
 
     function cancelConsult(formElement, event) {
-        console.log(event.dataset.idcns);
         document.querySelector(`[data-nmodal-new="confirmation"]`).click();
         
         let idConsultField = document.querySelector(`#confirmation-form [name="idConsult"]`);
@@ -437,7 +436,7 @@
     }
 
     function confirmCancel(formElement) {
-        //document.body.classList.remove("loaded");
+        document.body.classList.remove("loaded");
         let idConsultField = document.querySelector(`#confirmation-form [name="idConsult"]`);
 
         var xhr = new XMLHttpRequest(),
@@ -451,6 +450,11 @@
             alerts({state: "error", message: "XMLHttpRequest status not 200"});
         } else {
             console.log(xhr.responseText);
+            let result = JSON.parse(xhr.responseText);
+            alerts(result);
+
+            document.body.classList.add("loaded");
+            nModal.close();
         }
     }
 
