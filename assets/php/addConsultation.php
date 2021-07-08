@@ -104,20 +104,6 @@
                         <span>Идентификатор конференции: $respTest->id</span><br>
                         <span>Код доступа: $respTest->password</span>";
 
-        $schNewSubArray = [];
-        $schNewSubArray["MIGX_id"] = end($schCurrentArray)->MIGX_id + 1;
-        $schNewSubArray["datetime"] = $_POST['schTime'];
-        $schNewSubArray["allDay"] = 0;
-        $schNewSubArray["idUser"] = $_POST['idUser'];
-        $schNewSubArray["zoomLink"] = $respTest->join_url;
-        $schNewSubArray["desc"] = $description;
-        $schNewSubArray["status"] = 2;
-        $schNewSubArray["active"] = '1';
-    
-        $schCurrentArray[] = $schNewSubArray;
-        $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        $resource->save();
-
         // Заполняем общую таблицу консультации
         $newResource = $modx->newObject('modDocument');
 
@@ -148,6 +134,21 @@
             if (!$tvs->save()) {
                 $modx->log(xPDO::LOG_LEVEL_ERROR, "Ошибка сохранения дополнительных полей в id: {$docId}");
             }
+
+            $schNewSubArray = [];
+            $schNewSubArray["MIGX_id"] = end($schCurrentArray)->MIGX_id + 1;
+            $schNewSubArray["datetime"] = $_POST['schTime'];
+            $schNewSubArray["allDay"] = 0;
+            $schNewSubArray["idUser"] = $_POST['idUser'];
+            $schNewSubArray["zoomLink"] = $respTest->join_url;
+            $schNewSubArray["desc"] = $description;
+            $schNewSubArray["idConcult"] = $docId;
+            $schNewSubArray["status"] = 2;
+            $schNewSubArray["active"] = '1';
+        
+            $schCurrentArray[] = $schNewSubArray;
+            $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            $resource->save();
         }
         
         $cnsDateTime = new DateTime($_POST['schTime']);

@@ -290,7 +290,6 @@
         </div>
         <div class="nModal-buttons nModal-buttons-align_right">
             <a href="#" class="nModal-button button button-size--normal button-theme--mint" data-nmodal-callback="callback">Записаться </a>
-            <a href="#" class="nModal-button button button-size--normal button-theme--mint" data-nmodal-callback="testPayment">Test Payment</a>
         </div>
     </form>
 </div>
@@ -305,6 +304,13 @@
 
 <div id="financesSecure" class="nModal">
     <form id="financesSecure-form" action="">
+        <div class="preloader">
+            <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="currentColor"
+                    d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+                </path>
+            </svg>
+        </div>
         <div class="nModal-header">
             <div>
                 <div class="nModal-header__title">Подтвердите оплату консультации</div>
@@ -377,7 +383,6 @@
                 alerts({state: "error", message: "XMLHttpRequest status not 200"});
             } else {
                 console.log(xhr.responseText);
-                modalFormFrame.setAttribute("src", "https://3ds-gate.yoomoney.ru/card-auth?acsUri=https%3A%2F%2Fyookassa.ru%2Fsandbox%2Fbank-card%2F3ds&MD=1************-*****997089024260581&PaReq=Q1VSUkVOQ1k9UlVCJk9SREVSPTI4Nzc4YjM3LTAwMGYtNTAwMC1hMDAwLTFkNjI3ZGY4MWNiNSZURVJNSU5BTD05OTk5OTgmRVhQX1lFQVI9MjQmQU1PVU5UPTM1MDAuMDAmQ0FSRF9UWVBFPVBBTiZUUlRZUEU9MCZFWFA9MDMmQ1ZDMj01ODEmQ0FSRD01NTU1NTU1NTU1NTU0NDc3Jk5BTUU9TVIrQ0FSREhPTERFUg%3D%3D&TermUrl=https%3A%2F%2Fpaymentcard.yoomoney.ru%3A443%2F3ds%2Fchallenge%2F241%2FmxpUYnGAQwUntAyXkadjk-9keFsZ..001.202107");
             }
         } else {
             alerts({state: "error", message: "Выберите время для записи"});
@@ -402,6 +407,7 @@
             } else {
                 let response = JSON.parse(xhr.responseText);
                 modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
+                document.body.classList.add("loaded");
 
                 var $modalContainer = document.querySelector("#nModal-container-new");
                 var newObserver = new MutationObserver(function(mutationsList) {
@@ -410,6 +416,8 @@
                             if (!mutation.target.classList.contains("active") && 
                                 !mutation.target.classList.contains("hidden")
                             ) {
+                                document.body.classList.remove("loaded");
+
                                 let xhrMew = new XMLHttpRequest(),
                                     signUpModal = document.querySelector("#tarotSignUp"),
                                     signUpSuccess = document.querySelector("#signUpSuccess"),
@@ -422,9 +430,9 @@
                                     if (this.readyState != 4) return;
                                     let result = JSON.parse(this.responseText);
                                     signUpSuccessText.innerHTML = result.message;
-                                    document.body.classList.add("loaded");
 
                                     nModal.closeWithoutAnim();
+                                    document.body.classList.add("loaded");
                                     document.querySelector(`[data-nmodal="signUpSuccess"]`).click();
 
                                     setTimeout(() => {

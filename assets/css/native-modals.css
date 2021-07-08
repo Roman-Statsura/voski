@@ -103,28 +103,24 @@
       text-align: left;
       display: flex;
       align-items: center; }
-      #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button {
-        display: inline-block;
-        border-radius: 3px;
-        padding: 10px 14px;
-        color: white;
-        text-decoration: none;
-        margin-left: 3px;
-        margin-right: 3px; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:first-of-type, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:first-of-type {
-          margin-left: 0px; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:last-of-type, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:last-of-type {
-          margin-right: 0px; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__ok {
-          background-color: #8BC34A; }
-          #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok:hover, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__ok:hover {
-            background-color: #7CB342; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__cancel {
-          background-color: #F44336; }
-          #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel:hover, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__cancel:hover {
-            background-color: #E53935; }
-        #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:focus, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:focus {
-          box-shadow: 0 3px 10px 0 rgba(84, 84, 84, 0.3); }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button {
+      display: inline-block;
+      color: white;
+      text-decoration: none; }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:first-of-type, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:first-of-type {
+      margin-left: 0px; }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:last-of-type, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:last-of-type {
+      margin-right: 0px; }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__ok {
+      background-color: #8BC34A; }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__ok:hover, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__ok:hover {
+        background-color: #7CB342; }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__cancel {
+      background-color: #F44336; }
+      #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button.nModal-button__cancel:hover, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button.nModal-button__cancel:hover {
+        background-color: #E53935; }
+    #nModal-container #nModal-placeholder .nModal-buttons > .nModal-button:focus, #nModal-container-new #nModal-placeholder-new .nModal-buttons > .nModal-button:focus {
+      box-shadow: 0 3px 10px 0 rgba(84, 84, 84, 0.3); }
 
 .nModal {
   display: none; }

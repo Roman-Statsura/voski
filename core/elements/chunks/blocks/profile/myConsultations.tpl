@@ -159,14 +159,44 @@
                         </div>
                     {/if}
                 </div>
-            
             </div>
         </div>
     </div>
 </div> 
 
+{'@FILE chunks/elements/button.tpl' | chunk : [
+    'buttonTitle' => 'success'
+    'dataAttr' => 'style="display: none;position:absolute;left:-9999px;" data-nmodal-new="confirmation" data-nmodal-size="large"'
+]}
+
 <div id="consultDetailed" class="nModal">
     <form id="consultInfo" action="">
+    </form>
+</div>
+
+<div id="confirmation" class="nModal">
+    <form id="confirmation-form" action="">
+        <input type="hidden" name="idConsult" value="">
+
+        <div class="preloader">
+            <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="currentColor"
+                    d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+                </path>
+            </svg>
+        </div>
+        <div class="nModal-header">
+            <div>
+                <div class="nModal-header__title">Подтвердите отмену консультации</div>
+            </div>
+        </div>
+        <div class="nModal-body">
+            <p>Вы уверены, что хотите отменить консультацию? Данное действие необратимо.</p>
+        </div>
+        <div class="nModal-buttons nModal-buttons-align_right">
+            <a href="#" class="nModal-button button button-size--normal button-theme--red" data-nmodal-callback="confirmCancel">Да</a>
+            <a href="#" class="nModal-button button button-size--normal button-theme--mint" data-nmodal-callback="closeModalNew">Нет</a>
+        </div>
     </form>
 </div>
 
@@ -243,7 +273,12 @@
         //console.log(error);
     };
 
-    document.addEventListener("DOMContentLoaded", function () {        
+    document.addEventListener("DOMContentLoaded", function () {     
+        nModalNew.init({
+            watch: true,
+            backdrop: true
+        });
+        
         nModal.init({
             watch: true,
             backdrop: true
@@ -328,7 +363,10 @@
                 Number(newConsult[cnsArray]["tv.consultStatusSession"]) !== 3) 
             {
                 if (usergroup == 2) {
-                    buttonLink = `<a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="button button-size--normal button-theme--mint">${callbackTitle}</a>`;
+                    buttonLink = `
+                        <a href="#" class="button button-size--normal button-theme--red nModal-button" data-idcns="${newConsult[cnsArray]["id"]}" data-nmodal-callback="cancelConsult">Отменить консультацию</a>
+                        <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="button button-size--normal button-theme--mint">${callbackTitle}</a>
+                    `;
                 } else {
                     buttonLink = `<a href="${newConsult[cnsArray]["tv.consultZoomStartLink"]}" target="_blank" class="button button-size--normal ${buttonTheme} nModal-button" 
                                     data-action="meeting"
@@ -388,6 +426,32 @@
 
     function closeModal() {
         nModal.close();
+    }
+
+    function cancelConsult(formElement, event) {
+        console.log(event.dataset.idcns);
+        document.querySelector(`[data-nmodal-new="confirmation"]`).click();
+        
+        let idConsultField = document.querySelector(`#confirmation-form [name="idConsult"]`);
+        idConsultField.value = event.dataset.idcns
+    }
+
+    function confirmCancel(formElement) {
+        //document.body.classList.remove("loaded");
+        let idConsultField = document.querySelector(`#confirmation-form [name="idConsult"]`);
+
+        var xhr = new XMLHttpRequest(),
+            params = "idConsult=" + idConsultField.value;
+
+        xhr.open("POST", "/assets/php/cancelConsultation.php", false);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(params);
+
+        if (xhr.status != 200) {
+            alerts({state: "error", message: "XMLHttpRequest status not 200"});
+        } else {
+            console.log(xhr.responseText);
+        }
     }
 
     function secToTime(sec) {
@@ -539,4 +603,8 @@
             changeTab(checkbox);
         });
     });
+
+    function closeModalNew() {
+        nModalNew.close();
+    }
 </script>', true)}

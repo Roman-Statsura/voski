@@ -63,7 +63,7 @@
                     ]
                 ];
 
-                $clientPhone = $profile->get('username');
+                $clientPhone = $user->get('username');
                 $clientUserName = $profile->get('fullname');
                 $clientEmail = $profile->get('email');
                 $message = "Запись на консультацию от $clientUserName (id: {$_POST['idUser']}) на дату {$weekDay} {$dateWithTime}, к тарологу - {$resource->get('pagetitle')} (id: {$_POST['idTarot']})";    
