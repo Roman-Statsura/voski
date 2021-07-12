@@ -107,20 +107,22 @@
          * @return Object $response
          */
         public function createRefund($paymentId, $value, $paymentReceipt = []) {
-            $response = $this->client->createRefund(
-                array(
-                    'payment_id' => $paymentId,
-                    'amount' => array(
-                        'value' => $value,
-                        'currency' => 'RUB',
-                    ),
-                ),
-                uniqid('', true)
-            );
+            $request = [
+                'payment_id' => $paymentId,
+                'amount' => [
+                    'value' => $value,
+                    'currency' => 'RUB',
+                ]
+            ];
 
             if ($paymentReceipt) {
                 $request["receipt"] = $paymentReceipt;
             }
+            
+            $response = $this->client->createRefund(
+                $request,
+                uniqid('', true)
+            );
 
             return $response;
         }

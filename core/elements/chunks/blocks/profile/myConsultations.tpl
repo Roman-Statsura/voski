@@ -449,11 +449,11 @@
         if (xhr.status != 200) {
             alerts({state: "error", message: "XMLHttpRequest status not 200"});
         } else {
-            console.log(xhr.responseText);
             let result = JSON.parse(xhr.responseText);
             alerts(result);
 
             document.body.classList.add("loaded");
+            nModalNew.close();
             nModal.close();
         }
     }

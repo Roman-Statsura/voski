@@ -148,7 +148,10 @@
         
             $schCurrentArray[] = $schNewSubArray;
             $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-            $resource->save();
+
+            if (!$resource->save()) {
+                $modx->log(xPDO::LOG_LEVEL_ERROR, "Ошибка сохранения расписания к тарологу: id таролога: {$_POST['idTarot']}");
+            }
         }
         
         $cnsDateTime = new DateTime($_POST['schTime']);

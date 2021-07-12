@@ -17,6 +17,8 @@
     // Если ресурс существует и найден
     if ($resource) {
         $resourcePaymentID = $resource->getTVValue('consultPaymentID'); // Получаем id платежа
+        $resourceDatetime = $resource->getTVValue('consultDatetime'); // Получаем дату начала консультации
+        $resourceClientID = $resource->getTVValue('consultIDClient'); // Получаем id клиента
 
         // Подключаемся к магазину ЮКассы
         $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', "http://voski.loc/payment-status");
@@ -26,10 +28,51 @@
         if ($paymentInfo) {
             $paymentStatus = $paymentInfo->status;
             $paymentPrice = $paymentInfo->amount->value;
+            $paymentDesc = $paymentInfo->description;
             
             // Создаем запрос на возврат средств в ЮКассе
             if ($paymentStatus == "succeeded") {
-                $createRefund = $paymentClass->createRefund($resourcePaymentID, $paymentPrice);
+                $currentDatetime = time();
+                $consultDatetime = strtotime("-1 day", strtotime($resourceDatetime));
+
+                // Расчитываем процент возврата относительно даты начала консультации
+                // Условие: возврат 50% суммы, если клиент отказался от консультации, позднее чем за сутки до начала
+                // Иначе: полный возврат
+                if ($currentDatetime >= $consultDatetime) {
+                    $paymentPrice = $paymentPrice / 2;
+                }
+
+                // Получаем информацию клиента
+                if ($user = $modx->getObject('modUser', $resourceClientID)) {
+                    if ($profile = $user->getOne('Profile')) {
+                        $extended = $profile->get('extended');
+
+                        $clientPhone = $user->get('username');
+                        $clientUserName = $profile->get('fullname');
+                        $clientEmail = $profile->get('email');
+                    }
+                }
+
+                $paymentReceipt = [
+                    "customer" => [
+                        "full_name" => $clientUserName,
+                        "phone" => $clientPhone,
+                    ],
+                    "items" => [
+                        [
+                            "description" => $paymentDesc,
+                            "quantity" => 1.0,
+                            "amount" => [
+                                "value" => number_format(floatval($paymentPrice), 1, '.', ''),
+                                "currency" => "RUB"
+                            ],
+                            "vat_code" => "2",
+                            "payment_mode" => "full_payment",
+                            "payment_subject" => "service"
+                        ]
+                    ]
+                ];
+                $createRefund = $paymentClass->createRefund($resourcePaymentID, $paymentPrice, $paymentReceipt);
             } else if ($paymentStatus == "waiting_for_capture") {
                 $createRefund = $paymentClass->cancelPayment($resourcePaymentID);
             } else {
