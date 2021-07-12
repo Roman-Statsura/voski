@@ -152,61 +152,71 @@
                     <div class="table-flex table-consultation">
                         <div class="table-flex--row table-flex--head">
                             <div class="table-flex--col">Дата</div>
-                            <div class="table-flex--col">Получатель</div>
+                            <div class="table-flex--col">{if $_modx->user.extended.usertype == 3}Отправитель{else}Получатель{/if}</div>
                             <div class="table-flex--col">Описание</div>
                             <div class="table-flex--col">Статус</div>
                             <div class="table-flex--col">Сумма</div>
                             <div class="table-flex--col">Чек</div>
                         </div>
+                        {set $innerCount = 0}
                         {if count($consultations) > 0}
                             {foreach $consultations as $key => $consultItem}
                                 {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.id'))}
                                     {if $consultItem['tv.consultPaymentID'] != ""}
                                         {set $paymentInfo = '@FILE snippets/getPaymentInfo.php' | snippet : [
                                             'paymentID' => $consultItem['tv.consultPaymentID']
-                                        ]}                                     
+                                        ]}
+                                        {if ($_modx->user.extended.usertype == 2 && ($paymentInfo["statusCode"] == "waiting_for_capture" || $paymentInfo["statusCode"] == "succeeded")) ||
+                                            ($_modx->user.extended.usertype == 3 && $paymentInfo["statusCode"] == "succeeded")}
+                                            {set $innerCount = $innerCount + 1}
+                                            
+                                            <div class="login-finances__tab login-tab tab" data-id="2">
+                                                {if $consultItem.published}
+                                                    {if $consultItem['tv.consultStatusSession'] != 3}
+                                                        {if $_modx->user.extended.usertype == 3}
+                                                            {set $userFullname = '@FILE snippets/getUserNameByID.php' | snippet : [
+                                                                'id' => $consultItem['tv.consultIDClient']
+                                                                'field' => 'fullname'
+                                                            ]}
+                                                        {else}
+                                                            {set $userFullname = $consultItem['tv.consultIDTarot'] | resource : 'pagetitle'}
+                                                        {/if}
 
-                                        <div class="login-finances__tab login-tab tab" data-id="2">
-                                            {if $consultItem.published}
-                                                {if $consultItem['tv.consultStatusSession'] != 3}
-                                                    {if $_modx->user.extended.usertype == 3}
-                                                        {set $userFullname = '@FILE snippets/getUserNameByID.php' | snippet : [
-                                                            'id' => $consultItem['tv.consultIDClient']
-                                                            'field' => 'fullname'
-                                                        ]}
-                                                    {else}
-                                                        {set $userFullname = $consultItem['tv.consultIDTarot'] | resource : 'pagetitle'}
-                                                    {/if}
-
-                                                    <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-usergroup="{$_modx->user.extended.usertype}" data-nmodal-callback="clickTest" data-nmodal="consultDetailed" data-nmodal-size="large">
-                                                        <div class="table-flex--item">
-                                                            <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
-                                                            <div class="table-flex--col">{$userFullname}</div>
-                                                            <div class="table-flex--col consult-text">
-                                                                {$paymentInfo["description"]}
-                                                            </div>
-                                                            <div class="table-flex--col">
-                                                                <span class="table-consultation__status {if $paymentInfo['status'] == 'Оплачен'}table-consultation__status--green{/if}{if $paymentInfo['status'] == 'Отменен'}table-consultation__status--red{/if}">
-                                                                    {$paymentInfo["status"]}
-                                                                </span>
-                                                            </div>
-                                                            <div class="table-flex--col table-consultation__duration">
-                                                                {$paymentInfo["price"]} Р
-                                                            </div>
-                                                            
-                                                            <div class="table-flex--col">
-                                                                <a href="" download="">
-                                                                    {'@FILE chunks/icons/icon-download.tpl' | chunk}
-                                                                </a>
+                                                        <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-payment="{$consultItem['tv.consultPaymentID']}" data-nmodal-callback="paymentInfo" data-nmodal="paymentInfo" data-nmodal-size="large">
+                                                            <div class="table-flex--item">
+                                                                <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
+                                                                <div class="table-flex--col">{$userFullname}</div>
+                                                                <div class="table-flex--col consult-text">
+                                                                    {$paymentInfo["description"]}
+                                                                </div>
+                                                                <div class="table-flex--col">
+                                                                    <span class="table-consultation__status {if $paymentInfo['status'] == 'Оплачен'}table-consultation__status--green{/if}{if $paymentInfo['status'] == 'Отменен'}table-consultation__status--red{/if}">
+                                                                        {$paymentInfo["status"]}
+                                                                    </span>
+                                                                </div>
+                                                                <div class="table-flex--col table-consultation__duration">
+                                                                    {$paymentInfo["price"]} Р
+                                                                </div>
+                                                                
+                                                                <div class="table-flex--col">
+                                                                    <a href="" download="">
+                                                                        {'@FILE chunks/icons/icon-download.tpl' | chunk}
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    {/if}
                                                 {/if}
-                                            {/if}
-                                        </div>
+                                            </div>
+                                        {/if}
                                     {/if}
                                 {/if}
                             {/foreach}
+                            {if $innerCount == 0}
+                                <div class="table-flex--row table-flex--body">
+                                    <div class="table-flex--col table-flex--col--full">Вы еще не проводили оплату</div>
+                                </div>
+                            {/if}
                         {else}
                             <div class="table-flex--row table-flex--body">
                                 <div class="table-flex--col table-flex--col--full">Вы еще не проводили оплату</div>
@@ -233,6 +243,26 @@
     </form>
 </div>
 
+<div id="paymentInfo" class="nModal">
+    <form id="paymentInfo-form" action="">
+        <div class="preloader">
+            <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="currentColor"
+                    d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+                </path>
+            </svg>
+        </div>
+        <div class="nModal-header">
+            <div>
+                <div class="nModal-header__title">Чек об оплате</div>
+            </div>
+            <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
+        </div>
+        <div class="nModal-body"></div>
+        <div class="nModal-buttons"></div>
+    </form>
+</div>
+
 {$_modx->regClientScript($nativeModalsJS)}
 
 {$_modx->regClientScript('@FILE snippets/fileVersion.php' | snippet : [
@@ -245,7 +275,7 @@
             watch: true,
             backdrop: true,
             alerts: {
-                init: true,
+                init: false,
                 msg: "Привязка карты отменена"
             }
         });
@@ -272,6 +302,45 @@
         modalFormFrame = document.querySelector("#financesSecure-form .nModal-body iframe");
 
     document.body.classList.add("loaded");
+
+    function paymentInfo(formElement, event) {
+        document.body.classList.remove("loaded");
+
+        let formData = new FormData(),
+            xhr = new XMLHttpRequest(),
+            paymentID = formElement.dataset.payment,
+            paymentModalForm = event.querySelector(".nModal-body");
+
+        formData.append("paymentID", paymentID);
+        xhr.open("POST", "/assets/php/payment.php?action=getReceipts", false);
+        xhr.send(formData);
+
+        if (xhr.status != 200) {
+            alerts({state: "error", message: "XMLHttpRequest status not 200"});
+        } else {
+            document.body.classList.add("loaded");
+            let response = JSON.parse(xhr.responseText);
+
+            let modalDiv = `
+                <div class="nModal-body__list">
+                    <div class="nModal-body__item">
+                        <div class="nModal-body__record">Дата оплаты:</div>
+                        <div class="nModal-body__record">${response.formattedDate}</div>
+                    </div>
+                    <div class="nModal-body__item flex-direction--column">
+                        <div class="nModal-body__record">Описание:</div>
+                        <div class="nModal-body__record">${response.items[0].description}</div>
+                    </div>
+                    <div class="nModal-body__item">
+                        <div class="nModal-body__record">Стоимость:</div>
+                        <div class="nModal-body__record">${Number(response.items[0].amount.value).toFixed(0)} руб</div>
+                    </div>
+                </div>
+            `;
+
+            paymentModalForm.innerHTML = modalDiv;
+        }
+    }
 
     function changeTab(checkbox) {
         financesTabs.forEach(element => {

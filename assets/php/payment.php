@@ -120,7 +120,20 @@
             break;
         case "getPaymentInfo":
             $payment = $paymentClass->getPaymentInfo($_GET["paymentID"]);
-            echo $payment;
+            var_dump("<pre>");
+            var_dump($payment);
+            var_dump("</pre>");
+            break;
+        case "getReceipts":
+            $receipts = $paymentClass->getReceipts(array('payment_id' => $_POST["paymentID"]));
+            foreach ($receipts->getItems() as $receipt) {
+                $receipt["formattedDate"] = $receipt["registered_at"]->format('d.m.Y H:i:s');
+                echo json_encode($receipt, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+            break;
+        case "getReceiptInfo":
+            $receipt = $paymentClass->getReceiptInfo($_POST["receiptID"]);
+            var_dump($receipt);
             break;
         default:
             $payment = "Nothing";

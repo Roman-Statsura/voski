@@ -25,6 +25,7 @@
         }
 
 
+        $response["statusCode"] = $payment->status;
         $response["status"] = $status;
         $response["price"] = intval($payment->amount->value);
         $response["paid"] = $payment->paid;

@@ -143,8 +143,8 @@
          *
          * @return Object $response
          */
-        public function getReceipts() {
-            $response = $this->client->getReceipts();
+        public function getReceipts($filter = null) {
+            $response = $this->client->getReceipts($filter);
             return $response;
         }
 
