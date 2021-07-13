@@ -345,7 +345,7 @@
                 classEvent: ".schedule-block__date--list"
             },
             alerts: {
-                init: true,
+                init: false,
                 msg: "Операция отменена"
             }
         });
@@ -360,6 +360,12 @@
         });
 
         document.body.classList.add("loaded");
+
+        if (location.hash && location.hash === "#signup") {
+            if (signupInit = document.querySelector(`[data-nmodal="tarotSignUp"]`)) {
+                signupInit.click();
+            }
+        }
     });
 
     lightGallery(document.querySelector("#lightgallery"), {

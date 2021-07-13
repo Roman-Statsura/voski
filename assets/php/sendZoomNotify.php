@@ -38,7 +38,7 @@
         $zoomLink           = $consultRes["tv.consultZoomLink"];
 
         if (!$sended) {
-            if (time() >= $sendTime) {
+            if (time() >= $sendTime || $_GET["debug"] == "Y") {
                 $nothingSend = false;
                 $respTest = $jwt->cURLQueries("https://api.zoom.us/v2/meetings/{$zoomID}", $jwtToken, "", "GET");
                 $respTest = json_decode($respTest);

@@ -451,6 +451,7 @@
         } else {
             let result = JSON.parse(xhr.responseText);
             alerts(result);
+            socket.send(``);
 
             document.body.classList.add("loaded");
             nModalNew.close();

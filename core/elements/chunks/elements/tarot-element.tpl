@@ -3,22 +3,23 @@
 
 {set $tvFilters = 'consultIDTarot=='~$id~',consultStatusSession==1'}
 {set $consultationsList = '!pdoResources' | snippet : [
-    'parents' => 36
-    'sortby' => 'publishedon'
-    'sortdir' => 'DESC'
-    'includeTVs' => 'consultIDTarot, consultStatusSession'
-    'includeContent' => '1'
-    'tvFilters' => $tvFilters
-    'return' => 'json'
+    'parents' => 36,
+    'sortby' => 'publishedon',
+    'sortdir' => 'DESC',
+    'includeTVs' => 'consultIDTarot, consultStatusSession',
+    'includeContent' => '1',
+    'tvFilters' => $tvFilters,
+    'return' => 'json',
     'limit' => 0
 ] | json_decode : true}
 
 <div class="tarot-readers-block__item ajax-item">
     <div class="tarot-readers-block__photo">
         {'@FILE chunks/elements/tarolog-photo.tpl' | chunk : [
-            'imageField' => $photo
-            'options' => 'w=140&h=140&zc=C&q=85'
-            'class' => 'tarot-readers-photo'
+            'imageField' => $photo,
+            'options' => 'w=140&h=140&zc=C&q=85',
+            'class' => 'tarot-readers-photo',
+            'link' => $_modx->makeUrl($id)
         ]}
     </div>
     <div class="tarot-readers-block__info">
@@ -60,15 +61,15 @@
 
         <div class="tarot-readers-block__buttons">
             {'@FILE chunks/elements/button.tpl' | chunk : [
-                'buttonTitle' => 'Подробнее »'
-                'type' => 'link'
-                'link' => $_modx->makeUrl($id)
+                'buttonTitle' => 'Подробнее »',
+                'type' => 'link',
+                'link' => $_modx->makeUrl($id),
                 'theme' => 'transparent'
             ]}
             {'@FILE chunks/elements/button.tpl' | chunk : [
-                'type' => 'link'
-                'link' => $_modx->makeUrl($id)
-                'buttonTitle' => 'Записаться'
+                'type' => 'link',
+                'buttonTitle' => 'Записаться',
+                'link' => $_modx->makeUrl($id) ~ '#signup'
             ]}
         </div>
     </div>

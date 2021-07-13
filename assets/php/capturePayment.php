@@ -20,6 +20,7 @@
         'sortdir' => 'DESC',
         'includeTVs' => 'consultDatetime, consultIDClient, consultIDTarot, consultZoomID, consultZoomLink, consultZoomStartLink, 
                          consultDesc, consultStatusSession, consultDuration, consultSended, consultPaymentID',
+        'tvsFilter' => "consultPaymentID!=''",
         'includeContent' => '1',
         'return' => 'json',
         'limit' => 0
@@ -28,28 +29,26 @@
 	$consultationResources = json_decode($modx->runSnippet('pdoResources', $params), true);
     $redirectURL = "{$modx->getOption('site_url')}payment-status";
 
-    foreach ($consultationResources as $consultRes) {
+    foreach ($consultationResources as $key => $consultRes) {
         // Отбираем все консультации, где имеется id платежа
         if (!empty($consultRes["tv.consultPaymentID"])) {
             $currentDatetime = time();
             $consultDatetime = strtotime("-1 day", strtotime($consultRes["tv.consultDatetime"]));
-
+            
             // Смотрим только те консультации, до начала которых осталось менее дня
-            if ($currentDatetime >= $consultDatetime) {
+            if ($currentDatetime >= $consultDatetime || $_GET["debug"] == "Y") {
                 $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', $redirectURL);
                 $paymentID = $consultRes["tv.consultPaymentID"];
                 $paymentInfo = $paymentClass->getPaymentInfo($paymentID); // Получаем информацию платежа с ЮКассы
 
-                if ($paymentInfo) {
+                if ($paymentInfo && $paymentInfo->status == "waiting_for_capture") {
                     $paymentPrice = $paymentInfo->amount->value;
                     $capturePayment = $paymentClass->capturePayment($paymentID, $paymentPrice); // Отправляем запрос на подтверждение платежа
 
                     if ($capturePayment) {
                         echo "Captured payment succeeded approved";
-                        return $capturePayment;
                     } else {
                         echo "Something Wrong!";
-                        return false;
                     }
                 }
             }
