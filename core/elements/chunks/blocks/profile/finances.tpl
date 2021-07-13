@@ -387,20 +387,37 @@
                             if (!mutation.target.classList.contains("active") && 
                                 !mutation.target.classList.contains("hidden")
                             ) {
-                                newXhr.open("POST", "/assets/php/payment.php?action=createRefund", false);
-                                let formDataNew = new FormData();
-                                formDataNew.append("paymentID", response.id);
-                                formDataNew.append("paymentValue", response.amount.value);
-                                newXhr.send(formDataNew);
+                                newXhr.open("POST", "/assets/php/payment.php?action=getPaymentInfo", false);
+                                let formDataPaymentInfo = new FormData();
+                                formDataPaymentInfo.append("paymentID", response.id);
+                                newXhr.send(formDataPaymentInfo);
 
                                 if (newXhr.status != 200) {} 
                                 else {
-                                    document.body.classList.add("loaded");
-                                    alerts({state: "success", message: "Карта успешно привязана! Сейчас страница перезагрузится"});
+                                    let responsePaymentInfo = JSON.parse(newXhr.responseText);
+                                    if (responsePaymentInfo.status !== "canceled") {
+                                        let refundXhr = new XMLHttpRequest(),
+                                            formDataRefund = new FormData();
 
-                                    setTimeout(function () {
-                                        document.forms.finances.submit();
-                                    }, 1500);
+                                        formDataRefund.append("paymentID", response.id);
+                                        formDataRefund.append("paymentValue", response.amount.value);
+
+                                        refundXhr.open("POST", "/assets/php/payment.php?action=createRefund", false);
+                                        refundXhr.send(formDataNew);
+
+                                        if (refundXhr.status != 200) {} 
+                                        else {
+                                            document.body.classList.add("loaded");
+                                            alerts({state: "success", message: "Карта успешно привязана! Сейчас страница перезагрузится"});
+
+                                            setTimeout(function () {
+                                                document.forms.finances.submit();
+                                            }, 1500);
+                                        }
+                                    } else {
+                                        document.body.classList.add("loaded");
+                                        alerts({state: "error", message: "Ошибка в процессе оплаты!"});
+                                    }
                                 }
                             }
                         }

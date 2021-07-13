@@ -8,6 +8,8 @@
     $modx->initialize('web');
     $modx->getService('error','error.modError', '', '');
 
+    header('Content-Type: application/json');
+
     require_once './yookassa/YooKassaIntegration.php';
     require_once '../../core/elements/snippets/profile/encrypt.php';
 
@@ -149,10 +151,8 @@
             $payment = $paymentClass->createRefund($_POST["paymentID"], 1.0);
             break;
         case "getPaymentInfo":
-            $payment = $paymentClass->getPaymentInfo($_GET["paymentID"]);
-            var_dump("<pre>");
-            var_dump($payment);
-            var_dump("</pre>");
+            $payment = $paymentClass->getPaymentInfo($_REQUEST["paymentID"]);
+            echo json_encode($payment, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         case "getReceipts":
             $receipts = $paymentClass->getReceipts(array('payment_id' => $_POST["paymentID"]));
@@ -163,7 +163,7 @@
             break;
         case "getReceiptInfo":
             $receipt = $paymentClass->getReceiptInfo($_POST["receiptID"]);
-            var_dump($receipt);
+            echo json_encode($receipt, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         default:
             $payment = "Nothing";
