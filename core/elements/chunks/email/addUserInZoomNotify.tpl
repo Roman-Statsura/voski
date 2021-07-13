@@ -7,7 +7,7 @@
         Email таролога: [[+tarotEmail]]
     </p>
     <p>
-        Если все данные корректны, то можете <a href="http://voski.loc/assets/php/addUserInZoom.php?action=sendZoomInvite&tarotID=[[+tarotID]]" target="_blank">отправить приглашение</a> 
+        Если все данные корректны, то можете <a href="[[++site_url]]/assets/php/addUserInZoom.php?action=sendZoomInvite&tarotID=[[+tarotID]]" target="_blank">отправить приглашение</a> 
         тарологу на добавление в систему Zoom.
     </p>
     <p>С уважением, [[++site_name]]</p>

@@ -1,8 +1,9 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/yookassa/YooKassaIntegration.php';
+    $redirectURL = "{$modx->getOption('site_url')}payment-status";
 
     $response = [];
-    $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', "http://voski.loc/payment-status");
+    $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', $redirectURL);
     $payment = $paymentClass->getPaymentInfo($paymentID);
 
     if ($payment) {
@@ -23,7 +24,6 @@
                 $status = "Ожидает оплаты";
                 break;
         }
-
 
         $response["statusCode"] = $payment->status;
         $response["status"] = $status;

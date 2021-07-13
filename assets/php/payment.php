@@ -12,11 +12,12 @@
     require_once '../../core/elements/snippets/profile/encrypt.php';
 
     $user_id = $_POST["idUser"];
+    $redirectURL = "{$modx->getOption('site_url')}payment-status";
 
     // Testing
-    $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', "http://voski.loc/payment-status");
+    $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', $redirectURL);
 
-    if (!$user_id) {
+    if ($_GET["type"] == "checkNewCard") {
         if (!empty($_POST["cardname"]) && !empty($_POST["creditnumber"]) && !empty($_POST["datefinished"]) && !empty($_POST["cvc"])) {
             $dateFinished = explode("/", $_POST["datefinished"]);
             $dateMonth = DateTime::createFromFormat('m', $dateFinished[0]);
@@ -32,6 +33,35 @@
                     "csc" => $_POST["cvc"]
                 ]
             ];
+
+            // Получаем информацию клиента
+            if ($user = $modx->getObject('modUser', $_POST['idUser'])) {
+                if ($profile = $user->getOne('Profile')) {
+                    $extended = $profile->get('extended');
+                    $clientPhone = $user->get('username');
+                    $clientUserName = $profile->get('fullname');
+
+                    $paymentReceipt = [
+                        "customer" => [
+                            "full_name" => $clientUserName,
+                            "phone" => $clientPhone,
+                        ],
+                        "items" => [
+                            [
+                                "description" => "Проверка актуальности карты для привязки",
+                                "quantity" => 1.0,
+                                "amount" => [
+                                    "value" => 1.0,
+                                    "currency" => "RUB"
+                                ],
+                                "vat_code" => "2",
+                                "payment_mode" => "full_payment",
+                                "payment_subject" => "service"
+                            ]
+                        ]
+                    ];
+                }
+            }
         }
     } else {
         $cnsDateTime = new DateTime($_POST['schTime']);

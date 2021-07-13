@@ -11,6 +11,7 @@
         'message' => ''
     ];
 
+    $redirectURL = "{$modx->getOption('site_url')}payment-status";
     $idConsult = $_POST["idConsult"];
     $resource = $modx->getObject('modResource', $idConsult);
 
@@ -21,7 +22,7 @@
         $resourceClientID = $resource->getTVValue('consultIDClient'); // Получаем id клиента
 
         // Подключаемся к магазину ЮКассы
-        $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', "http://voski.loc/payment-status");
+        $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', $redirectURL);
         $paymentInfo = $paymentClass->getPaymentInfo($resourcePaymentID); // Получаем информацию платежа с ЮКассы
 
         // Если информация платежа существует в системе

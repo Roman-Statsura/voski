@@ -26,6 +26,7 @@
 	);
 
 	$consultationResources = json_decode($modx->runSnippet('pdoResources', $params), true);
+    $redirectURL = "{$modx->getOption('site_url')}payment-status";
 
     foreach ($consultationResources as $consultRes) {
         // Отбираем все консультации, где имеется id платежа
@@ -35,7 +36,7 @@
 
             // Смотрим только те консультации, до начала которых осталось менее дня
             if ($currentDatetime >= $consultDatetime) {
-                $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', "http://voski.loc/payment-status");
+                $paymentClass = new YooKassaIntegration('816161', 'test_3wczMGG3w0zovqkXHxCIh6PVkMwYUaaK1JcIIJek4EE', $redirectURL);
                 $paymentID = $consultRes["tv.consultPaymentID"];
                 $paymentInfo = $paymentClass->getPaymentInfo($paymentID); // Получаем информацию платежа с ЮКассы
 

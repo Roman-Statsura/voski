@@ -238,7 +238,7 @@
             <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
         </div>
         <div class="nModal-body">
-            <iframe src="" width="100%" height="720" frameborder="0"></iframe>
+            <iframe src="" width="100%" height="400" frameborder="0"></iframe>
         </div>
     </form>
 </div>
@@ -374,7 +374,11 @@
         } else {
             if (xhr.responseText !== "false") {
                 let response = JSON.parse(xhr.responseText);
-                modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
+                if (response.hasOwnProperty("confirmation")) {
+                    modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
+                } else if (response.status === "succeeded") {
+                    modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status");
+                }
 
                 var $modalContainer = document.querySelector("#nModal-container");
                 var newObserver = new MutationObserver(function(mutationsList) {
@@ -408,13 +412,12 @@
                 });
             } else {
                 document.body.classList.add("loaded");
-                modalFormFrame.setAttribute("src", "http://voski.loc/payment-status?vnumber=" + creditNumberField.value.replaceAll(" ", ""));
+                modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?vnumber=" + creditNumberField.value.replaceAll(" ", ""));
             }
         }
     });
 
     function closeModal() {
         nModal.close();
-        document.body.classList.add("loaded");
     }
 </script>', true)}
