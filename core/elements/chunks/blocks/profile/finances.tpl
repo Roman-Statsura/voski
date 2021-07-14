@@ -121,7 +121,7 @@
                                     <div class="login-tpl-form__item">
                                         <div class="login-tpl-form__item--left"></div>
                                         <div class="login-tpl-form__item--right display__block">
-                                            <input class="button button-size--normal button-theme--mint login-tpl-form__item--button" type="button" data-nmodal="financesSecure" data-nmodal-size="large" name="login-updfin-btn" id="login-updfin-btn" value="Сохранить" />
+                                            <input class="button button-size--normal button-theme--mint login-tpl-form__item--button" type="button" data-nmodal-callback="financesSecure" data-nmodal="financesSecure" data-nmodal-size="large" name="login-updfin-btn" id="login-updfin-btn" value="Сохранить" />
                                         </div>
                                     </div>
                                 </div>
@@ -231,6 +231,13 @@
 
 <div id="financesSecure" class="nModal">
     <form id="financesSecure-form" action="">
+        <div class="preloader">
+            <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="currentColor"
+                    d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+                </path>
+            </svg>
+        </div>
         <div class="nModal-header">
             <div>
                 <div class="nModal-header__title">Подтвердите привязку карты</div>
@@ -269,6 +276,10 @@
     'input' => '/assets/js/imask.js'
 ])}
 
+{$_modx->regClientScript('@FILE snippets/fileVersion.php' | snippet : [
+    'input' => '/assets/js/paymentReasonError.js'
+])}
+
 {$_modx->regClientScript('<script>
     document.addEventListener("DOMContentLoaded", function () {        
         nModal.init({
@@ -298,10 +309,27 @@
         financesCheckboxes = document.querySelectorAll(`.form__radio[name="financestype"]`),
         financestypeChecked = document.querySelector(`.form__radio[name="financestype"]:checked`),
         financesTabs = document.querySelectorAll(".login-finances__tab"),
-        submitFormButton = document.querySelector("#login-updfin-btn"),
-        modalFormFrame = document.querySelector("#financesSecure-form .nModal-body iframe");
+        submitFormButton = document.querySelector("#login-updfin-btn");
 
     document.body.classList.add("loaded");
+
+    function changeTab(checkbox) {
+        financesTabs.forEach(element => {
+            element.classList.remove("active");
+
+            if (element.dataset.id === checkbox.value) {
+                element.classList.add("active");
+            }
+        });
+    }
+
+    changeTab(financestypeChecked);
+
+    financesCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function() {
+            changeTab(checkbox);
+        });
+    });
 
     function paymentInfo(formElement, event) {
         document.body.classList.remove("loaded");
@@ -342,30 +370,14 @@
         }
     }
 
-    function changeTab(checkbox) {
-        financesTabs.forEach(element => {
-            element.classList.remove("active");
-
-            if (element.dataset.id === checkbox.value) {
-                element.classList.add("active");
-            }
-        });
-    }
-
-    changeTab(financestypeChecked);
-
-    financesCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", function() {
-            changeTab(checkbox);
-        });
-    });
-
-    submitFormButton.addEventListener("click", function() {
+    function financesSecure(formElement, event) {
         document.body.classList.remove("loaded");
-        let formData = new FormData(document.forms.finances),
+        let modalFormFrame = event.querySelector(".nModal-body iframe"),
+            formData = new FormData(document.forms.finances),
             xhr = new XMLHttpRequest(),
             newXhr = new XMLHttpRequest();
 
+        // Создаем запрос на привязку карты и проверяем карту на валидность
         xhr.open("POST", "/assets/php/payment.php?action=createPayment&type=checkNewCard", false);
         xhr.send(formData);
 
@@ -373,13 +385,30 @@
             alerts({state: "error", message: "XMLHttpRequest status not 200"});
         } else {
             if (xhr.responseText !== "false") {
-                let response = JSON.parse(xhr.responseText);
+                let response = JSON.parse(xhr.responseText),
+                    reason = "";
+
+                // Проверяем, есть ли ссылка на 3D-Secure
                 if (response.hasOwnProperty("confirmation")) {
                     modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
-                } else if (response.status === "succeeded") {
-                    modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status");
+                } else if (response.status !== "") {
+                    reason = response.cancellation_details.reason;
+                    modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?status=" + response.status + "&reason=" + reason);
                 }
 
+                document.body.classList.add("loaded");
+
+                // Получаем сообщение об закрытии модалки
+                window.addEventListener("message", function(event) {
+                    var message = event.data;
+                    if (message == "closeModal") {
+                        setTimeout(() => {
+                            closeModal();
+                        }, 2000);
+                    }
+                });
+
+                // Проверяем, закрылась ли модалка подтверждения оплаты
                 var $modalContainer = document.querySelector("#nModal-container");
                 var newObserver = new MutationObserver(function(mutationsList) {
                     for (var mutation of mutationsList) {
@@ -387,11 +416,14 @@
                             if (!mutation.target.classList.contains("active") && 
                                 !mutation.target.classList.contains("hidden")
                             ) {
+                                document.body.classList.remove("loaded");
+
+                                // Получаем статус оплаты и проверяем с ошибкой он или нет
                                 newXhr.open("POST", "/assets/php/payment.php?action=getPaymentInfo", false);
                                 let formDataPaymentInfo = new FormData();
                                 formDataPaymentInfo.append("paymentID", response.id);
                                 newXhr.send(formDataPaymentInfo);
-
+                                
                                 if (newXhr.status != 200) {} 
                                 else {
                                     let responsePaymentInfo = JSON.parse(newXhr.responseText);
@@ -402,8 +434,9 @@
                                         formDataRefund.append("paymentID", response.id);
                                         formDataRefund.append("paymentValue", response.amount.value);
 
+                                        // Если все успешно, то создаем возврат
                                         refundXhr.open("POST", "/assets/php/payment.php?action=createRefund", false);
-                                        refundXhr.send(formDataNew);
+                                        refundXhr.send(formDataRefund);
 
                                         if (refundXhr.status != 200) {} 
                                         else {
@@ -415,8 +448,9 @@
                                             }, 1500);
                                         }
                                     } else {
+                                        reason = responsePaymentInfo.cancellation_details.reason;
                                         document.body.classList.add("loaded");
-                                        alerts({state: "error", message: "Ошибка в процессе оплаты!"});
+                                        alerts({state: "error", message: "Ошибка в процессе оплаты! Причина: " + paymentReasonError(reason)});
                                     }
                                 }
                             }
@@ -432,7 +466,7 @@
                 modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?vnumber=" + creditNumberField.value.replaceAll(" ", ""));
             }
         }
-    });
+    }
 
     function closeModal() {
         nModal.close();

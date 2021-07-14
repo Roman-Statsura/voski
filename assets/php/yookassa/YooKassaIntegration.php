@@ -19,6 +19,10 @@
             $this->client->setAuth($shopid, $secretKey);
         }
 
+        public function changeReturnURL($returnURL) {
+            $this->returnURL = $returnURL;
+        }
+
         /**
          * Создание платежа
          *
