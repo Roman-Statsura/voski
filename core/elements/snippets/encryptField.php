@@ -5,7 +5,7 @@ if ($modx->user->id) {
 	if ($user = $modx->getObject('modUser', $modx->user->id)) {
 		if ($profile = $user->getOne('Profile')) {
 			$extended = $profile->get('extended');
-			$extended['cvc'] = mc_encrypt($_POST['cvc'], ENCRYPTION_KEY);
+			$extended['cvc'] = mc_encrypt($_POST['cvc']);
 			$profile->set('extended', $extended);
 			$profile->save();
 
