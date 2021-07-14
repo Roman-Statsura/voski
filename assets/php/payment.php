@@ -91,7 +91,7 @@
                         "number" => str_replace(" ", "", $extended["creditnumber"]),
                         "expiry_month" => $dateFinished[0],
                         "expiry_year" => $dateYear->format('Y'),
-                        "csc" => mc_decrypt($extended["cvc"], ENCRYPTION_KEY)
+                        "csc" => mc_decrypt($extended["cvc"])
                     ]
                 ];
 
