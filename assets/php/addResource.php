@@ -184,14 +184,14 @@
             $tvs->setTVValue('gender', $_POST['gender']);
             $tvs->setTVValue('specialization', $_POST['specialization']);
 
-            $resource->setTVValue('fio-pre', $_POST['fullname']);
-            $resource->setTVValue('content-pre', $_POST['about']);
-            $resource->setTVValue('city-pre', $_POST['city']);
-            $resource->setTVValue('experience-pre', $_POST['experience']);
-            $resource->setTVValue('price-pre', $_POST['price']);
-            $resource->setTVValue('specialization-pre', $_POST['specialization']);
-            $resource->setTVValue('gender-pre', $_POST['gender']);
-            $resource->setTVValue('isModerate', '1');
+            $tvs->setTVValue('fio-pre', $_POST['fullname']);
+            $tvs->setTVValue('content-pre', $_POST['about']);
+            $tvs->setTVValue('city-pre', $_POST['city']);
+            $tvs->setTVValue('experience-pre', $_POST['experience']);
+            $tvs->setTVValue('price-pre', $_POST['price']);
+            $tvs->setTVValue('specialization-pre', $_POST['specialization']);
+            $tvs->setTVValue('gender-pre', $_POST['gender']);
+            $tvs->setTVValue('isModerate', '1');
 
             if (!empty($file)) {
                 $fullPath = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/tarolog/" . $newTarolog;
@@ -205,9 +205,9 @@
                 if (!file_exists($fullPathIMG)) {
                     if (move_uploaded_file($file, $fullPathIMG)) {
                         if ($premoderateSetting) {
-                            $resource->setTVValue('photo-pre', $pathIMG);
+                            $tvs->setTVValue('photo-pre', $pathIMG);
                         } else {
-                            $resource->setTVValue('photo', $pathIMG);
+                            $tvs->setTVValue('photo', $pathIMG);
                         }
                     } else {
                         $result = [

@@ -27,6 +27,7 @@
                 {'@FILE chunks/elements/button.tpl' | chunk : [
                     'type' => 'link'
                     'buttonTitle' => 'На главную'
+                    'link' => '/'
                 ]}
             </div>
         </div>
