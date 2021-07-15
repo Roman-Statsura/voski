@@ -48,6 +48,13 @@
 <div class="login">
     <div class="login-container login-container--wide container">
         <div class="login-container__content login-content">
+            <div class="preloader">
+                <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor"
+                        d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+                    </path>
+                </svg>
+            </div>
             <div class="login-content__header">
                 <h2 class="login-content__header--title">Анкета</h2>
                 {if $isModerate}
@@ -228,6 +235,8 @@
         currentSpecArray = currentSpec.split(","),
         selectOptions = [];
 
+    document.body.classList.add("loaded");
+
     specList.forEach(element => {
         let selectInput = {};
         selectInput["label"] = element.title;
@@ -347,6 +356,8 @@
     }
 
     document.querySelector(`[name="send-profile"]`).addEventListener("click", function() {
+        document.body.classList.remove("loaded");
+
         var formData = new FormData(document.forms.questionnaire);
         var xhr = new XMLHttpRequest();
 
@@ -354,6 +365,7 @@
 
         xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
+            document.body.classList.add("loaded");
             let result = JSON.parse(this.responseText);
 
             alertDOM.classList.add("alert--" + result.state);
