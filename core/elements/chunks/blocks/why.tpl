@@ -47,7 +47,7 @@
         </div>
 
         <div class="why-container__content why-content">
-            <div class="why-content__block">
+            <div class="why-content__block why-content__block--max">
                 <h3 class="why-content__block--title_h3">Мы проверяем:</h3>
                 <div class="why-content__block--items">
                     <div class="why-content-swiper__container swiper-container">
@@ -82,16 +82,20 @@
 {$_modx->regClientScript('<script>
     var galleryThumbs = new Swiper(".why-content-swiper__container", {
         spaceBetween: 24,
-        slidesPerView: 4,
+        slidesPerView: 1,
+        allowTouchMove: false,
         breakpoints: {
             0: {
-                slidesPerView: 1
+                slidesPerView: 1,
+                allowTouchMove: true
             },
             768: {
-                slidesPerView: 3
+                slidesPerView: 3,
+                allowTouchMove: true
             },
             992: {
-                slidesPerView: 4
+                slidesPerView: 4,
+                allowTouchMove: false
             }
         }
     });

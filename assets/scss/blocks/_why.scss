@@ -20,6 +20,10 @@
         }
         
         &__block {
+            &--max {
+                width: 100%;
+            }
+
             &--title {
                 font-family: $nunito-font;
                 font-style: normal;

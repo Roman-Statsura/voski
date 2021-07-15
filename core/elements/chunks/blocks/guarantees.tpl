@@ -51,7 +51,8 @@
 {$_modx->regClientScript('<script>
     var galleryThumbs = new Swiper(".guarantees-swiper__container", {
         spaceBetween: 15,
-        slidesPerView: 3,
+        slidesPerView: 1,
+        allowTouchMove: false,
         pagination: {
             el: ".swiper-pagination",
             type: "bullets",
@@ -61,10 +62,12 @@
                 slidesPerView: 1
             },
             768: {
-                slidesPerView: 2
+                slidesPerView: 2,
+                allowTouchMove: true
             },
             992: {
-                slidesPerView: 3
+                slidesPerView: 3,
+                allowTouchMove: false
             }
         }
     });

@@ -536,6 +536,8 @@ li {
 
         &--photos {
             display: flex;
+            width: calc(100% - 50px);
+            flex-wrap: wrap;
             transition: .3s;
 
             @media only screen and (max-width: $screen-sm) {
@@ -552,6 +554,14 @@ li {
             position: relative;
             border: 1px solid $light-grey;
             border-radius: 2px;
+
+            &:nth-child(5n) {
+                margin-right: 0;
+
+                @media only screen and (max-width: $screen-sm) {
+                    margin-right: 15px;
+                }
+            }
 
             &:last-child {
                 margin-right: 0;

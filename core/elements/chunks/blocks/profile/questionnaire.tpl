@@ -271,15 +271,17 @@
             optionHidden: "select-pure__option--hidden",
         }
     });
+
     var resetMulti = function() {
         multi.reset();
     };
 
     function checkImagesBeforeUpload(input) {
-        var files = input.files || input.currentTarget.files;
-        var reader = [];
-        var images = document.getElementById("imgPhoto");
-        var name;
+        let files = input.files || input.currentTarget.files,
+            reader = [],
+            images = document.getElementById("imgPhoto"),
+            name;
+            
         for (var i in files) {
             if (files.hasOwnProperty(i)) {
                 name = "file" + i;
@@ -307,24 +309,27 @@
         checkImagesBeforeUpload(this);
     });
 
-    document.querySelector(`#certs`).addEventListener("change", function() {
+    var photocount = document.getElementsByClassName("form__label--photo").length;
+
+    photosBlock.addEventListener("change", function() {
         let files = photosBlock.files || photosBlock.currentTarget.files,
             reader = [],
             images = document.getElementById("images"),
             name;
-
+        
         for (var i in files) {
             if (files.hasOwnProperty(i)) {
-                name = "file" + i + "-certs";
-                reader[i] = new FileReader();
-                reader[i].readAsDataURL(photosBlock.files[i]);
+                photocount++;
+                name = "file" + photocount + "-certs";
+                reader[photocount] = new FileReader();
+                reader[photocount].readAsDataURL(photosBlock.files[i]);
                 
                 images.innerHTML += `<div class="form__label--photo">
                     <img id="${name}" src="" alt="" />
                 </div>`;
                 
                 (function (name) {
-                    reader[i].onload = function (e) {
+                    reader[photocount].onload = function (e) {
                         document.getElementById(name).src = e.target.result;
                     };
                 })(name);
@@ -350,6 +355,7 @@
             element.addEventListener("click", function() {
                 currCertArray.splice(i, 1, "");
                 idUploadedCerts.value = JSON.stringify(currCertArray);
+                console.log(JSON.stringify(currCertArray).length);
                 this.remove();
             });
         });
