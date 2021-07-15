@@ -1,3 +1,8 @@
+/**
+ * calendar.js
+ * Скрипт генерирует календарь
+ **/
+
 let options = {
     intervalDay: 0,
     removeClientRecord: 0
@@ -121,8 +126,8 @@ function createCalendar(elem, month, year, userData = {}, diff = 2) {
                 newDateYear = newDateTime.getFullYear(),
                 newDateMonth = newDateTime.getMonth() + 1,
                 newDateDay = newDateTime.getDate(),
-                newTime = `${newDateTime.getHours()}:${newDateTime.getMinutes() < 10 ? '0' + newDateTime.getMinutes() : newDateTime.getMinutes()}`,
-                newTimeEnd = `${newDateEndTime.getHours()}:${newDateEndTime.getMinutes() < 10 ? '0' + newDateEndTime.getMinutes() : newDateEndTime.getMinutes()}`;
+                newTime = `${newDateTime.getHours() < 10 ? '0' + newDateTime.getHours() : newDateTime.getHours()}:${newDateTime.getMinutes() < 10 ? '0' + newDateTime.getMinutes() : newDateTime.getMinutes()}`,
+                newTimeEnd = `${newDateEndTime.getHours() < 10 ? '0' + newDateTime.getHours() : newDateTime.getHours()}:${newDateEndTime.getMinutes() < 10 ? '0' + newDateEndTime.getMinutes() : newDateEndTime.getMinutes()}`;
 
             if (newDateMonth < 10) {
                 newDateMonth = "0" + newDateMonth;
@@ -649,6 +654,7 @@ function setModalPosition(evElem, modal, evAction) {
         dataValue = document.querySelector('#date'),
         descField = document.querySelector('#desc'),
         timeField = document.querySelector('[data-info="time"]'),
+        timeFieldSelect = document.querySelector('.calendar-date__time'),
         timeFieldOptions = document.querySelectorAll('.calendar-date__time option'),
         timeEndField = document.querySelector('[data-info="timeEnd"]'),
         timeEndBlock = document.querySelector('.calendar-date__times--end'),
@@ -688,7 +694,7 @@ function setModalPosition(evElem, modal, evAction) {
         });
         
         migxIDField.value = migxID;
-        descField.innerHTML = dayDesc;
+        descField.value = dayDesc;
         timeField.innerHTML = dayTime;
         statusField.checked = dayStatus == 2 ? 1 : 0;
 
@@ -707,8 +713,9 @@ function setModalPosition(evElem, modal, evAction) {
         }
     } else {
         migxIDField.value = "";
-        descField.innerHTML = "";
+        descField.value = "";
         timeField.innerHTML = "";
+        timeFieldSelect.selectedIndex = 0;
 
         timeFieldOptions.forEach(element => {
             if (element.hasAttribute("selected") && element.value != "0") {
@@ -983,6 +990,7 @@ function callback(formElement, modal, action = "") {
 
         userData.schedule = result.res;
         createCalendar(calendar, month, year, userData);
+        getCurrentDate();
     }
     xhr.send(formData);
 }
@@ -1047,13 +1055,18 @@ function getCurrentDate(action = "") {
         });
 
         let actionButtonsMore = document.querySelectorAll('[data-modalid="showmore"] [data-action]'),
-            eventModals = document.querySelectorAll('.calendar-modal[data-modalid]');
+            eventModals = document.querySelectorAll('.calendar-modal[data-modalid]'),
+            showmoreModal = document.querySelector('[data-modalid="showmore"]');
         
         actionButtonsMore.forEach(el => {
             el.addEventListener("click", function(e) {
                 e.stopPropagation();
                 e.preventDefault();
 
+                if (this.dataset.action === "close") {
+                    showmoreModal.classList.remove("show");
+                    document.querySelector(".calendar-modal--overlay").classList.remove("shown");
+                }
                 if (this.dataset.action === "editEvent") {
                     setModalPosition(this, findInNodeList(eventModals, "schEvent"), el.dataset);
                 }
@@ -1088,13 +1101,18 @@ function getCurrentDate(action = "") {
     });
 
     let actionButtonsMore = document.querySelectorAll('[data-modalid="showmore"] [data-action]'),
-        eventModals = document.querySelectorAll('.calendar-modal[data-modalid]');
-    
+        eventModals = document.querySelectorAll('.calendar-modal[data-modalid]'),
+        showmoreModal = document.querySelector('[data-modalid="showmore"]');
+
     actionButtonsMore.forEach(el => {
         el.addEventListener("click", function(e) {
             e.stopPropagation();
             e.preventDefault();
 
+            if (this.dataset.action === "close") {
+                showmoreModal.classList.remove("show");
+                document.querySelector(".calendar-modal--overlay").classList.remove("shown");
+            }
             if (this.dataset.action === "editEvent") {
                 setModalPosition(this, findInNodeList(eventModals, "schEvent"), el.dataset);
             }

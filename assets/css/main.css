@@ -3491,6 +3491,11 @@ th {
 .calendar-modal--tiny {
   max-width: 337px;
 }
+@media screen and (max-width: 992px) {
+  .calendar-modal--tiny {
+    max-width: 100%;
+  }
+}
 .calendar-modal.show {
   display: block;
 }

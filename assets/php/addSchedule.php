@@ -44,19 +44,24 @@
         }
         $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     } else {
-        $schNewSubArray = [];
-        $schNewSubArray["MIGX_id"] = end($schCurrentArray)->MIGX_id + 1;
-        $schNewSubArray["datetime"] = $_POST['date'] . " " . $_POST['time'];
-        $schNewSubArray["datetimeEnd"] = $_POST['date'] . " " . $_POST['timeEnd'];
-        $schNewSubArray["allDay"] = empty($_POST['allDay']) ? 0 : $_POST['allDay'];
-        $schNewSubArray["idUser"] = $_POST['idUser'];
-        $schNewSubArray["desc"] = $_POST['desc'];
-        $schNewSubArray["status"] = empty($_POST['status']) ? 0 : $_POST['status'];
-        $schNewSubArray["active"] = '1';
-    
-        $schCurrentArray[] = $schNewSubArray;
-        $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        $message = "Запись успешно добавлена";
+        if (!empty($_POST['time'])) {
+            $schNewSubArray = [];
+            $schNewSubArray["MIGX_id"] = end($schCurrentArray)->MIGX_id + 1;
+            $schNewSubArray["datetime"] = $_POST['date'] . " " . $_POST['time'];
+            $schNewSubArray["datetimeEnd"] = $_POST['date'] . " " . $_POST['timeEnd'];
+            $schNewSubArray["allDay"] = empty($_POST['allDay']) ? 0 : $_POST['allDay'];
+            $schNewSubArray["idUser"] = $_POST['idUser'];
+            $schNewSubArray["desc"] = $_POST['desc'];
+            $schNewSubArray["status"] = empty($_POST['status']) ? 0 : $_POST['status'];
+            $schNewSubArray["active"] = '1';
+        
+            $schCurrentArray[] = $schNewSubArray;
+            $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            $message = "Запись успешно добавлена";
+        } else {
+            $state = "error";
+            $message = "Ошибка сохранения записи в расписание! Пустое значение времени!";
+        }
     }
 
     $newArray = [];
@@ -77,11 +82,12 @@
     if (!$resource->save()) {
         $result = [
             'state' => 'error',
-            'message' => 'Ошибка сохранения записи в расписание!'
+            'message' => 'Ошибка сохранения записи в расписание!',
+            'res' => $newArray
         ];
     } else {
         $result = [
-            'state' => 'success',
+            'state' => empty($state) ? "success" : $state,
             'message' => $message,
             'res' => $newArray
         ];

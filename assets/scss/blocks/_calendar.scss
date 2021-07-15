@@ -249,6 +249,10 @@ th {
 
         &--tiny {
             max-width: 337px;
+
+            @media screen and (max-width: $screen-md) {
+                max-width: 100%;
+            }
         }
 
         &.show {
