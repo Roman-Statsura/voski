@@ -524,6 +524,17 @@ li {
     }
 }
 
+.login-tpl-form__item--right {
+    .form__label--photos {
+        width: calc(100% - 50px);
+
+        @media only screen and (max-width: $screen-sm) {
+            flex-wrap: wrap;
+            width: calc(100% - 50px);
+        }
+    }
+}
+
 .form {
     &__label {
         font-family: $gilroy-font;
@@ -536,14 +547,8 @@ li {
 
         &--photos {
             display: flex;
-            width: calc(100% - 50px);
             flex-wrap: wrap;
             transition: .3s;
-
-            @media only screen and (max-width: $screen-sm) {
-                flex-wrap: wrap;
-                width: calc(100% - 50px);
-            }
         }
 
         &--photo {

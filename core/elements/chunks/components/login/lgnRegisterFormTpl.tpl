@@ -21,12 +21,7 @@
         {set $cardInfo = $_modx->config['Reg.CardInfo']}
 
         <form id="register" class="form login-tpl-content__form login-form" action="/{$_modx->makeUrl($_modx->resource.id)}" method="post">
-            <input type="hidden" name="nospam:blank" value="" />
-            <input type="hidden" name="phone" value="{$sessionUsername}" />
-            <input type="hidden" name="password" value="{$sessionPassword}" />
-            <input type="hidden" name="password_confirm" value="{$sessionPassword}" />
-            <input type="hidden" name="usertype" value="{$sessionUserGroup}">
-            
+            <input type="hidden" name="nospam:blank" value="" />           
             <div class="login-tab tab active" data-id="1" data-parent="1" type-form="registration">
                 <div class="login-tpl-form__list">
                     <div class="login-tpl-form__item">
@@ -96,6 +91,11 @@
                             <small class="form__error">Укажите ваш часовой пояс</small>
                         </div>
                     </div>
+
+                    <input type="hidden" name="phone" value="{$sessionUsername}" />
+                    <input type="hidden" name="password" value="{$sessionPassword}" />
+                    <input type="hidden" name="password_confirm" value="{$sessionPassword}" />
+                    <input type="hidden" name="usertype" value="{$sessionUserGroup}">
 
                     {if !$cardInfo}
                         <div class="login-tpl-form__item">

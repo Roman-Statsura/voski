@@ -655,6 +655,16 @@ li {
   background: #4DDBDB;
 }
 
+.login-tpl-form__item--right .form__label--photos {
+  width: calc(100% - 50px);
+}
+@media only screen and (max-width: 768px) {
+  .login-tpl-form__item--right .form__label--photos {
+    flex-wrap: wrap;
+    width: calc(100% - 50px);
+  }
+}
+
 .form__label {
   font-family: "Gilroy", sans-serif;
   font-style: normal;
@@ -666,15 +676,8 @@ li {
 }
 .form__label--photos {
   display: flex;
-  width: calc(100% - 50px);
   flex-wrap: wrap;
   transition: 0.3s;
-}
-@media only screen and (max-width: 768px) {
-  .form__label--photos {
-    flex-wrap: wrap;
-    width: calc(100% - 50px);
-  }
 }
 .form__label--photo {
   display: flex;
