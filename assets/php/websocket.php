@@ -5,6 +5,9 @@
     use Ratchet\MessageComponentInterface;
     use Ratchet\ConnectionInterface;
 
+    set_time_limit(0);
+    ignore_user_abort(true);
+
     require dirname(__DIR__) . '/../vendor/autoload.php';
     require_once dirname(__DIR__) . '/../core/model/modx/modx.class.php';
     
@@ -17,7 +20,7 @@
     
         public function onOpen(ConnectionInterface $conn) {
             $this->clients->attach($conn);
-            echo "New connection! ({$conn->resourceId})\n";
+            echo "New connection! ({$conn->resourceId})\n"; 
         }
     
         public function onMessage(ConnectionInterface $from, $msg) {
