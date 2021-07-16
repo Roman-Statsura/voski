@@ -1,4 +1,8 @@
 <?php
+if (date_default_timezone_get() != "Europe/Moscow") {
+    date_default_timezone_set('Europe/Moscow');
+}
+
 $worktimeArray = json_decode($worktime);
     $dateArray = [];
     $dateArraySch = [];
