@@ -9,7 +9,7 @@
             </div>
             <div class="login-content__body display__flex justify-content--center">    
                 <a href="/" class="button button-size--normal button-theme--dark login-tpl-form__item--button">На главную</a>
-                <a href="/" class="button button-size--normal button-theme--mint login-tpl-form__item--button">В личный кабинет</a>
+                <a href="/profile/settings" class="button button-size--normal button-theme--mint login-tpl-form__item--button">В личный кабинет</a>
             </div>
         </div>
     </div>

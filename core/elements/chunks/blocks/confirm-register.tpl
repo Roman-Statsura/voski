@@ -9,7 +9,7 @@
             </div>
             <div class="login-content__body display__flex justify-content--center">    
                 {'!ConfirmRegister' | snippet : [
-                    'redirectTo' => '30'
+                    'redirectTo' => '1'
                 ]}
 
                 <a href="/" class="button button-size--normal button-theme--mint login-tpl-form__item--button">Назад</a>
