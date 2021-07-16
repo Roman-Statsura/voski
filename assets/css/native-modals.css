@@ -162,6 +162,14 @@
 }
 
 @media screen and (max-width: 768px) {
+  .nModal-buttons .button {
+    width: 100%;
+    justify-content: center;
+  }
+  .nModal-body__record:last-child {
+    width: 100%;
+    overflow: hidden;
+  }
   #nModal-container #nModal-placeholder, #nModal-container-new #nModal-placeholder-new {
     margin: 15px;
   }

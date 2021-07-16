@@ -405,100 +405,110 @@
             let formData = new FormData(document.forms.consultations),
                 xhr = new XMLHttpRequest(),
                 newXhr = new XMLHttpRequest(),
-                paymentStatusXhr = new XMLHttpRequest()
                 modalFormFrame = document.querySelector("#financesSecure-form .nModal-body iframe");
             
-            // Создаем запрос на создание оплаты
-            xhr.open("POST", "/assets/php/payment.php?action=createPayment", false);
-            xhr.send(formData);
+            xhr.open("POST", "/assets/php/payment.php?action=createPayment", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState != 4) return;
+                if (xhr.status === 200) {
+                    try {
+                        let response = JSON.parse(xhr.responseText),
+                            reason = "";
 
-            if (xhr.status != 200) {
-                alerts({state: "error", message: "Request status not 200"});
-            } else {
-                let response = JSON.parse(xhr.responseText),
-                    reason = "";
-
-                // Проверяем, есть ли ссылка на 3D-Secure
-                if (response.hasOwnProperty("confirmation")) {
-                    modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
-                } else if (response.status !== "") {
-                    reason = response.cancellation_details.reason;
-                    modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?status=" + response.status + "&reason=" + reason);
-                }
-
-                document.body.classList.add("loaded");
-
-                // Получаем сообщение об закрытии модалки
-                window.addEventListener("message", function(event) {
-                    var message = event.data;
-                    if (message == "closeModal") {
-                        setTimeout(() => {
-                            closeModalNew();
-                        }, 2000);
-                    }
-                });
-
-                // Проверяем, закрылась ли модалка подтверждения оплаты
-                var $modalContainer = document.querySelector("#nModal-container-new");
-                var newObserver = new MutationObserver(function(mutationsList) {
-                    for (var mutation of mutationsList) {
-                        if (mutation.type == "attributes") {
-                            if (!mutation.target.classList.contains("active") && 
-                                !mutation.target.classList.contains("hidden")
-                            ) {
-                                // Получаем статус оплаты и проверяем с ошибкой он или нет
-                                paymentStatusXhr.open("POST", "/assets/php/payment.php?action=getPaymentInfo", false);
-                                let formDataPaymentInfo = new FormData();
-                                formDataPaymentInfo.append("paymentID", response.id);
-                                paymentStatusXhr.send(formDataPaymentInfo);
-                                
-                                if (paymentStatusXhr.status != 200) {} 
-                                else {
-                                    let responsePaymentInfo = JSON.parse(paymentStatusXhr.responseText);
-                                    if (responsePaymentInfo.status !== "canceled") {
-                                        document.body.classList.remove("loaded");
-
-                                        let xhrMew = new XMLHttpRequest(),
-                                            signUpModal = document.querySelector("#tarotSignUp"),
-                                            signUpSuccess = document.querySelector("#signUpSuccess"),
-                                            signUpSuccessText = document.querySelector("#signUpSuccess .success-info__text");
-
-                                        formData.append("paymentID", response.id);
-
-                                        // Если все успешно, то создаем консультацию
-                                        xhrMew.open("POST", "/assets/php/addConsultation.php", true);
-                                        xhrMew.onreadystatechange = function() {
-                                            if (this.readyState != 4) return;
-                                            let result = JSON.parse(this.responseText);
-                                            signUpSuccessText.innerHTML = result.message;
-
-                                            nModal.closeWithoutAnim();
-                                            document.body.classList.add("loaded");
-                                            document.querySelector(`[data-nmodal="signUpSuccess"]`).click();
-
-                                            setTimeout(() => {
-                                                nModal.close();
-                                            }, 4000);
-                                        }
-                                        xhrMew.send(formData);
-                                    } else {
-                                        reason = responsePaymentInfo.cancellation_details.reason;
-                                        document.body.classList.add("loaded");
-                                        alerts({state: "error", message: "Ошибка в процессе оплаты! Причина: " + paymentReasonError(reason)});
-                                    }
-                                }
+                        // Проверяем, есть ли ссылка на 3D-Secure
+                        if (response.hasOwnProperty("confirmation")) {
+                            modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
+                        } else if (response.status !== "") {
+                            if (response.status === "canceled") {
+                                reason = response.cancellation_details.reason;
                             }
+                            modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?status=" + response.status + "&reason=" + reason);
                         }
+
+                        document.body.classList.add("loaded");
+
+                        // Получаем сообщение об закрытии модалки
+                        window.addEventListener("message", function(event) {
+                            var message = event.data;
+                            if (message == "closeModal") {
+                                setTimeout(() => {
+                                    closeModalNew();
+
+                                    document.body.classList.remove("loaded");
+
+                                    let paymentStatusXhr = new XMLHttpRequest();
+                                    paymentStatusXhr.open("POST", "/assets/php/payment.php?action=getPaymentInfo", true);
+
+                                    let formDataPaymentInfo = new FormData();
+                                    formDataPaymentInfo.append("paymentID", response.id);
+
+                                    paymentStatusXhr.onreadystatechange = function() {
+                                        if (paymentStatusXhr.readyState != 4) return;
+                                        if (paymentStatusXhr.status === 200) {
+                                            try {
+                                                let responsePaymentInfo = JSON.parse(paymentStatusXhr.responseText);
+
+                                                if (responsePaymentInfo.status !== "canceled") {
+                                                    let xhrMew = new XMLHttpRequest(),
+                                                        signUpModal = document.querySelector("#tarotSignUp"),
+                                                        signUpSuccess = document.querySelector("#signUpSuccess"),
+                                                        signUpSuccessText = document.querySelector("#signUpSuccess .success-info__text");
+
+                                                    formData.append("paymentID", response.id);
+
+                                                    // Если все успешно, то создаем консультацию
+                                                    xhrMew.open("POST", "/assets/php/addConsultation.php", true);
+                                                    xhrMew.onreadystatechange = function() {
+                                                        if (xhrMew.readyState != 4) return;
+                                                        try {
+                                                            let result = JSON.parse(xhrMew.responseText);
+                                                            signUpSuccessText.innerHTML = result.message;
+
+                                                            nModal.closeWithoutAnim();
+                                                            document.body.classList.add("loaded");
+                                                            document.querySelector(`[data-nmodal="signUpSuccess"]`).click();
+
+                                                            setTimeout(() => {
+                                                                nModal.close();
+                                                            }, 4000);
+                                                        } catch (e) {
+                                                            exceptionError("Ошибка получения данных!", "new");
+                                                        }
+                                                    }
+                                                    xhrMew.send(formData);
+                                                }
+                                            } catch (e) {
+                                                exceptionError("Ошибка получения данных!", "new");
+                                            }
+                                        } else {
+                                            exceptionError("Payment Info Request status not 200");
+                                        }
+                                    }
+                                    paymentStatusXhr.send(formDataPaymentInfo);
+                                }, 2000);
+                            }
+                        });
+                    } catch (e) {
+                        exceptionError("Ошибка получения данных!", "new");
                     }
-                });
-                
-                newObserver.observe($modalContainer, {
-                    "attributes": true
-                });
+                } else {
+                    exceptionError("Request status not 200");
+                }
             }
+            xhr.send(formData);
         } else {
             alerts({state: "error", message: "Выберите время для записи"});
         }
+    }
+
+    function exceptionError(message, modal = "old") {
+        document.body.classList.add("loaded");
+        if (modal === "new") {
+            closeModalNew()
+        } else {
+            closeModal();
+        }
+        alerts({state: "error", message: message});
     }
 
     function closeModal() {

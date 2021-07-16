@@ -364,8 +364,8 @@
             {
                 if (usergroup == 2) {
                     buttonLink = `
+                        <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
                         <a href="#" class="button button-size--normal button-theme--red nModal-button" data-idcns="${newConsult[cnsArray]["id"]}" data-nmodal-callback="cancelConsult">Отменить консультацию</a>
-                        <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="button button-size--normal button-theme--mint">${callbackTitle}</a>
                     `;
                 } else {
                     buttonLink = `<a href="${newConsult[cnsArray]["tv.consultZoomStartLink"]}" target="_blank" class="button button-size--normal ${buttonTheme} nModal-button" 
@@ -442,21 +442,27 @@
         var xhr = new XMLHttpRequest(),
             params = "idConsult=" + idConsultField.value;
 
-        xhr.open("POST", "/assets/php/cancelConsultation.php", false);
+        xhr.open("POST", "/assets/php/cancelConsultation.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send(params);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState != 4) return;
+            if (xhr.status === 200) {
+                try {
+                    let result = JSON.parse(xhr.responseText);
+                    alerts(result);
 
-        if (xhr.status != 200) {
-            alerts({state: "error", message: "XMLHttpRequest status not 200"});
-        } else {
-            let result = JSON.parse(xhr.responseText);
-            alerts(result);
-
-            document.body.classList.add("loaded");
-            nModalNew.close();
-            nModal.close();
-            socket.send(``);
+                    document.body.classList.add("loaded");
+                    nModalNew.close();
+                    nModal.close();
+                    socket.send(``);
+                } catch (e) {
+                    exceptionError("Ошибка получения данных!");
+                }
+            } else {
+                exceptionError("Request status not 200");
+            }
         }
+        xhr.send(params);
     }
 
     function secToTime(sec) {
@@ -608,6 +614,12 @@
             changeTab(checkbox);
         });
     });
+
+    function exceptionError(message) {
+        document.body.classList.add("loaded");
+        closeModal();
+        alerts({state: "error", message: message});
+    }
 
     function closeModalNew() {
         nModalNew.close();

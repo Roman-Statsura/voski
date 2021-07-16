@@ -149,6 +149,7 @@
             break;
         case "createRefund":
             $payment = $paymentClass->createRefund($_POST["paymentID"], 1.0);
+            echo json_encode($payment, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         case "getPaymentInfo":
             $payment = $paymentClass->getPaymentInfo($_REQUEST["paymentID"]);
