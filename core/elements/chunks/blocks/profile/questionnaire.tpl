@@ -174,7 +174,7 @@
                                     </div>
                                 </div>
                 
-                                <div class="login-tpl-form__item">
+                                <div class="login-tpl-form__item login-tpl-form__item--certs">
                                     <div class="login-tpl-form__item--left">
                                         <label class="form__label login-tpl-form__item--label" for="certs">
                                             Ваши сертификаты

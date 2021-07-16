@@ -655,11 +655,11 @@ li {
   background: #4DDBDB;
 }
 
-.login-tpl-form__item--right .form__label--photos {
+.login-tpl-form__item--certs .form__label--photos {
   width: calc(100% - 50px);
 }
 @media only screen and (max-width: 768px) {
-  .login-tpl-form__item--right .form__label--photos {
+  .login-tpl-form__item--certs .form__label--photos {
     flex-wrap: wrap;
     width: calc(100% - 50px);
   }
