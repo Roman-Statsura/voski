@@ -246,9 +246,15 @@
         return re.test(String(email).toLowerCase());
     }
 
+    // Validate Fullname by Only String
+        function validateFullname(name) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(name).toLowerCase());
+    }
+
     steps.forEach(element => {
         element.addEventListener("click", function () {
-            if (fullnameField.value == "") {
+            if (!validateFullname(fullnameField.value)) {
                 fullnameField.classList.add("invalid");
             } else {
                 fullnameField.classList.remove("invalid");
@@ -278,7 +284,7 @@
                 timezoneField.classList.remove("invalid");
             }
 
-            if (fullnameField.value !== "" && 
+            if (validateFullname(fullnameField.value) && 
                 validateEmail(emailField.value) &&
                 genderField.value !== "0" &&
                 Number(ageField.value) >= 18 &&
