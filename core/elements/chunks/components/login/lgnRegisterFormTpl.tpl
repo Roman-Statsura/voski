@@ -345,7 +345,7 @@
                 document.querySelector("#register").submit();
             }
         } else {
-            if (fullnameField.value == "") {
+            if (!validateFullname(fullnameField.value)) {
                 fullnameField.classList.add("invalid");
             } else {
                 fullnameField.classList.remove("invalid");
@@ -375,7 +375,13 @@
                 timezoneField.classList.remove("invalid");
             }
 
-            if (fullnameField.value !== "" && 
+            if (!checkboxField.checked) {
+                checkboxField.classList.add("invalid");
+            } else {
+                checkboxField.classList.remove("invalid");
+            }
+
+            if (validateFullname(fullnameField.value) && 
                 validateEmail(emailField.value) &&
                 genderField.value !== "0" &&
                 Number(ageField.value) >= 18 &&
