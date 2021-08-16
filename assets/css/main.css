@@ -2974,6 +2974,12 @@ li {
     align-items: center;
   }
 }
+.tarot-readers-block__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
 .tarot-readers-block__item {
   width: calc((100% / 3) - 24px);
   display: flex;
@@ -3068,6 +3074,10 @@ li {
   line-height: 26px;
   color: #516472;
   flex-wrap: wrap;
+}
+.tarot-readers-block__list:after {
+  content: "";
+  flex: auto;
 }
 @media screen and (max-width: 640px) {
   .tarot-readers-block__list {

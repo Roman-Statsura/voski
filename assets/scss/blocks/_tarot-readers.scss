@@ -159,6 +159,13 @@
             align-items: center;
         }
 
+        &__info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
         &__item {
             width: calc((100% / 3) - 24px);
             display: flex;
@@ -262,6 +269,11 @@
             line-height: 26px;
             color: $dark-mint;
             flex-wrap: wrap;
+
+            &:after {
+                content: "";
+                flex: auto;
+            } 
 
             @media screen and (max-width: $screen-smm) {
                 flex-direction: column;
