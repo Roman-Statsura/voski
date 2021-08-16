@@ -23,40 +23,42 @@
         ]}
     </div>
     <div class="tarot-readers-block__info">
-        <h3 class="tarot-readers-block__name">
-            {$pagetitle}
-        </h3>
+        <div class="tarot-readers-block__info--items">
+            <h3 class="tarot-readers-block__name">
+                {$pagetitle}
+            </h3>
 
-        <div class="tarot-readers-block__info--list">
-            <div class="tarot-readers-block__item--label">
-                {'@FILE chunks/elements/rating.tpl' | chunk : [
-                    'count' => 5,
-                    'number' => '@FILE snippets/avgRating.php' | snippet : ['idTarot' => $id]
-                ]}
+            <div class="tarot-readers-block__info--list">
+                <div class="tarot-readers-block__item--label">
+                    {'@FILE chunks/elements/rating.tpl' | chunk : [
+                        'count' => 5,
+                        'number' => '@FILE snippets/avgRating.php' | snippet : ['idTarot' => $id]
+                    ]}
+                </div>
+                <div class="tarot-readers-block__item--text font-weight--500">
+                    {count($consultationsList)} 
+                    {'@FILE snippets/word.php' | snippet : [
+                        'number' => count($consultationsList),
+                        'titles' => ["сессия", "сессий", "сессий"]
+                    ]}
+                </div>
             </div>
-            <div class="tarot-readers-block__item--text font-weight--500">
-                {count($consultationsList)} 
-                {'@FILE snippets/word.php' | snippet : [
-                    'number' => count($consultationsList),
-                    'titles' => ["сессия", "сессий", "сессий"]
-                ]}
-            </div>
-        </div>
 
-        {if $experience != ""}
-            <div class="tarot-readers-block__info--list">
-                <div class="tarot-readers-block__item--label">Опыт консультрования:</div>
-                <div class="tarot-readers-block__item--text">{$experience} лет</div>
+            {if $experience != ""}
+                <div class="tarot-readers-block__info--list">
+                    <div class="tarot-readers-block__item--label">Опыт консультрования:</div>
+                    <div class="tarot-readers-block__item--text">{$experience} лет</div>
+                </div>
+            {/if}
+            {if $price != ""}
+                <div class="tarot-readers-block__info--list">
+                    <div class="tarot-readers-block__item--label">Цена за сеанс:</div>
+                    <div class="tarot-readers-block__item--text">{$price} ₽</div>
+                </div>
+            {/if}
+            <div class="tarot-readers-block__text">
+                {$content | truncate: '250'}
             </div>
-        {/if}
-        {if $price != ""}
-            <div class="tarot-readers-block__info--list">
-                <div class="tarot-readers-block__item--label">Цена за сеанс:</div>
-                <div class="tarot-readers-block__item--text">{$price} ₽</div>
-            </div>
-        {/if}
-        <div class="tarot-readers-block__text">
-            {$content | truncate: '250'}
         </div>
 
         <div class="tarot-readers-block__buttons">
