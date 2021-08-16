@@ -50,7 +50,7 @@
                         <div class="tarot-content-filter__row">
                             <div class="tarot-content-filter__col">
                                 <label for="specialization" class="tarot-content-filter__label">Специализация</label>
-                                <select class="form__input form__input--select login-tpl-form__item--input" name="specialization[]" id="specialization" required>
+                                <select class="form__input form__input--select login-tpl-form__item--input" name="specialization[]" id="specialization">
                                     <option value="0">Любой</option>
                                     {foreach $specList | json_decode: true as $key => $specItem}
                                         {if $specItem.active == 1}
@@ -61,7 +61,7 @@
                             </div>
                             <div class="tarot-content-filter__col">
                                 <label for="experience" class="tarot-content-filter__label">Опыт работы</label>
-                                <select class="form__input form__input--select login-tpl-form__item--input" name="experience" id="experience" required>
+                                <select class="form__input form__input--select login-tpl-form__item--input" name="experience" id="experience">
                                     <option value="0">Любой</option>
                                     <option value="0-5">0-5 лет</option>
                                     <option value="6-10">6-10 лет</option>
@@ -71,10 +71,10 @@
                             </div>
                             <div class="tarot-content-filter__col">
                                 <label for="gender" class="tarot-content-filter__label">Пол таролога</label>
-                                <select class="form__input form__input--select login-tpl-form__item--input" name="gender" id="gender" required>
+                                <select class="form__input form__input--select login-tpl-form__item--input" name="gender" id="gender">
                                     <option value="0">Любой</option>
-                                    <option value="1">Мужской</option>
-                                    <option value="2">Женский</option>
+                                    <option value="male">Мужской</option>
+                                    <option value="female">Женский</option>
                                 </select>
                             </div>
                         </div>

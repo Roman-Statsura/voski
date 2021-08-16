@@ -16,7 +16,7 @@ $filter = array();
     }
 
     if (isset($_GET['experience'])) {
-        if ($_GET['experience'] !== '' && $_GET['experience'] !== '0') {
+        if (!empty($_GET['experience']) && $_GET['experience'] !== '0') {
 			if (strpos($_GET['experience'], "+") !== false) {
 				$expReady = str_replace("+", "", $_GET['experience']);
 				$expResult = "experience>={$expReady}";
@@ -30,8 +30,20 @@ $filter = array();
     }
 
     if (isset($_GET['gender'])) {
-        if ($_GET['gender'] !== "" && $_GET['gender'] !== "0") {
-            $filter[] = "gender=={$_GET['gender']}";
+        if (!empty($_GET['gender']) && $_GET['gender'] !== "0") {
+			switch ($_GET['gender']) {
+				case 'male':
+					$genderCode = 1;
+					break;
+				case 'female':
+					$genderCode = 2;
+					break;
+				default:
+					$genderCode = 1;
+					break;
+			}
+
+            $filter[] = "gender=={$genderCode}";
         }
     }
 
@@ -61,7 +73,7 @@ $filter = array();
     }
 
     if (isset($_GET['priceFrom']) && isset($_GET['priceTo'])) {
-        if ($_GET['priceFrom'] !== '' && $_GET['priceTo'] !== '') {
+        if (!empty($_GET['priceFrom']) && !empty($_GET['priceTo'])) {
             $filter[] = "price>={$_GET['priceFrom']},price<={$_GET['priceTo']}";
         }
     }
@@ -152,7 +164,7 @@ $filter = array();
 	foreach ($arrayTarotConsult as $key => $arrayTarotItem) {
 		$idsTarot[] = $key;
 	}
-
+	
 	$params = array(
 		'parents' => $parents,
 		'resources' => implode(", ", $idsTarot),
