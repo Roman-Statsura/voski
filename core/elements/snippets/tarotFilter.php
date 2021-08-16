@@ -62,12 +62,7 @@ $filter = array();
 			$priceFrom = min($newPriceArray);
 			$priceTo = max($newPriceArray);
 
-			if ($priceTo > 0) {
-				$expResult = "price>={$priceFrom},price<={$priceTo}";
-			} else {
-				$expResult = "price>={$priceFrom}";
-			}
-
+			$expResult = "price>={$priceFrom},price<={$priceTo}";
             $filter[] = $expResult;
         }
     }
