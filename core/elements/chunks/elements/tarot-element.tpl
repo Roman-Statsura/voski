@@ -46,7 +46,7 @@
 
             {if $experience != ""}
                 <div class="tarot-readers-block__info--list">
-                    <div class="tarot-readers-block__item--label">Опыт консультрования:</div>
+                    <div class="tarot-readers-block__item--label">Опыт консультирования:</div>
                     <div class="tarot-readers-block__item--text">{$experience} лет</div>
                 </div>
             {/if}
