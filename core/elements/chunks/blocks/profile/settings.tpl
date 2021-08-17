@@ -127,7 +127,6 @@
         genderField      = document.querySelector(`#gender`),
         ageField         = document.querySelector(`#age`),
         timezoneField    = document.querySelector(`#timezone`),
-        isValidForm      = true
         isValidFormArray = [true, true, true, true, true]; // Check errors by each field
 
     // isValid Function

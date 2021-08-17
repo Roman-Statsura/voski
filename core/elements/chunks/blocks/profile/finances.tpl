@@ -19,15 +19,15 @@
 {$nativeModalsCSSLink | htmlToHead: true}
 
 <div class="login">
+    <div class="preloader">
+        <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor"
+                d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+            </path>
+        </svg>
+    </div>
     <div class="login-container login-container--100 container">
         <div class="login-container__content login-content">
-            <div class="preloader">
-                <svg class="preloader__image" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path fill="currentColor"
-                        d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
-                    </path>
-                </svg>
-            </div>
             <div class="login-content__header finances-form">
                 {'@FILE chunks/elements/alerts.tpl' | chunk : [
                     'fixed' => true
@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="login-tpl-form__item--right">
                                             <input type="text" class="form__input form__input--tel login-tpl-form__item--input" name="cardname" id="cardname" value="{$_modx->getPlaceholder('upd.cardname')}" placeholder="Ваше имя..." required />
-                                            <small class="form__error">Укажите имя держателя карты</small>
+                                            <small class="form__error">Проверьте правильность заполнения</small>
                                         </div>
                                     </div>
                                     <div class="login-tpl-form__item">
@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="login-tpl-form__item--right">
                                             <input type="text" class="form__input form__input--tel login-tpl-form__item--input" name="creditnumber" id="creditnumber" value="{$_modx->getPlaceholder('upd.creditnumber')}" placeholder="0000 1234 4567 8900" required />
-                                            <small class="form__error">Укажите номер карты</small>
+                                            <small class="form__error">Укажите корректный номер карты</small>
                                         </div>
                                     </div>
                                     <div class="login-tpl-form__item">
@@ -103,7 +103,7 @@
                                         </div>
                                         <div class="login-tpl-form__item--right">
                                             <input type="text" class="form__input form__input--tel login-tpl-form__item--input" name="datefinished" id="datefinished" value="{$_modx->getPlaceholder('upd.datefinished')}" placeholder="ММ/ГГ" required />
-                                            <small class="form__error">Укажите дату окончания срока действия карты</small>
+                                            <small class="form__error">Укажите корректную дату окончания срока действия карты</small>
                                         </div>
                                     </div>
                                     <div class="login-tpl-form__item">
@@ -311,7 +311,8 @@
         financesCheckboxes = document.querySelectorAll(`.form__radio[name="financestype"]`),
         financestypeChecked = document.querySelector(`.form__radio[name="financestype"]:checked`),
         financesTabs = document.querySelectorAll(".login-finances__tab"),
-        submitFormButton = document.querySelector("#login-updfin-btn");
+        submitFormButton = document.querySelector("#login-updfin-btn"),
+        isValidFormArray = [true, true, true, true];
 
     function changeTab(checkbox) {
         financesTabs.forEach(element => {
@@ -376,108 +377,194 @@
         xhr.send(formData);
     }
 
+    // Luhn Algorithm
+    function luhnAlgorithm(digits) {
+        let sum = 0;
+
+        for (let i = 0; i < digits.length; i++) {
+            let cardNum = parseInt(digits[i]);
+
+            if (i % 2 === 0) {
+                cardNum = cardNum * 2;
+
+                if (cardNum > 9) {
+                    cardNum = cardNum - 9;
+                }
+            }
+
+            sum += cardNum;
+        }
+
+        return sum % 10 === 0;
+    }
+
+    // Validate Fullname by Only String
+    function validateCardholder(name) {
+        const re = /^[A-Za-z ]+$/i;
+        return re.test(String(name).toLowerCase());
+    }
+
+    // Validate Fullname by Only String
+    function validateCVC(code) {
+        const re = /^[0-9]{3}$/i;
+        return re.test(String(code).toLowerCase());
+    }
+
+    // isValid Function
+    function isValid(field, id) {
+        document.body.classList.add("loaded");
+        field.classList.remove("invalid");
+        isValidFormArray[id] = true;
+    }
+
     function financesSecure(formElement, event) {
         document.body.classList.remove("loaded");
-        let modalFormFrame = event.querySelector(".nModal-body iframe"),
-            formData = new FormData(document.forms.finances),
-            xhr = new XMLHttpRequest();
 
-        xhr.open("POST", "/assets/php/payment.php?action=createPayment&type=checkNewCard", true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState != 4) return;
-            if (xhr.status === 200) {
-                if (xhr.responseText !== "false") {
-                    try {
-                        let response = JSON.parse(xhr.responseText),
-                            reason = "";
-
-                        // Проверяем, есть ли ссылка на 3D-Secure
-                        if (response.hasOwnProperty("confirmation")) {
-                            modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
-                        } else if (response.status !== "") {
-                            if (response.status === "canceled") {
-                                reason = response.cancellation_details.reason;
-                            }
-                            modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?status=" + response.status + "&reason=" + reason);
-                        }
-
-                        document.body.classList.add("loaded");
-
-                        // Получаем сообщение об закрытии модалки
-                        window.addEventListener("message", function(event) {
-                            var message = event.data;
-                            if (message == "closeModal") {
-                                setTimeout(() => {
-                                    closeModal();
-
-                                    document.body.classList.remove("loaded");
-                                    let newXhr = new XMLHttpRequest(),
-                                        formDataPaymentInfo = new FormData();
-                                        formDataPaymentInfo.append("paymentID", response.id);
-
-                                    newXhr.open("POST", "/assets/php/payment.php?action=getPaymentInfo", true);
-                                    newXhr.onreadystatechange = function() {
-                                        if (newXhr.readyState != 4) return;
-                                        if (newXhr.status === 200) {
-                                            try {
-                                                let responsePaymentInfo = JSON.parse(newXhr.responseText);
-
-                                                if (responsePaymentInfo.status !== "canceled") {
-                                                    let refundXhr = new XMLHttpRequest(),
-                                                        formDataRefund = new FormData();
-                                                        formDataRefund.append("paymentID", response.id);
-                                                        formDataRefund.append("paymentValue", response.amount.value);
-
-                                                    // Если все успешно, то создаем возврат
-                                                    refundXhr.open("POST", "/assets/php/payment.php?action=createRefund", true);
-                                                    refundXhr.onreadystatechange = function() {
-                                                        if (refundXhr.readyState != 4) return;
-                                                        if (refundXhr.status === 200) {
-                                                            try {
-                                                                let responseRefundInfo = JSON.parse(refundXhr.responseText);
-                                                                document.body.classList.add("loaded");
-
-                                                                if (responseRefundInfo.status === "succeeded") {
-                                                                    alerts({state: "success", message: "Карта успешно привязана! Сейчас страница перезагрузится"});
-
-                                                                    setTimeout(function () {
-                                                                        document.forms.finances.submit();
-                                                                    }, 1500);
-                                                                } else {
-                                                                    exceptionError("Ошибка при возврате! Пожалуйста обратитесь в тех.поддержку сайта!");
-                                                                }
-                                                            } catch (e) {
-                                                                exceptionError("Ошибка получения данных!");
-                                                            }
-                                                        } else {
-                                                            exceptionError("Refund Request status not 200");
-                                                        }
-                                                    }
-                                                    refundXhr.send(formDataRefund);
-                                                } else {
-                                                    reason = responsePaymentInfo.cancellation_details.reason;
-                                                    exceptionError("Ошибка в процессе оплаты! Причина: " + paymentReasonError(reason));
-                                                }
-                                            } catch (e) {
-                                                exceptionError("Ошибка получения данных!");
-                                            }
-                                        } else {
-                                            exceptionError("Payment Info Request status not 200");
-                                        }
-                                    }
-                                    newXhr.send(formDataPaymentInfo);
-                                }, 2000);
-                            }
-                        });
-                    } catch (e) {
-                        exceptionError("Ошибка получения данных!");
-                    }
-                }
-            } else {
-                exceptionError("Request status not 200");
-            }
+        // Fullname Field Check
+        if (!validateCardholder(cardholderField.value)) {
+            cardholderField.classList.add("invalid");
+            isValidFormArray[0] = false;
+        } else {
+            isValid(cardholderField, 0);
         }
-        xhr.send(formData);
+
+        // Credit Card Number Field Check by Luhn Algorithm
+        if (!luhnAlgorithm(creditNumberField.value.replaceAll(" ", ""))) {
+            creditNumberField.classList.add("invalid");
+            isValidFormArray[1] = false;
+        } else {
+            isValid(creditNumberField, 1);
+        }
+
+        // Date Finished Field Check
+        let dateFinishedSplit = dateFinishedField.value.split("/"),
+            currentDate       = new Date(),
+            dateFinishedMonth = Number(dateFinishedSplit[0]),
+            dateFinishedYear  = Number("20" + dateFinishedSplit[1]);
+
+        if (
+            (dateFinishedMonth <= 0 || dateFinishedMonth > 12) || 
+            (dateFinishedYear < currentDate.getFullYear()) ||
+            ((dateFinishedMonth < currentDate.getMonth() + 1) && (dateFinishedYear <= currentDate.getFullYear()))
+        ) {
+            dateFinishedField.classList.add("invalid");
+            isValidFormArray[2] = false;
+        } else {
+            isValid(dateFinishedField, 2);
+        }
+
+        // CVC Field Check
+        if (!validateCVC(cvcField.value)) {
+            cvcField.classList.add("invalid");
+            isValidFormArray[3] = false;
+        } else {
+            isValid(cvcField, 3);
+        }
+
+        if (isValidFormArray.includes(false)) {
+            exceptionError("Ошибка заполнения формы!<br>Проверьте заполненность формы!");
+        } else {
+            let modalFormFrame = event.querySelector(".nModal-body iframe"),
+                formData = new FormData(document.forms.finances),
+                xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "/assets/php/payment.php?action=createPayment&type=checkNewCard", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState != 4) return;
+                if (xhr.status === 200) {
+                    if (xhr.responseText !== "false") {
+                        try {
+                            let response = JSON.parse(xhr.responseText),
+                                reason = "";
+
+                            // Проверяем, есть ли ссылка на 3D-Secure
+                            if (response.hasOwnProperty("confirmation")) {
+                                modalFormFrame.setAttribute("src", response.confirmation["confirmation_url"]);
+                            } else if (response.status !== "") {
+                                if (response.status === "canceled") {
+                                    reason = response.cancellation_details.reason;
+                                }
+                                modalFormFrame.setAttribute("src", "'~$_modx->config['site_url']~'payment-status?status=" + response.status + "&reason=" + reason);
+                            }
+
+                            document.body.classList.add("loaded");
+
+                            // Получаем сообщение об закрытии модалки
+                            window.addEventListener("message", function(event) {
+                                var message = event.data;
+                                if (message == "closeModal") {
+                                    setTimeout(() => {
+                                        closeModal();
+
+                                        document.body.classList.remove("loaded");
+                                        let newXhr = new XMLHttpRequest(),
+                                            formDataPaymentInfo = new FormData();
+                                            formDataPaymentInfo.append("paymentID", response.id);
+
+                                        newXhr.open("POST", "/assets/php/payment.php?action=getPaymentInfo", true);
+                                        newXhr.onreadystatechange = function() {
+                                            if (newXhr.readyState != 4) return;
+                                            if (newXhr.status === 200) {
+                                                try {
+                                                    let responsePaymentInfo = JSON.parse(newXhr.responseText);
+
+                                                    if (responsePaymentInfo.status !== "canceled") {
+                                                        let refundXhr = new XMLHttpRequest(),
+                                                            formDataRefund = new FormData();
+                                                            formDataRefund.append("paymentID", response.id);
+                                                            formDataRefund.append("paymentValue", response.amount.value);
+
+                                                        // Если все успешно, то создаем возврат
+                                                        refundXhr.open("POST", "/assets/php/payment.php?action=createRefund", true);
+                                                        refundXhr.onreadystatechange = function() {
+                                                            if (refundXhr.readyState != 4) return;
+                                                            if (refundXhr.status === 200) {
+                                                                try {
+                                                                    let responseRefundInfo = JSON.parse(refundXhr.responseText);
+                                                                    document.body.classList.add("loaded");
+
+                                                                    if (responseRefundInfo.status === "succeeded") {
+                                                                        alerts({state: "success", message: "Карта успешно привязана! Сейчас страница перезагрузится"});
+
+                                                                        setTimeout(function () {
+                                                                            document.forms.finances.submit();
+                                                                        }, 1500);
+                                                                    } else {
+                                                                        exceptionError("Ошибка при возврате! Пожалуйста обратитесь в тех.поддержку сайта!");
+                                                                    }
+                                                                } catch (e) {
+                                                                    exceptionError("Ошибка получения данных!");
+                                                                }
+                                                            } else {
+                                                                exceptionError("Refund Request status not 200");
+                                                            }
+                                                        }
+                                                        refundXhr.send(formDataRefund);
+                                                    } else {
+                                                        reason = responsePaymentInfo.cancellation_details.reason;
+                                                        exceptionError("Ошибка в процессе оплаты! Причина: " + paymentReasonError(reason));
+                                                    }
+                                                } catch (e) {
+                                                    exceptionError("Ошибка получения данных!");
+                                                }
+                                            } else {
+                                                exceptionError("Payment Info Request status not 200");
+                                            }
+                                        }
+                                        newXhr.send(formDataPaymentInfo);
+                                    }, 2000);
+                                }
+                            });
+                        } catch (e) {
+                            exceptionError("Ошибка получения данных!");
+                        }
+                    }
+                } else {
+                    exceptionError("Request status not 200");
+                }
+            }
+            xhr.send(formData);
+        }
     }
 
     function exceptionError(message) {
