@@ -56,10 +56,12 @@
         pagination: {
             el: ".swiper-pagination",
             type: "bullets",
+            clickable: true
         },
         breakpoints: {
             0: {
-                slidesPerView: 1
+                slidesPerView: 1,
+                allowTouchMove: true
             },
             768: {
                 slidesPerView: 2,
