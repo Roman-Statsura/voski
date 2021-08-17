@@ -81,6 +81,7 @@
                     {'@FILE chunks/blocks/profile/myConsultations.tpl' | chunk}
                 </div>
             {/if}
+            
             {if $_modx->user.extended.usertype == 3}
                 {if $_modx->makeUrl($_modx->resource.id) == "profile/calendar"}
                     <div class="profile-body__block" data-id="5" data-parent="1" data-form="calendar">
@@ -95,7 +96,7 @@
             {/if}
 
             {if $_modx->user.extended.usertype != 3}
-                {if $_modx->makeUrl($_modx->resource.id) == "profile/calendar"}
+                {if $_modx->makeUrl($_modx->resource.id) == "profile/calendar" || $_modx->makeUrl($_modx->resource.id) == "profile/questionnaire"}
                     {'@FILE snippets/Redirect.php' | snippet : [
                         'id' => '30'
                         'isAuth' => '1'
