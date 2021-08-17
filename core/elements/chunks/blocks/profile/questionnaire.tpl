@@ -59,7 +59,7 @@
                 <h2 class="login-content__header--title">Анкета</h2>
                 {if $isModerate}
                     <div class="alert alert--info" style="display: block;">
-                        Ваша анкета на модерации
+                        Ваша анкета на модерации. Анкета будет рассмотрена модерацией ближайшие 24 часа.
                     </div>
                 {/if}
                 {if !$zoomUserID}
@@ -80,7 +80,7 @@
                 {/if}
                 
                 <div data-action="alert" class="alert alert--fixed">
-                    Анкета отправлена на модерацию
+                    Анкета отправлена на модерацию. Анкета будет рассмотрена модерацией ближайшие 24 часа.
                 </div>
                 <div class="login-content__header--subtitle">
                     Пожалуйста заполните анкету и отправьте нам на модерацию.<br>
@@ -182,7 +182,7 @@
                                     </div>
                                     <div class="login-tpl-form__item--right flex-direction--row">
                                         <label class="form__label login-tpl-form__item--label-photo" for="certs">
-                                            <input class="form__input form__input--file" multiple name="certs[]" id="certs" type="file">
+                                            <input class="form__input form__input--file" name="certs[]" id="certs" type="file" multiple="multiple">
                                         </label>
                                         <input class="form__input form__input--file" name="uploaded-certs" id="uploaded-certs" type="hidden" value="">
                                         <div id="images" class="form__label--photos">
@@ -355,7 +355,6 @@
             element.addEventListener("click", function() {
                 currCertArray.splice(i, 1, "");
                 idUploadedCerts.value = JSON.stringify(currCertArray);
-                console.log(JSON.stringify(currCertArray).length);
                 this.remove();
             });
         });

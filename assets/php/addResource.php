@@ -76,7 +76,7 @@
         }
 
         if ($certs && !empty($certs[0])) {
-            $certsArray = json_decode($_POST['uploaded-certs']);
+            $certsArray = json_decode($_POST['uploaded-certs'], true);
             $newCleanArray = [];
             foreach ($certsArray as $key => $elem) {
                 if ($elem != "") {
@@ -85,6 +85,8 @@
             }
             $i = count($newCleanArray);
 
+            $modx->log(xPDO::LOG_LEVEL_ERROR, $certsArray);
+ 
             foreach ($certs as $key => $cert) {
                 $filename = "maxpreview";
                 $fullPath = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/tarolog/" . $resourceID . "/certs";
@@ -114,6 +116,8 @@
                     $modx->log(xPDO::LOG_LEVEL_ERROR, 'Проблемы с загрузкой фото.');
                 }
             }
+            $modx->log(xPDO::LOG_LEVEL_ERROR, json_encode($newCleanArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            
 
             if ($premoderateSetting) {
                 $resource->setTVValue('certs-pre', json_encode($newCleanArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
@@ -122,7 +126,7 @@
             }
         } else {
             if (!empty($_POST['uploaded-certs'])) {
-                $certsArray = json_decode($_POST['uploaded-certs']);
+                $certsArray = json_decode($_POST['uploaded-certs'], true);
                 $newCleanArray = [];
                 foreach ($certsArray as $key => $elem) {
                     if ($elem != "") {
