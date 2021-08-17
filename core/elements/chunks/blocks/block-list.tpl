@@ -24,7 +24,7 @@
                 <div class="block-list-content__footer">
                     {'@FILE chunks/elements/button.tpl' | chunk : [
                         'type' => 'link'
-                        'buttonTitle' => 'Заполнить анкету и присоединиться к нам!'
+                        'buttonTitle' => 'Присоединиться к нам!'
                         'link' => 'profile/questionnaire'
                         'classes' => ''
                     ]}
