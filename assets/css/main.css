@@ -1419,7 +1419,7 @@ li {
     display: flex;
     top: 71px;
     left: 0;
-    z-index: 999;
+    z-index: 9999;
     height: 0;
     width: 100%;
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.35);

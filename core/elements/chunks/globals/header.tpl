@@ -7,7 +7,7 @@
                 </a>
             </div>
             <div class="header-block__menu header-menu">
-                <div class="header-menu__burger menu-burger">
+                <div class="header-menu__burger menu-burger target">
                     <div class="menu-burger__header">
                         <span></span>
                     </div>
@@ -104,6 +104,23 @@
                         element.classList.remove("show");
                     }
                 });
+            }
+        });
+
+        document.addEventListener("click", function(event) {
+            if (!event.target.classList.contains("header-menu__container") && 
+                !event.target.classList.contains("header-menu__btn") && 
+                !event.target.classList.contains("header-menu__item") &&
+                !event.target.classList.contains("header-menu__icon") &&
+                !event.target.classList.contains("header-menu__checkbox") &&
+                !event.target.classList.contains("header-menu__list") &&
+                !event.target.classList.contains("header-menu__link") &&
+                !event.target.classList.contains("header-menu__dropdown--link")
+            ) {
+                event.stopPropagation();
+
+                console.log(event.target);
+                document.querySelector("#checkbox").checked = false;
             }
         });
     </script>', true)}
