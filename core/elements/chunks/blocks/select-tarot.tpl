@@ -280,7 +280,7 @@
                                 'limit' => 5
                             ]}
                             <div class="tarot-readers-block__item ajax-item">
-                                <div class="tarot-readers-block__info">
+                                <div class="tarot-readers-block__info justify-content--center">
                                     <h3 class="tarot-readers-block__name">
                                         Каталог тарологов
                                     </h3>

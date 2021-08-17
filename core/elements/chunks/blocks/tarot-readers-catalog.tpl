@@ -111,6 +111,14 @@
             </div>
         </div>
     </div>
+    <div class="button-sticky container">
+        {'@FILE chunks/elements/button.tpl' | chunk : [
+            'type' => 'link'
+            'buttonTitle' => 'Подберите мне таролога'
+            'link' => 'select-tarot'
+            'classes' => ''
+        ]}
+    </div>
 </div>
 
 {$_modx->regClientScript($nouisliderJS)}

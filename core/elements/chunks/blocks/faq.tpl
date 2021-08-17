@@ -29,6 +29,7 @@
                             </picture>
                             <div class="faq-content__left-button">
                                 {'@FILE chunks/elements/button.tpl' | chunk : [
+                                    'type' => 'link',
                                     'buttonTitle' => 'Получить консультацию'
                                 ]}
                             </div>
