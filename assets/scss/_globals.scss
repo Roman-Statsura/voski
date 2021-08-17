@@ -1064,7 +1064,7 @@ li {
     }
 
     &--info {
-        background: rgba(113, 113, 113, 0.1);
+        background: $smoky-white;
         color: $dark-mint;
         border-color: $dark-mint;
         animation: showBlock .3s linear forwards;

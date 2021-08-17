@@ -1132,7 +1132,7 @@ li {
   top: 15px;
 }
 .alert--info {
-  background: rgba(113, 113, 113, 0.1);
+  background: #F2F2F2;
   color: #516472;
   border-color: #516472;
   animation: showBlock 0.3s linear forwards;
