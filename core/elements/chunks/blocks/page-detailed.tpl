@@ -7,7 +7,7 @@
     'options' => 'w=285&zc=C&q=85&f=webp'
 ]}
 
-<div class="page-detailed">
+<div class="page-detailed {$wawe ? 'wawe-container wawe-container-theme--'~$theme~' '~$onlytop~'' : ''}">
     <div class="page-detailed-container container">
         <div class="page-detailed-container__content page-detailed-content">
             <div class="page-detailed-content__body">

@@ -37,6 +37,9 @@
 
 {block 'content'}
     {'@FILE chunks/blocks/page-detailed.tpl' | chunk : [
+        "wawe" => 1,
+        "theme" => "white",
+        "onlytop" => "wawe-container--onlytop",
         "title" => "Почему именно VOSKI?",
         "sidebarImage" => "/assets/img/blocks/tarologist-image.png",
         "content" => "
