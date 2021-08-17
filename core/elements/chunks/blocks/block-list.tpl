@@ -25,7 +25,7 @@
                     {'@FILE chunks/elements/button.tpl' | chunk : [
                         'type' => 'link'
                         'buttonTitle' => 'Присоединиться к нам!'
-                        'link' => 'profile/questionnaire'
+                        'link' => 'profile'
                         'classes' => ''
                     ]}
                 </div>
