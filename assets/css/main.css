@@ -1698,6 +1698,9 @@ li {
   display: flex;
   margin-top: 8px;
 }
+.footer-item__socials--link:hover {
+  opacity: 0.6;
+}
 .footer-item__paragraph {
   font-family: "Gilroy", sans-serif;
   font-style: normal;
@@ -2445,6 +2448,9 @@ li {
   align-items: center;
   justify-content: center;
   margin-left: 15px;
+}
+.contacts-block-content__socials a:hover {
+  opacity: 0.6;
 }
 .contacts-block-content__link--inline {
   display: inline;

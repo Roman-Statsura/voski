@@ -116,6 +116,12 @@
         &__socials {
             display: flex;
             margin-top: 8px;
+
+            &--link {
+                &:hover {
+                    opacity: .6;
+                }
+            }
         }
 
         &__paragraph {
