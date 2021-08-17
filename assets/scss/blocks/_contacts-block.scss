@@ -20,12 +20,24 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 4px;
+
+            &--inline {
+                display: block;
+                text-align: center;
+            }
         }
 
         &__socials {
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-left: 15px;
+        }
+
+        &__link {
+            &--inline {
+                display: inline;
+            }
         }
     }
 }

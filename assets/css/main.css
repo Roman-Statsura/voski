@@ -2436,10 +2436,18 @@ li {
   justify-content: center;
   margin-bottom: 4px;
 }
+.contacts-block-content__item--inline {
+  display: block;
+  text-align: center;
+}
 .contacts-block-content__socials {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 15px;
+}
+.contacts-block-content__link--inline {
+  display: inline;
 }
 
 .articles-list__item {

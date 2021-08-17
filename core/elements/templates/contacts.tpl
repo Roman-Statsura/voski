@@ -8,7 +8,7 @@
         'direction' => 'column',
         'tiny' => 1,
         'pNoMargin' => 1,
-        'title' => $_modx->resource.pagetitle,
+        'title' => $_modx->resource.longtitle != "" ? $_modx->resource.longtitle : $_modx->resource.pagetitle,
         'block' => $_modx->resource.content
     ]}
     
