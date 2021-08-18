@@ -1,4 +1,4 @@
-{set $imageField = '/assets/img/blocks/videocall.png'}
+{set $imageField = '/assets/img/blocks/videocall-new.png'}
 
 {set $thumbFromPhoto = '@FILE snippets/pThumb/pthumb.php' | snippet : [
     'input' => $imageField,
