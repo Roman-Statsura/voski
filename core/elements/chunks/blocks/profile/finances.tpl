@@ -363,6 +363,18 @@
                                 <div class="nModal-body__record">Стоимость:</div>
                                 <div class="nModal-body__record">${Number(response.items[0].amount.value).toFixed(0)} руб</div>
                             </div>
+                            <div class="nModal-body__item">
+                                <div class="nModal-body__record">Номер фискального документа:</div>
+                                <div class="nModal-body__record">${response.fiscal_document_number}</div>
+                            </div>
+                            <div class="nModal-body__item">
+                                <div class="nModal-body__record">Номер фискального накопителя:</div>
+                                <div class="nModal-body__record">${response.fiscal_storage_number}</div>
+                            </div>
+                            <div class="nModal-body__item">
+                                <div class="nModal-body__record">Фискальный признак:</div>
+                                <div class="nModal-body__record">${response.fiscal_attribute}</div>
+                            </div>
                         </div>
                     `;
 
