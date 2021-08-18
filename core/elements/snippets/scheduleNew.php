@@ -3,11 +3,19 @@ if (date_default_timezone_get() != "Europe/Moscow") {
     date_default_timezone_set('Europe/Moscow');
 }
 
-$worktimeArray = json_decode($worktime);
+if (empty($idTarot)) {
+    $modx->sendErrorPage(); 
+}
+
+$resource = $modx->getObject('modResource', $idTarot);
+$worktimeMIGX = $resource->getTVValue('worktime');
+$scheduleMIGX = $resource->getTVValue('schedule');
+
+$worktimeArray = json_decode($worktimeMIGX);
     $dateArray = [];
     $dateArraySch = [];
 
-    $scheduleJSON = json_decode($schedule, true);
+    $scheduleJSON = json_decode($scheduleMIGX, true);
     
     uasort($scheduleJSON, function($a, $b) {
         return $a['datetime'] > $b['datetime'];

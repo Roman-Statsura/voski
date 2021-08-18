@@ -26,7 +26,6 @@
 {set $lightgallery = '<link href="'~$lightgalleryCSS~'" rel="stylesheet">'}
 {set $nativeModalsCSSLink = '<link href="'~$nativeModalsCSS~'" rel="stylesheet">'}
 
-
 {$lightgalleryPreload | htmlToHead: true}
 {$lightgallery | htmlToBottom: true}
 {$nativeModalsJSPreload | htmlToHead: true}
@@ -38,7 +37,8 @@
 {$swiperBundle | htmlToHead: true}
 
 {set $tarotScheduleNew = '!scheduleNew' | snippet : [
-    'worktime' => $_modx->resource.worktime
+    'idTarot'  => $_modx->resource.id,
+    'worktime' => $_modx->resource.worktime,
     'schedule' => $_modx->resource.schedule
 ]}
 
@@ -259,7 +259,7 @@
             </div>
             <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
         </div>
-        <div class="nModal-body">
+        <div class="nModal-body ajax-data-loader">
             <div class="schedule-block__date">
                 {if count($tarotScheduleNew) > 0}
                     {foreach $tarotScheduleNew as $schDate => $tarotScheduleItem}
@@ -357,6 +357,10 @@
             swiper: {
                 init: true,
                 classEvent: ".schedule-block__date--list"
+            },
+            watchOptions: {
+                data: '~$_modx->resource.id~',
+                type: "schedule"
             }
         });
 
@@ -394,6 +398,32 @@
         } else {
             alerts({state: "error", message: "Выберите время для записи"});
         }
+    }
+
+    function updateSchedule() {
+        document.body.classList.remove("loaded");
+
+        let scheduleXHR = new XMLHttpRequest(),
+            formDataScheduleInfo = new FormData();
+
+        scheduleXHR.open("POST", "/select-time", true);
+        formDataScheduleInfo.append("idTarot", '~$_modx->resource.id~');
+
+        scheduleXHR.onreadystatechange = function() {
+            if (scheduleXHR.readyState != 4) return;
+            if (scheduleXHR.status === 200) {
+                document.querySelectorAll(".ajax-data-loader").forEach(function(element, key) {
+                    if (key == 1) {
+                        setTimeout(() => {
+                            element.innerHTML = scheduleXHR.responseText;
+                            document.body.classList.add("loaded");
+                        }, 1000);
+                    }
+                });
+            }
+        }
+
+        scheduleXHR.send(formDataScheduleInfo);
     }
 
     function callback(formElement) {

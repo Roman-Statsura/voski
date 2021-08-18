@@ -12,6 +12,10 @@ var nModal = (function () {
             alerts: {
                 init: false,
                 msg: ""
+            },
+            watchOptions: {
+                data: "",
+                type: ""
             }
         };
 
@@ -130,6 +134,56 @@ var nModal = (function () {
         // Assign the nModal triggers
         $modalTriggers.forEach(function ($modalTrigger) {
             $modalTrigger.addEventListener("click", function (e) {
+                // Feature: Update schedule before open
+                if (document.querySelector(".ajax-data-loader")) {
+                    document.body.classList.remove("loaded");
+
+                    let scheduleXHR = new XMLHttpRequest(),
+                        formDataScheduleInfo = new FormData();
+            
+                    scheduleXHR.open("POST", "/select-time", true);
+                    formDataScheduleInfo.append("idTarot", options.watchOptions.data);
+            
+                    scheduleXHR.onreadystatechange = function() {
+                        if (scheduleXHR.readyState != 4) return;
+                        if (scheduleXHR.status === 200) {
+                            document.querySelectorAll(".ajax-data-loader").forEach(function(element, key) {
+                                element.innerHTML = scheduleXHR.responseText;
+                                document.body.classList.add("loaded");
+
+                                if (options.swiper.init) {
+                                    new Swiper(options.swiper.classEvent, {
+                                        slidesPerView: 1,
+                                        spaceBetween: 24,
+                                        scrollbar: {
+                                            el: ".swiper-scrollbar",
+                                            draggable: true,
+                                        },
+                                        breakpoints: {
+                                            320: {
+                                                slidesPerView: 3
+                                            },
+                                            450: {
+                                                slidesPerView: 4
+                                            },
+                                            575: {
+                                                slidesPerView: 6
+                                            },
+                                            800: {
+                                                slidesPerView: 8
+                                            },
+                                            992: {
+                                                slidesPerView: 10
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    scheduleXHR.send(formDataScheduleInfo);
+                }
+
                 modalTriggerClickEventHandler(e, $modalTrigger);
 
                 if (options.swiper.init) {

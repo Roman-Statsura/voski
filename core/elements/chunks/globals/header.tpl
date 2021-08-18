@@ -118,8 +118,6 @@
                 !event.target.classList.contains("header-menu__dropdown--link")
             ) {
                 event.stopPropagation();
-
-                console.log(event.target);
                 document.querySelector("#checkbox").checked = false;
             }
         });
