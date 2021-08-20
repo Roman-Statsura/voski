@@ -132,10 +132,10 @@
                 <div class="login-finances__tab login-tab tab" data-id="2">
                     {if $_modx->user.extended.usertype == 3}
                         {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
-                            'id' => $_modx->getPlaceholder('upd.id')
+                            'id' => $_modx->getPlaceholder('upd.internalKey')
                         ]}
                     {else}
-                        {set $userQuestResourse = $_modx->getPlaceholder('upd.id')}
+                        {set $userQuestResourse = $_modx->getPlaceholder('upd.internalKey')}
                     {/if}
 
                     {set $consultations = '!pdoResources' | snippet : [
@@ -161,7 +161,7 @@
                         {set $innerCount = 0}
                         {if count($consultations) > 0}
                             {foreach $consultations as $key => $consultItem}
-                                {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.id'))}
+                                {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $userQuestResourse)}
                                     {if $consultItem['tv.consultPaymentID'] != ""}
                                         {set $paymentInfo = '@FILE snippets/getPaymentInfo.php' | snippet : [
                                             'paymentID' => $consultItem['tv.consultPaymentID']

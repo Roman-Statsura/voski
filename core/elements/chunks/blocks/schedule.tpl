@@ -1,5 +1,5 @@
 {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
-    'id' => $_modx->getPlaceholder('upd.id')
+    'id' => $_modx->getPlaceholder('upd.internalKey')
 ]}
 
 {'@FILE snippets/hoursRange.php' | snippet}
@@ -33,7 +33,7 @@
 ]' | json_decode: 'true'}
 
 <form id="worktime" method="POST">
-    <input type="hidden" name="idUser" value="{$_modx->getPlaceholder('upd.id')}">
+    <input type="hidden" name="idUser" value="{$_modx->getPlaceholder('upd.internalKey')}">
     <div class="display__flex justify-content--center flex-direction--column">
         {foreach $worktimeSchedule as $key => $worktimeItem}
             <div class="login-tpl-form__item justify-content--center">

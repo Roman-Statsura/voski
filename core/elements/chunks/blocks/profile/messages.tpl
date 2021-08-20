@@ -35,10 +35,10 @@
             <div class="login-content__body">
                 {if $_modx->user.extended.usertype == 3}
                     {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
-                        'id' => $_modx->getPlaceholder('upd.id')
+                        'id' => $_modx->getPlaceholder('upd.internalKey')
                     ]}
                 {else}
-                    {set $userQuestResourse = $_modx->getPlaceholder('upd.id')}
+                    {set $userQuestResourse = $_modx->getPlaceholder('upd.internalKey')}
                 {/if}
 
                 {set $messages = 1 | resource : 'messages' | json_decode: true}
@@ -52,7 +52,7 @@
                     </div>
                     {set $countMessages = 0}
                     {foreach $messages as $key => $message}
-                        {if ($_modx->user.extended.usertype == 3 && $message.toUser == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $message.fromUser == $_modx->getPlaceholder('upd.id'))}
+                        {if ($_modx->user.extended.usertype == 3 && $message.toUser == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $message.fromUser == $_modx->getPlaceholder('upd.internalKey'))}
                             {if $message.active == 1}
                                 {set $countMessages += 1}
                                 {set $userFullname = '@FILE snippets/getUserNameByID.php' | snippet : [
@@ -126,7 +126,7 @@
         {if $_modx->user.extended.usertype == 3}
             <input type="hidden" name="idUser" value="{$userQuestResourse}">
         {else}
-            <input type="hidden" name="idUser" value="{$_modx->getPlaceholder('upd.id')}">
+            <input type="hidden" name="idUser" value="{$_modx->getPlaceholder('upd.internalKey')}">
         {/if}
         <div class="nModal-header">
             <div class="nModal-header__title">Написать сообщение</div>

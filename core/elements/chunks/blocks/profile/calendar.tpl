@@ -19,7 +19,7 @@
 ]}
 
 {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
-    'id' => $_modx->getPlaceholder('upd.id')
+    'id' => $_modx->getPlaceholder('upd.internalKey')
 ]}
 
 <div class="login">

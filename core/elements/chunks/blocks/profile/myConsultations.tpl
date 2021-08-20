@@ -49,10 +49,10 @@
 
                 {if $_modx->user.extended.usertype == 3}
                     {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
-                        'id' => $_modx->getPlaceholder('upd.id')
+                        'id' => $_modx->getPlaceholder('upd.internalKey')
                     ]}
                 {else}
-                    {set $userQuestResourse = $_modx->getPlaceholder('upd.id')}
+                    {set $userQuestResourse = $_modx->getPlaceholder('upd.internalKey')}
                 {/if}
 
                 {set $consultations = '!pdoResources' | snippet : [
@@ -76,7 +76,7 @@
                     </div>
                     {if count($consultations) > 0}
                         {foreach $consultations as $key => $consultItem}
-                            {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.id'))}
+                            {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.internalKey'))}
                                 <div class="login-finances__tab login-tab tab" data-id="1">
                                     {if $consultItem.published}
                                         {if $consultItem['tv.consultStatusSession'] != 3}

@@ -23,7 +23,7 @@
 ]}
 
 {set $userQuestResourse = '@FILE snippets/findUserAndReview.php' | snippet : [
-    'id' => $_modx->getPlaceholder('upd.id')
+    'id' => $_modx->getPlaceholder('upd.internalKey')
 ]}
 
 {if $userQuestResourse}
@@ -97,7 +97,7 @@
                     <div class="login-tpl-content">
                         <form id="questionnaire" name="questionnaire" class="form login-tpl-content__form login-form" action="" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="nospam:blank" value="" />
-                            <input type="hidden" name="idUser" value="{$_modx->getPlaceholder('upd.id')}" />
+                            <input type="hidden" name="idUser" value="{$_modx->getPlaceholder('upd.internalKey')}" />
                             <input type="hidden" name="fullname" value="{$_modx->getPlaceholder('upd.fullname')}" />
 
                             <div class="login-tpl-form__list">
@@ -394,7 +394,7 @@
 
             const request = new XMLHttpRequest();
             const url = "/assets/php/addUserInZoom.php";
-            const params = `tarotEmail='~$_modx->getPlaceholder('upd.email')~'&tarotName='~$_modx->getPlaceholder('upd.fullname')~'&tarotID='~$_modx->getPlaceholder('upd.id')~'&questTarotID='~$userQuestResourse~'`
+            const params = `tarotEmail='~$_modx->getPlaceholder('upd.email')~'&tarotName='~$_modx->getPlaceholder('upd.fullname')~'&tarotID='~$_modx->getPlaceholder('upd.internalKey')~'&questTarotID='~$userQuestResourse~'`
 
             request.open("POST", url, true);
             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
