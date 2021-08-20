@@ -40,12 +40,12 @@
                         <div class="login-tpl-form__item--left">
                             <label class="form__label login-tpl-form__item--label" for="email">
                                 E-mail
-                                <span class="error">{$reg.error.email}</span>
+                                <span class="error">{$error.email}</span>
                             </label>
                         </div>
                         <div class="login-tpl-form__item--right">
-                            <input type="text" class="form__input form__input--tel login-tpl-form__item--input" name="email" id="email" value="{$email}" placeholder="Ваш E-mail..." required />
-                            <small class="form__error">Неверный формат электронной почты</small>
+                            <input type="email" class="form__input form__input--tel login-tpl-form__item--input" name="email" id="email" value="{$email}" placeholder="Ваш E-mail..." required />
+                            <small data-error="email" class="form__error">Неверный формат электронной почты</small>
                         </div>
                     </div>
                     <div class="login-tpl-form__item">
@@ -203,6 +203,7 @@
 ])}
 
 {$_modx->regClientScript('<script>
+    document.body.classList.add("loaded");
     let cardInfo = '~ $cardInfo ~';
 
     if (cardInfo) {
@@ -239,11 +240,35 @@
         creditnumberField = document.querySelector("#creditnumber"),
         datefinishedField = document.querySelector("#datefinished"),
         cvcField = document.querySelector("#cvc"),
-        checkboxField = document.querySelector("#agreement");
+        checkboxField = document.querySelector("#agreement"),
+        emailError = document.querySelector(`[data-error="email"]`);
 
+    // Validate Email 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
+    }
+
+    function checkEmailTaken(email) {
+        let formData = new FormData(),
+            xhr = new XMLHttpRequest(),
+            isTaken = false;
+
+        formData.append("email", email);
+        xhr.open("POST", "/assets/php/checkEmailExist.php", false);
+        xhr.send(formData);
+
+        if (xhr.status != 200) {
+            return;
+        } else {
+            if (xhr.responseText === "true") {
+                isTaken = true;
+            } else {
+                isTaken = false;
+            }
+        }
+
+        return isTaken;
     }
 
     // Validate Fullname by Only String
@@ -310,6 +335,8 @@
     });
 
     document.querySelector(`input[name="submitReg"]`).addEventListener("click", function () {
+        document.body.classList.remove("loaded");
+
         if (cardInfo) {
             if (cardnameField.value == "") {
                 cardnameField.classList.add("invalid");
@@ -359,8 +386,17 @@
 
             if (!validateEmail(emailField.value)) {
                 emailField.classList.add("invalid");
+                emailError.innerHTML = "Неверный формат электронной почты";
             } else {
                 emailField.classList.remove("invalid");
+
+                if (checkEmailTaken(emailField.value)) {
+                    emailField.classList.add("invalid");
+                    emailError.innerHTML = "Указанный электронный ящик уже зарегистрирован в системе";
+                } else {
+                    emailField.classList.remove("invalid");
+                    emailError.innerHTML = "Неверный формат электронной почты";
+                }
             }
 
             if (Number(ageField.value) < 18) {
@@ -383,12 +419,15 @@
 
             if (validateFullname(fullnameField.value) && 
                 validateEmail(emailField.value) &&
+                !checkEmailTaken(emailField.value) &&
                 genderField.value !== "0" &&
                 Number(ageField.value) >= 18 &&
                 timezoneField.value !== "no" &&
                 document.querySelector("#agreement:checked") !== null) 
             {
                 document.querySelector("#register").submit();
+            } else {
+                document.body.classList.add("loaded");
             }
         }
     });
