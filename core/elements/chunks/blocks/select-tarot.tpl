@@ -178,13 +178,13 @@
 
                     <div class="login-tab tab" data-id="2" data-parent="1" type-form="gender-tarot">
                         <div class="login-tpl-form__item">
-                            <input id="gender-tarot_1" class="form__radio login-tpl-form__item--input" type="radio" name="gender" value="1" required />
+                            <input id="gender-tarot_1" class="form__radio login-tpl-form__item--input" type="radio" name="gender" value="male" required />
                             <label for="gender-tarot_1" class="form__label login-tpl-form__item--label">
                                 <div class="form__label--title">Мужской</div>
                             </label>
                         </div>
                         <div class="login-tpl-form__item">
-                            <input id="gender-tarot_2" class="form__radio login-tpl-form__item--input" type="radio" name="gender" value="2" required />
+                            <input id="gender-tarot_2" class="form__radio login-tpl-form__item--input" type="radio" name="gender" value="female" required />
                             <label for="gender-tarot_2" class="form__label login-tpl-form__item--label">
                                 <div class="form__label--title">Женский</div>
                             </label>
@@ -317,6 +317,8 @@
         subtitle = document.querySelector(".login-content__header--subtitle"),
         inputs = document.querySelectorAll(`.login-tpl-form__item--input`),
         alertDOM = document.querySelector(`[data-action="alert"]`),
+        specsCheckedList = document.querySelectorAll(`[name="specialization[]"]:checked`),
+        priceCheckedList = document.querySelectorAll(`[name="price[]"]`),
         activeStep = 1,
         error = true,
         headers = [{
@@ -345,34 +347,75 @@
         });
     });
 
+    function stepsErrorList(activeStep) {
+        switch (activeStep) {
+            case 1:
+                message = "Выберите от 2-4 вариантов";
+                break;
+            default:
+                message = "Выберите хотя бы один вариант";
+                break;
+        }
+
+        return message;
+    }
+
+    priceCheckedList.forEach(element => {
+        element.addEventListener("change", function () {
+            if (this.checked && this.value === "0") {
+                priceCheckedList.forEach(el => {
+                    if (el.value !== "0") {
+                        el.checked = false;
+                    }
+                });
+            } else if (this.value !== "0") {
+                priceCheckedList[4].checked = false;
+            }
+        });
+    });
+
     steps.forEach(element => {
         element.addEventListener("click", function () {
-            checkedLenght = 0;
-            inputs.forEach(element => {
-                if (element.offsetParent !== null) {
-                    if (!element.checked) {
-                        element.classList.add("invalid");
+            if (element.getAttribute("name") !== "prev") {
+                checkedLenght = 0;
+                inputs.forEach(element => {
+                    if (element.offsetParent !== null) {
+                        if (!element.checked) {
+                            element.classList.add("invalid");
+                            error = true;
+                            alerts({
+                                state: "error",
+                                message: stepsErrorList(activeStep)
+                            });
+                        } else {
+                            element.classList.remove("invalid");
+                            checkedLenght += 1;
+                        }
+                    }
+                });
+
+                if (checkedLenght > 0) {
+                    if (activeStep === 1 && (checkedLenght < 2 || checkedLenght > 4)) {
                         error = true;
                         alerts({
                             state: "error",
-                            message: "Выберите хотя бы один вариант"
+                            message: "Выберите от 2-4 вариантов"
                         });
-                    } else {
-                        element.classList.remove("invalid");
-                        checkedLenght += 1;
+
+                        return false;
                     }
+
+                    error = false;
+                    clearAlert();
+
+                    inputs.forEach(element => {
+                        if (element.offsetParent !== null) {
+                            element.classList.remove("invalid");
+                        }
+                    });
                 }
-            });
-
-            if (checkedLenght > 0) {
+            } else {
                 error = false;
-                clearAlert();
-
-                inputs.forEach(element => {
-                    if (element.offsetParent !== null) {
-                        element.classList.remove("invalid");
-                    }
-                });
             }
 
             if (!error) {

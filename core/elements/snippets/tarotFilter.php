@@ -1,19 +1,6 @@
 <?php
 $filter = array();
-	if (isset($_GET['specialization'])) {
-        if (!empty($_GET['specialization'])) {
-			$newSpecArray = array();
-
-			if ($_GET['specialization'][0] !== "0") {
-				foreach ($_GET['specialization'] as $key => $specItem) {
-					if (!in_array("specialization==%{$specItem}%", $newSpecArray)) {
-						$newSpecArray[] = "specialization==%{$specItem}%";
-					}
-				}
-				$filter[] = implode('||', $newSpecArray);
-			}
-        }
-    }
+$withSpecArrayFilter = array();
 
     if (isset($_GET['experience'])) {
         if (!empty($_GET['experience']) && $_GET['experience'] !== '0') {
@@ -25,7 +12,8 @@ $filter = array();
 				$expResult = "experience>={$expExplode[0]},experience<={$expExplode[1]}";
 			}
 
-            $filter[] = $expResult;
+            $withSpecArrayFilter[] = $expResult;
+           	//$filter[] = $expResult;
         }
     }
 
@@ -43,7 +31,8 @@ $filter = array();
 					break;
 			}
 
-            $filter[] = "gender=={$genderCode}";
+            $withSpecArrayFilter[] = "gender=={$genderCode}";
+            //$filter[] = "gender=={$genderCode}";
         }
     }
 
@@ -61,15 +50,38 @@ $filter = array();
 
 			$priceFrom = min($newPriceArray);
 			$priceTo = max($newPriceArray);
-				
-			$expResult = "price>={$priceFrom},price<={$priceTo}";
-            $filter[] = $expResult;
+			
+			if ($priceTo > 0) {
+				$expResult = "price>={$priceFrom},price<={$priceTo}";
+			} else {
+				$expResult = "price>={$priceFrom}";
+			}
+            $withSpecArrayFilter[] = $expResult;
+            //$filter[] = $expResult;
         }
     }
 
     if (isset($_GET['priceFrom']) && isset($_GET['priceTo'])) {
         if (!empty($_GET['priceFrom']) && !empty($_GET['priceTo'])) {
-            $filter[] = "price>={$_GET['priceFrom']},price<={$_GET['priceTo']}";
+			$withSpecArrayFilter[] = "price>={$_GET['priceFrom']},price<={$_GET['priceTo']}";
+            //$filter[] = "price>={$_GET['priceFrom']},price<={$_GET['priceTo']}";
+        }
+    }
+
+	if (isset($_GET['specialization'])) {
+        if (!empty($_GET['specialization'])) {
+			$newSpecArray = array();
+
+			if ($_GET['specialization'][0] !== "0") {
+				foreach ($_GET['specialization'] as $key => $specItem) {
+					if (!in_array("specialization==%{$specItem}%", $newSpecArray)) {
+						//$withSpecArrayFilter[] = "specialization==%{$specItem}%";
+						$newSpecArray[] = "specialization==%{$specItem}%,".implode(',', $withSpecArrayFilter);
+					}
+				}
+				$filter[] = implode('||', $newSpecArray);
+				//$filter[] = implode('||', $newSpecArray);
+			}
         }
     }
 
