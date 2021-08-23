@@ -74,6 +74,10 @@
                         <div class="table-flex--col">Статус сеанса</div>
                         <div class="table-flex--col">Продолжительность</div>
                     </div>
+
+                    {set $innerCount = 0}
+                    {set $innerCountClosed = 0}
+
                     {if count($consultations) > 0}
                         {foreach $consultations as $key => $consultItem}
                             {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.internalKey'))}
@@ -88,6 +92,8 @@
                                             {else}
                                                 {set $userFullname = $consultItem['tv.consultIDTarot'] | resource : 'pagetitle'}
                                             {/if}
+
+                                            {set $innerCount = $innerCount + 1}
 
                                             <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-usergroup="{$_modx->user.extended.usertype}" data-nmodal-callback="clickTest" data-nmodal="consultDetailed" data-nmodal-size="large">
                                                 <div class="table-flex--item">
@@ -126,6 +132,8 @@
                                                 {set $userFullname = $consultItem['tv.consultIDTarot'] | resource : 'pagetitle'}
                                             {/if}
 
+                                            {set $innerCountClosed = $innerCountClosed + 1}
+
                                             <div class="table-flex--row table-flex--body" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-usergroup="{$_modx->user.extended.usertype}" data-nmodal-callback="clickTest" data-nmodal="consultDetailed" data-nmodal-size="large">
                                                 <div class="table-flex--item">
                                                     <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
@@ -153,6 +161,20 @@
                                 </div>
                             {/if}
                         {/foreach}
+                        <div class="login-finances__tab login-tab tab" data-id="1">
+                            {if $innerCount == 0}
+                                <div class="table-flex--row table-flex--body">
+                                    <div class="table-flex--col table-flex--col--full">На данный момент, консультации нет</div>
+                                </div>
+                            {/if}
+                        </div>
+                        <div class="login-finances__tab login-tab tab" data-id="2">
+                            {if $innerCountClosed == 0}
+                                <div class="table-flex--row table-flex--body">
+                                    <div class="table-flex--col table-flex--col--full">На данный момент, консультации нет</div>
+                                </div>
+                            {/if}
+                        </div>
                     {else}
                         <div class="table-flex--row table-flex--body">
                             <div class="table-flex--col table-flex--col--full">На данный момент, консультации нет</div>
