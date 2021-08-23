@@ -37,7 +37,7 @@
                                 'text' => 'Гарантия возврата денег при возникновении конфликтных ситуаций'
                             ]}
                         </div>
-                        <div class="guarantees-swiper__pagination swiper-pagination"></div>
+                        <div class="guarantees-swiper__pagination swiper-pagination guarantees-swiper__pagination--disabled"></div>
                     </div>
                 </div>
             </div>
@@ -73,4 +73,32 @@
             }
         }
     });
+
+    if (window.innerWidth > 992) {
+        if (document.querySelectorAll(".guarantees-swiper__container .swiper-slide").length > 3) {
+            document.querySelector.classList.remove("disabled");
+        }
+    }
+
+    function hidePagination() {
+        let slides      = document.querySelectorAll(".guarantees-swiper__container .swiper-slide"),
+            pagination  = document.querySelector(".guarantees-swiper__pagination");
+        
+        if (window.innerWidth > 992) {
+            if (slides.length > 3) {
+                pagination.classList.remove("guarantees-swiper__pagination--disabled");
+            } else {
+                pagination.classList.add("guarantees-swiper__pagination--disabled");
+            }
+        } else {
+            pagination.classList.remove("guarantees-swiper__pagination--disabled");
+        }
+    }
+
+    hidePagination();
+
+    window.addEventListener("resize", function(event) {
+        hidePagination();
+    });
+
 </script>',true)}

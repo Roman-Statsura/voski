@@ -38,6 +38,10 @@
             position: relative !important;
             bottom: 0 !important;
 
+            &--disabled {
+                display: none;
+            }
+
             .swiper-pagination-bullet {
                 background: $light-cyan;
                 border-radius: 2px;

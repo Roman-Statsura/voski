@@ -1899,6 +1899,9 @@ li {
   position: relative !important;
   bottom: 0 !important;
 }
+.guarantees-swiper__pagination--disabled {
+  display: none;
+}
 .guarantees-swiper__pagination .swiper-pagination-bullet {
   background: #CDEEF5;
   border-radius: 2px;
