@@ -87,7 +87,7 @@
                                     <div class="login-tpl-form__item">
                                         <div class="login-tpl-form__item--left">
                                             <label class="form__label login-tpl-form__item--label" for="creditnumber">
-                                                Номер кредитной карты *
+                                                Номер кредитной карты*
                                             </label>
                                         </div>
                                         <div class="login-tpl-form__item--right">
@@ -98,7 +98,7 @@
                                     <div class="login-tpl-form__item">
                                         <div class="login-tpl-form__item--left">
                                             <label class="form__label login-tpl-form__item--label" for="datefinished">
-                                                Дата окончания срока действия *
+                                                Дата окончания срока действия*
                                             </label>
                                         </div>
                                         <div class="login-tpl-form__item--right">
@@ -109,7 +109,7 @@
                                     <div class="login-tpl-form__item">
                                         <div class="login-tpl-form__item--left">
                                             <label class="form__label login-tpl-form__item--label" for="cvc">
-                                                CVC-код *
+                                                CVC-код*
                                             </label>
                                         </div>
                                         <div class="login-tpl-form__item--right">
