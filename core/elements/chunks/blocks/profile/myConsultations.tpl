@@ -79,7 +79,7 @@
                             {if ($_modx->user.extended.usertype == 3 && $consultItem['tv.consultIDTarot'] == $userQuestResourse) || ($_modx->user.extended.usertype == 2 && $consultItem['tv.consultIDClient'] == $_modx->getPlaceholder('upd.internalKey'))}
                                 <div class="login-finances__tab login-tab tab" data-id="1">
                                     {if $consultItem.published}
-                                        {if $consultItem['tv.consultStatusSession'] != 3}
+                                        {if $consultItem['tv.consultStatusSession'] != 1 && $consultItem['tv.consultStatusSession'] != 2 && $consultItem['tv.consultStatusSession'] != 3}
                                             {if $_modx->user.extended.usertype == 3}
                                                 {set $userFullname = '@FILE snippets/getUserNameByID.php' | snippet : [
                                                     'id' => $consultItem['tv.consultIDClient']
@@ -116,7 +116,7 @@
                                 </div>
                                 <div class="login-finances__tab login-tab tab" data-id="2">
                                     {if $consultItem.published}
-                                        {if $consultItem['tv.consultStatusSession'] == 3}
+                                        {if $consultItem['tv.consultStatusSession'] == 1 || $consultItem['tv.consultStatusSession'] == 2 || $consultItem['tv.consultStatusSession'] == 3}
                                             {if $_modx->user.extended.usertype == 3}
                                                 {set $userFullname = '@FILE snippets/getUserNameByID.php' | snippet : [
                                                     'id' => $consultItem['tv.consultIDClient']
