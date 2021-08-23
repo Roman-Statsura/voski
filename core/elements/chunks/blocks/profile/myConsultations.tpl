@@ -350,7 +350,14 @@
                 fullname = event.dataset.name,
                 usergroup = event.dataset.usergroup,
                 duration = event.dataset.duration,
-                intervalId = 0;
+                intervalId = 0,
+                dateTime = new Date(newConsult[cnsArray]["tv.consultDatetime"]).getTime() / 1000,
+                today = parseInt(new Date().getTime() / 1000),
+                expiredConsult = false;
+
+            if (dateTime <= today) {
+                expiredConsult = true;
+            }
 
             if (Number(newConsult[cnsArray]["tv.consultStatusSession"]) === 0) {
                 callbackFunc = "startMeeting";
@@ -385,10 +392,16 @@
                 Number(newConsult[cnsArray]["tv.consultStatusSession"]) !== 3) 
             {
                 if (usergroup == 2) {
-                    buttonLink = `
-                        <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
-                        <a href="#" class="button button-size--normal button-theme--red nModal-button" data-idcns="${newConsult[cnsArray]["id"]}" data-nmodal-callback="cancelConsult">Отменить консультацию</a>
-                    `;
+                    if (dateTime <= today) {
+                        buttonLink = `
+                            <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
+                        `;
+                    } else {
+                        buttonLink = `
+                            <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
+                            <a href="#" class="button button-size--normal button-theme--red nModal-button" data-idcns="${newConsult[cnsArray]["id"]}" data-nmodal-callback="cancelConsult">Отменить консультацию</a>
+                        `;
+                    }
                 } else {
                     buttonLink = `<a href="${newConsult[cnsArray]["tv.consultZoomStartLink"]}" target="_blank" class="button button-size--normal ${buttonTheme} nModal-button" 
                                     data-action="meeting"
