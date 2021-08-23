@@ -392,7 +392,7 @@
                 Number(newConsult[cnsArray]["tv.consultStatusSession"]) !== 3) 
             {
                 if (usergroup == 2) {
-                    if (dateTime <= today) {
+                    if (dateTime <= today || Number(newConsult[cnsArray]["tv.consultStatusSession"]) !== 0) {
                         buttonLink = `
                             <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
                         `;
