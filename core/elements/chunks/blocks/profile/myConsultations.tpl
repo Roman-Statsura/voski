@@ -394,11 +394,11 @@
                 if (usergroup == 2) {
                     if (dateTime <= today || Number(newConsult[cnsArray]["tv.consultStatusSession"]) !== 0) {
                         buttonLink = `
-                            <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
+                            <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="button button-size--normal button-theme--mint">${callbackTitle}</a>
                         `;
                     } else {
                         buttonLink = `
-                            <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="nModal-button button button-size--normal button-theme--mint">${callbackTitle}</a>
+                            <a href="${newConsult[cnsArray]["tv.consultZoomLink"]}" target="_blank" class="button button-size--normal button-theme--mint">${callbackTitle}</a>
                             <a href="#" class="button button-size--normal button-theme--red nModal-button" data-idcns="${newConsult[cnsArray]["id"]}" data-nmodal-callback="cancelConsult">Отменить консультацию</a>
                         `;
                     }
