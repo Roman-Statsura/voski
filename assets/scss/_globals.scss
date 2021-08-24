@@ -239,6 +239,7 @@ li {
     border: 0;
     cursor: pointer;
     margin-right: 10px;
+    -webkit-appearance: none;
 
     @media screen and (max-width: $screen-sm) {
         margin-right: 0;
