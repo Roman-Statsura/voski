@@ -3,6 +3,7 @@
     $timezone_identifiers = array_merge(DateTimeZone::listIdentifiers(128), DateTimeZone::listIdentifiers(16));
     $timezones = "";
     $tzs = array();
+    $locale = "ru_RU.utf8";
 
     foreach ($timezone_identifiers as $key => $timezone) {
         $dtz = new DateTimeZone($timezone);

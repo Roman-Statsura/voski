@@ -100,7 +100,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.ph
                     $startTimeToSec = 0;
                 } else if ($startTimeToSec > 86400) {
                     $oldLower = $startTimeToSec - 86400;
-                    //$startTimeToSec = 0;
                     
                     if ($endTimeToSec > 82800) {
                         $oldUpper = 86400 - $endTimeToSec;
@@ -108,8 +107,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.ph
                         if ($oldUpper < 0) {
                             $oldUpper = $endTimeToSec - 86400;
                         }
-
-                        //$endTimeToSec = 82800;
                     } else {
                         $oldUpper = $endTimeToSec;
                     }
@@ -145,7 +142,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.ph
 
                 if ($prevDayArray) {
                     $workDateYesterday = date("Y-m-d", strtotime($worktimeItem->dayweek . "-1 day"));
-                    
+
                     if ($workDateYesterday >= date("Y-m-d")) {
                         $rangeNew = hoursRange(
                             $oldLower, 
@@ -172,7 +169,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.ph
                     $dateArrayNewDay[$workDateNew] = $rangeNew;
                 }
 
-                
                 $range = hoursRange(
                     $startTimeToSec, 
                     $endTimeToSec, 
