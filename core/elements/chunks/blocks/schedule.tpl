@@ -46,19 +46,27 @@
                     </label>
                 </div>
                 <div class="login-tpl-form__item--right width__auto flex-direction--row">
+                    {set $startTime = '@FILE snippets/timeByTimezone.php' | snippet : [
+                        'time' => $worktime[$key]['time']
+                    ]}
+
                     {'@FILE chunks/elements/timepicker.tpl' | chunk : [
                         'name' => 'time['~$worktimeItem.dayweek~']',
                         'attrs' => $worktime[$key]["active"] ? "" : "disabled",
-                        'value' => $worktime[$key]['time'],
+                        'value' => $startTime,
                         'id' => 'time_'~$key
                     ]}
                     
                     <span class="calendar-date__times--delimeter">-</span>
 
+                    {set $endTime = '@FILE snippets/timeByTimezone.php' | snippet : [
+                        'time' => $worktime[$key]['timeEnd']
+                    ]}
+
                     {'@FILE chunks/elements/timepicker.tpl' | chunk : [
                         'name' => 'timeEnd['~$worktimeItem.dayweek~']',
                         'attrs' => $worktime[$key]["active"] ? "" : "disabled",
-                        'value' => $worktime[$key]['timeEnd'],
+                        'value' => $endTime,
                         'id' => 'timeEnd_'~$key
                     ]}
                 </div>

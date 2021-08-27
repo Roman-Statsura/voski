@@ -1,5 +1,7 @@
 <?php
     require_once '../../core/model/modx/modx.class.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.php';
+
     $modx = new modX();
     $modx->initialize('web');
     $modx->getService('error','error.modError', '', '');
@@ -15,6 +17,9 @@
         $resource = $modx->getObject('modResource', $idUser);
         $resourceID = $resource->get('id');
         $worktimeMIGX = $resource->getTVValue('worktime');
+        $idUserInSystem = $resource->getTVValue('idUser');
+
+        $diffTimezoneOffset = getDiffTimezoneOffset($modx, $idUserInSystem);
 
         $wrkCurrentArray = [];
 
@@ -35,9 +40,16 @@
             $wrkNewSubArray["MIGX_id"] = $itemNum;
             
             if (in_array($arrDayItem, $_POST["dayweek"])) {
+                // Записываем время по Московскому времени
+                $startTime = strtotime(date($_POST["time"][$arrDayItem]));
+                $endTime = strtotime(date($_POST["timeEnd"][$arrDayItem]));
+
+                $startTimeByMSK = date("H:i", $startTime - $diffTimezoneOffset);
+                $endTimeByMSK   = date("H:i", $endTime - $diffTimezoneOffset);
+
                 $wrkNewSubArray["dayweek"] = $arrDayItem;
-                $wrkNewSubArray["time"] = $_POST["time"][$arrDayItem];
-                $wrkNewSubArray["timeEnd"] = $_POST["timeEnd"][$arrDayItem];
+                $wrkNewSubArray["time"] = $startTimeByMSK;
+                $wrkNewSubArray["timeEnd"] = $endTimeByMSK;
                 $wrkNewSubArray["active"] = "1";
             } else {
                 $wrkNewSubArray["dayweek"] = $arrDayItem;

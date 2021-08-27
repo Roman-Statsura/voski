@@ -97,7 +97,11 @@
 
                                             <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-usergroup="{$_modx->user.extended.usertype}" data-nmodal-callback="clickTest" data-nmodal="consultDetailed" data-nmodal-size="large">
                                                 <div class="table-flex--item">
-                                                    <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
+                                                    <div class="table-flex--col">
+                                                        {'@FILE snippets/dateByTimezone.php' | snippet : [
+                                                            'dateTimeConsult' => $consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'
+                                                        ]}
+                                                    </div>
                                                     <div class="table-flex--col">{$userFullname}</div>
                                                     <div class="table-flex--col consult-text">
                                                         {$consultItem.content | strip_tags}
@@ -136,7 +140,11 @@
 
                                             <div class="table-flex--row table-flex--body" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-usergroup="{$_modx->user.extended.usertype}" data-nmodal-callback="clickTest" data-nmodal="consultDetailed" data-nmodal-size="large">
                                                 <div class="table-flex--item">
-                                                    <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
+                                                    <div class="table-flex--col">
+                                                        {'@FILE snippets/dateByTimezone.php' | snippet : [
+                                                            'dateTimeConsult' => $consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'
+                                                        ]}
+                                                    </div>
                                                     <div class="table-flex--col">{$userFullname}</div>
                                                     <div class="table-flex--col consult-text">
                                                         {$consultItem.content | strip_tags}
@@ -347,6 +355,7 @@
             let cnsID = event.dataset.cnsid,
                 cnsArray = event.dataset.cnsid, 
                 newConsult = JSON.parse(xhrConsult.responseText),
+                convertDatetime = newConsult[cnsArray]["tv.consultDatetime"],
                 fullname = event.dataset.name,
                 usergroup = event.dataset.usergroup,
                 duration = event.dataset.duration,
@@ -358,6 +367,23 @@
             if (dateTime <= today) {
                 expiredConsult = true;
             }
+
+            // Переводим дату и время в указанный часовой пояс пользователя
+            var xhrTimezone = new XMLHttpRequest(),
+                params      = "date=" + newConsult[cnsArray]["tv.consultDatetime"];
+
+            xhrTimezone.open("POST", "/assets/php/dateByTimezone.php", false);
+            xhrTimezone.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhrTimezone.send(params);
+
+            if (xhrTimezone.status != 200) {
+                alerts({state: "error", message: "Timezone request status not 200"});
+            } else {
+                convertDatetime = xhrTimezone.responseText;
+            }
+
+            console.log(newConsult[cnsArray]["tv.consultDatetime"]);
+            console.log(convertDatetime);
 
             if (Number(newConsult[cnsArray]["tv.consultStatusSession"]) === 0) {
                 callbackFunc = "startMeeting";
@@ -426,7 +452,7 @@
                 </div>
                 <div class="nModal-header">
                     <div>
-                        <div class="nModal-header__title">Консультация №${newConsult[cnsArray]["id"]} от ${newConsult[cnsArray]["tv.consultDatetime"]}</div>
+                        <div class="nModal-header__title">Консультация №${newConsult[cnsArray]["id"]} от ${convertDatetime}</div>
                     </div>
                     <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -439,7 +465,7 @@
                     <div class="nModal-body__list">
                         <div class="nModal-body__item">
                             <div class="nModal-body__record">Дата:</div>
-                            <div class="nModal-body__record">${newConsult[cnsArray]["tv.consultDatetime"]}</div>
+                            <div class="nModal-body__record">${convertDatetime}</div>
                         </div>
                         <div class="nModal-body__item">
                             <div class="nModal-body__record">${usergroup == 2 ? "Таролог:" : "Клиент:"}</div>

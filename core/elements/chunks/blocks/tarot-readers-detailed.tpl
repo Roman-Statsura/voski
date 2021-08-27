@@ -252,10 +252,16 @@
         <input type="hidden" name="idTarot" value="{$_modx->resource.id}">
         <input type="hidden" name="idUser" value="{$_modx->user.id}">
         <input type="hidden" name="subjectSum" value="{$_modx->resource.price}">
+
+        {set $timezoneName = '@FILE snippets/timezones.php' | snippet : [
+            'current' => $_modx->user.extended.timezone,
+            'type' => 'name'
+        ]}
+
         <div class="nModal-header">
             <div>
                 <div class="nModal-header__title">Выберите дату и время сессии</div>
-                <div class="nModal-header__subtitle">Расписание отображается в часовом поясе Moscow</div>
+                <div class="nModal-header__subtitle">Расписание отображается в часовом поясе {$timezoneName}</div>
             </div>
             <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
         </div>

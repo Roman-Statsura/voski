@@ -1,5 +1,7 @@
 <?php
     require_once '../../core/model/modx/modx.class.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.php';
+
     $modx = new modX();
     $modx->initialize('web');
     $modx->getService('error','error.modError', '', '');
@@ -12,6 +14,9 @@
     $resource = $modx->getObject('modResource', $_POST['profileID']);
     $resourceID = $resource->get('id');
     $scheduleMIGX = $resource->getTVValue('schedule');
+    $idUserInSystem = $resource->getTVValue('idUser');
+    
+    $diffTimezoneOffset = getDiffTimezoneOffset($modx, $idUserInSystem);
 
     if ($scheduleMIGX) {
         $schCurrentArray = json_decode($scheduleMIGX);
@@ -32,8 +37,18 @@
         } else {
             foreach ($schCurrentArray as $schCurrentItem) {
                 if ($schCurrentItem->MIGX_id == $_POST["migxID"]) {
-                    $schCurrentItem->datetime = $_POST['date'] . " " . $_POST['time'];
-                    $schCurrentItem->datetimeEnd = $_POST['date'] . " " . $_POST['timeEnd'];
+                    $startTime      = strtotime(date($_POST['date'] . " " . $_POST['time']));
+                    $startTimeByMSK = date("Y-m-d H:i", $startTime - $diffTimezoneOffset);
+        
+                    if (!empty($_POST['timeEnd'])) {
+                        $endTime      = strtotime(date($_POST['date'] . " " . $_POST['timeEnd']));
+                        $endTimeByMSK = date("Y-m-d H:i", $endTime - $diffTimezoneOffset);
+                    } else {
+                        $endTimeByMSK = $_POST['date'] . " " . $_POST['timeEnd'];
+                    }
+
+                    $schCurrentItem->datetime = $startTimeByMSK;
+                    $schCurrentItem->datetimeEnd = $endTimeByMSK;
                     $schCurrentItem->allDay = empty($_POST['allDay']) ? 0 : $_POST['allDay'];
                     $schCurrentItem->desc = $_POST['desc'];
                     $schCurrentItem->status = empty($_POST['status']) ? 0 : $_POST['status'];
@@ -45,15 +60,25 @@
         $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     } else {
         if (!empty($_POST['time'])) {
-            $schNewSubArray = [];
-            $schNewSubArray["MIGX_id"] = end($schCurrentArray)->MIGX_id + 1;
-            $schNewSubArray["datetime"] = $_POST['date'] . " " . $_POST['time'];
-            $schNewSubArray["datetimeEnd"] = $_POST['date'] . " " . $_POST['timeEnd'];
-            $schNewSubArray["allDay"] = empty($_POST['allDay']) ? 0 : $_POST['allDay'];
-            $schNewSubArray["idUser"] = $_POST['idUser'];
-            $schNewSubArray["desc"] = $_POST['desc'];
-            $schNewSubArray["status"] = empty($_POST['status']) ? 0 : $_POST['status'];
-            $schNewSubArray["active"] = '1';
+            $startTime      = strtotime(date($_POST['date'] . " " . $_POST['time']));
+            $startTimeByMSK = date("Y-m-d H:i", $startTime - $diffTimezoneOffset);
+
+            if (!empty($_POST['timeEnd'])) {
+                $endTime      = strtotime(date($_POST['date'] . " " . $_POST['timeEnd']));
+                $endTimeByMSK = date("Y-m-d H:i", $endTime - $diffTimezoneOffset);
+            } else {
+                $endTimeByMSK = $_POST['date'] . " " . $_POST['timeEnd'];
+            }
+
+            $schNewSubArray = (object)[];
+            $schNewSubArray->MIGX_id = end($schCurrentArray)->MIGX_id + 1;
+            $schNewSubArray->datetime = $startTimeByMSK;
+            $schNewSubArray->datetimeEnd = $endTimeByMSK;
+            $schNewSubArray->allDay = empty($_POST['allDay']) ? 0 : $_POST['allDay'];
+            $schNewSubArray->idUser = $_POST['idUser'];
+            $schNewSubArray->desc = $_POST['desc'];
+            $schNewSubArray->status = empty($_POST['status']) ? 0 : $_POST['status'];
+            $schNewSubArray->active = '1';
         
             $schCurrentArray[] = $schNewSubArray;
             $resource->setTVValue('schedule', json_encode($schCurrentArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
@@ -75,6 +100,10 @@
                 $schCurrentItem->username = $user['fullname'];
             }
         }
+
+        $datetime = strtotime(date($schCurrentItem->datetime));
+        $datetimeByMSK = date("Y-m-d H:i", $datetime + $diffTimezoneOffset);
+        $schCurrentItem->datetime = $datetimeByMSK;
 
         $newArray[] = $schCurrentItem;
     }

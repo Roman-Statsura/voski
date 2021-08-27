@@ -22,6 +22,11 @@
     'id' => $_modx->getPlaceholder('upd.internalKey')
 ]}
 
+{set $timezoneName = '@FILE snippets/timezones.php' | snippet : [
+    'current' => $_modx->getPlaceholder('upd.timezone'),
+    'type' => 'name'
+]}
+
 <div class="login">
     <div class="login-container login-container--100 container">
         <div class="login-container__content login-content">
@@ -32,7 +37,9 @@
                 <h2 class="login-content__header--title">Календарь</h2>
                 <div class="login-content__header--subtitle">
                     Здесь отображаются записи к вам.<br>
-                    Вы можете следить и управлять своим расписанием.
+                    Вы можете следить и управлять своим расписанием.<br>
+                    <strong>Внимание!</strong> График работы заполняется по указанному вами<br>часовому поясу: <strong>{$timezoneName}</strong><br>
+                    Время, будет скорректировано для часовых поясов автоматически
                 </div>
             </div>
             <div class="login-content__body">
@@ -70,6 +77,11 @@
                             'field' => 'age'
                         ]}
                     {/if}
+
+                    {set $sch.datetime = '@FILE snippets/dateByTimezone.php' | snippet : [
+                        'dateTimeConsult' => $sch.datetime | date: 'd.m.Y H:i'
+                        'dateFormat'      => "Y-m-d H:i"
+                    ]}
 
                     {set $newSchedule[] = $sch}
                 {/foreach}
