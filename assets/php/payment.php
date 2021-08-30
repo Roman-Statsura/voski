@@ -156,8 +156,21 @@
             echo json_encode($payment, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         case "getReceipts":
-            $receipts = $paymentClass->getReceipts(array('payment_id' => $_POST["paymentID"]));
             $receiptArr = [];
+
+            // Проверка на наличие Чеков возврата
+            if (isset($_POST["refundID"]) && !empty($_POST["refundID"])) {
+                $receiptsRefunds = $paymentClass->getReceipts(array("refund_id" => $_POST["refundID"]));
+                $receiptRefundArr = $receiptsRefunds->getItems();
+                if (count($receiptRefundArr) > 0) {
+                    foreach ($receiptRefundArr as $receipt) {
+                        $receipt["formattedDate"] = $receipt["registered_at"]->format('d.m.Y H:i:s');
+                        $receiptArr[] = $receipt;
+                    }
+                }
+            }
+
+            $receipts = $paymentClass->getReceipts(array("payment_id" => $_POST["paymentID"]));
             foreach ($receipts->getItems() as $receipt) {
                 $receipt["formattedDate"] = $receipt["registered_at"]->format('d.m.Y H:i:s');
                 $receiptArr[] = $receipt;

@@ -182,15 +182,19 @@
                                                             {set $userFullname = $consultItem['tv.consultIDTarot'] | resource : 'pagetitle'}
                                                         {/if}
 
-                                                        <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-payment="{$consultItem['tv.consultPaymentID']}" data-nmodal-callback="paymentInfo" data-nmodal="paymentInfo" data-nmodal-size="large">
+                                                        <div class="table-flex--row table-flex--body nModal-button" data-cnsid="{$key}" data-consultation="cnsid-{$consultItem.id}" data-name="{$userFullname}" data-payment="{$consultItem['tv.consultPaymentID']}" data-refund="{$consultItem['tv.consultRefundID']}" data-nmodal-callback="paymentInfo" data-nmodal="paymentInfo" data-nmodal-size="large">
                                                             <div class="table-flex--item">
-                                                                <div class="table-flex--col">{$consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'}</div>
+                                                                <div class="table-flex--col">
+                                                                    {'@FILE snippets/dateByTimezone.php' | snippet : [
+                                                                        'dateTimeConsult' => $consultItem['tv.consultDatetime'] | date: 'd.m.Y H:i'
+                                                                    ]}
+                                                                </div>
                                                                 <div class="table-flex--col">{$userFullname}</div>
                                                                 <div class="table-flex--col consult-text">
                                                                     {$paymentInfo["description"]}
                                                                 </div>
                                                                 <div class="table-flex--col">
-                                                                    <span class="table-consultation__status {if $paymentInfo['status'] == 'Оплачен'}table-consultation__status--green{/if}{if $paymentInfo['status'] == 'Отменен'}table-consultation__status--red{/if}">
+                                                                    <span class="table-consultation__status {if $paymentInfo['status'] == 'Оплачен' || $paymentInfo['status'] == 'Оплачен, удержано'}table-consultation__status--green{/if}{if $paymentInfo['status'] == 'Отменен' || $paymentInfo['status'] == 'Отменен, возврат'}table-consultation__status--red{/if}">
                                                                         {$paymentInfo["status"]}
                                                                     </span>
                                                                 </div>
@@ -338,9 +342,15 @@
 
         let xhr = new XMLHttpRequest(),
             paymentID = formElement.dataset.payment,
+            refundID = formElement.dataset.refund,
+            paymentType = "payment_id",
             paymentModalForm = event.querySelector(".nModal-body"),
             receiptModalTitle = event.querySelector(`[data-modaltitle="receipt"]`),
             params = "paymentID=" + paymentID;
+
+        if (refundID !== "") {
+            params += "&refundID=" + refundID;
+        }
 
         xhr.open("POST", "/assets/php/payment.php?action=getReceipts", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -349,52 +359,56 @@
             if (xhr.readyState != 4) return;
             if (xhr.status === 200) {
                 document.body.classList.add("loaded");
-                let response = JSON.parse(xhr.responseText),
-                    refundKey = response.findIndex(p => p.type == "refund"),
+                let response = JSON.parse(xhr.responseText);
+                if (response.length > 0) {
+                    let refundKey = response.findIndex(p => p.type == "refund"),
                     resultResponse = [];
 
-                if (refundKey !== -1) {
-                    resultResponse = response[refundKey];
-                    receiptModalTitle.innerHTML = "Чек возврата";
-                } else {
-                    resultResponse = response[0];
-                }
+                    if (refundKey !== -1) {
+                        resultResponse = response[refundKey];
+                        receiptModalTitle.innerHTML = "Чек возврата";
+                    } else {
+                        resultResponse = response[0];
+                    }
 
-                if (resultResponse.status === "succeeded") {
-                    let modalDiv = `
-                        <div class="nModal-body__list">
-                            <div class="nModal-body__item">
-                                <div class="nModal-body__record">Тип:</div>
-                                <div class="nModal-body__record">${resultResponse.type === "payment" ? "Оплата" : "Возврат"}</div>
+                    if (resultResponse.status === "succeeded") {
+                        let modalDiv = `
+                            <div class="nModal-body__list">
+                                <div class="nModal-body__item">
+                                    <div class="nModal-body__record">Тип:</div>
+                                    <div class="nModal-body__record">${resultResponse.type === "payment" ? "Оплата" : "Возврат"}</div>
+                                </div>
+                                <div class="nModal-body__item">
+                                    <div class="nModal-body__record">Дата оплаты:</div>
+                                    <div class="nModal-body__record">${resultResponse.formattedDate}</div>
+                                </div>
+                                <div class="nModal-body__item flex-direction--column">
+                                    <div class="nModal-body__record">Описание:</div>
+                                    <div class="nModal-body__record">${resultResponse.items[0].description}</div>
+                                </div>
+                                <div class="nModal-body__item">
+                                    <div class="nModal-body__record">Стоимость:</div>
+                                    <div class="nModal-body__record">${Number(resultResponse.items[0].amount.value).toFixed(0)} руб</div>
+                                </div>
+                                <div class="nModal-body__item">
+                                    <div class="nModal-body__record">Номер фискального документа:</div>
+                                    <div class="nModal-body__record">${resultResponse.fiscal_document_number}</div>
+                                </div>
+                                <div class="nModal-body__item">
+                                    <div class="nModal-body__record">Номер фискального накопителя:</div>
+                                    <div class="nModal-body__record">${resultResponse.fiscal_storage_number}</div>
+                                </div>
+                                <div class="nModal-body__item">
+                                    <div class="nModal-body__record">Фискальный признак:</div>
+                                    <div class="nModal-body__record">${resultResponse.fiscal_attribute}</div>
+                                </div>
                             </div>
-                            <div class="nModal-body__item">
-                                <div class="nModal-body__record">Дата оплаты:</div>
-                                <div class="nModal-body__record">${resultResponse.formattedDate}</div>
-                            </div>
-                            <div class="nModal-body__item flex-direction--column">
-                                <div class="nModal-body__record">Описание:</div>
-                                <div class="nModal-body__record">${resultResponse.items[0].description}</div>
-                            </div>
-                            <div class="nModal-body__item">
-                                <div class="nModal-body__record">Стоимость:</div>
-                                <div class="nModal-body__record">${Number(resultResponse.items[0].amount.value).toFixed(0)} руб</div>
-                            </div>
-                            <div class="nModal-body__item">
-                                <div class="nModal-body__record">Номер фискального документа:</div>
-                                <div class="nModal-body__record">${resultResponse.fiscal_document_number}</div>
-                            </div>
-                            <div class="nModal-body__item">
-                                <div class="nModal-body__record">Номер фискального накопителя:</div>
-                                <div class="nModal-body__record">${resultResponse.fiscal_storage_number}</div>
-                            </div>
-                            <div class="nModal-body__item">
-                                <div class="nModal-body__record">Фискальный признак:</div>
-                                <div class="nModal-body__record">${resultResponse.fiscal_attribute}</div>
-                            </div>
-                        </div>
-                    `;
+                        `;
 
-                    paymentModalForm.innerHTML = modalDiv;
+                        paymentModalForm.innerHTML = modalDiv;
+                    } else {
+                        exceptionError("Ошибка получения чека с кассы!");
+                    }
                 } else {
                     exceptionError("Ошибка получения чека с кассы!");
                 }

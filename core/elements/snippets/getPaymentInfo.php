@@ -7,27 +7,34 @@
     $payment = $paymentClass->getPaymentInfo($paymentID);
 
     if ($payment) {
-        switch ($payment->status) {
-            case 'pending':
-                $status = "Ожидает оплаты";
-                break;
-            case 'waiting_for_capture':
-                $status = "Оплачен";
-                break;
-            case 'succeeded':
-                $status = "Оплачен";
-                break;
-            case 'canceled':
-                $status = "Отменен";
-                break;
-            default:
-                $status = "Ожидает оплаты";
-                break;
+        if (empty($payment->refunded_amount)) {
+            switch ($payment->status) {
+                case 'pending':
+                    $status = "Ожидает оплаты";
+                    break;
+                case 'waiting_for_capture':
+                    $status = "Оплачен, удержано";
+                    break;
+                case 'succeeded':
+                    $status = "Оплачен";
+                    break;
+                case 'canceled':
+                    $status = "Отменен";
+                    break;
+                default:
+                    $status = "Ожидает оплаты";
+                    break;
+            }
+
+            $paymentPrice = $payment->amount->value;
+        } else {
+            $status = "Отменен, возврат";
+            $paymentPrice = $payment->refunded_amount->value;
         }
 
         $response["statusCode"] = $payment->status;
         $response["status"] = $status;
-        $response["price"] = intval($payment->amount->value);
+        $response["price"] = intval($paymentPrice);
         $response["paid"] = $payment->paid;
         $response["description"] = $payment->description;
     }

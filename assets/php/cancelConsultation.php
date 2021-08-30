@@ -108,6 +108,7 @@
                         // Если расписание успешно сохранилась, то удаляем саму консультацию
                         // $resource->set('deleted', '1');
                         $resource->setTVValue('consultStatusSession', 2);
+                        $resource->setTVValue('consultRefundID', $createRefund->id);
 
                         // Сохраняем результат
                         if ($resource->save()) {
