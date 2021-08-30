@@ -3,6 +3,7 @@
     require_once './zoomJWT/jwtTokenGenerator.php';
     require_once './sendMail.php';
     require_once './uniqueAliasGenerator.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.php';
 
     $modx = new modX();
     $modx->initialize('web');
@@ -81,12 +82,19 @@
             $tarotEmail = $tarot["email"];
         }
 
+        $diffTimezoneOffset = getDiffTimezoneOffset($modx, $_POST['idUser']);
+
+        $timestamp = strtotime(date($_POST['schTime']));
+        $dateFormat = "Y-m-d H:i";
+        // Переводим в МСК часовой пояс для Zoom
+        $timezoneTime = date($dateFormat, $timestamp - $diffTimezoneOffset);
+
         // Создаем конференцию в Zoom
-        $title = "Консультация с клиентом {$clientUserName} на дату {$_POST['schTime']}";
+        $title = "Консультация с клиентом {$clientUserName} на дату {$timezoneTime}";
         $query = array(
             "topic"      => $title,
             "type"       => 2,
-            "start_time" => date("Y-m-d\TH:i:s", strtotime($_POST['schTime'])),
+            "start_time" => date("Y-m-d\TH:i:s", strtotime($timezoneTime)),
             "timezone"   => "Europe/Moscow",
             "duration"   => "60",
             "password"   => "123456"
@@ -119,7 +127,7 @@
         } else {
             $docId = $newResource->get('id');
             $tvs = $modx->getObject('modResource', $docId);
-            $tvs->setTVValue('consultDatetime', $_POST['schTime']);
+            $tvs->setTVValue('consultDatetime', $timezoneTime);
             $tvs->setTVValue('consultIDClient', $_POST['idUser']);
             $tvs->setTVValue('consultIDTarot', $_POST['idTarot']);
             $tvs->setTVValue('consultZoomID', $respTest->id);
@@ -137,7 +145,7 @@
 
             $schNewSubArray = [];
             $schNewSubArray["MIGX_id"] = end($schCurrentArray)->MIGX_id + 1;
-            $schNewSubArray["datetime"] = $_POST['schTime'];
+            $schNewSubArray["datetime"] = $timezoneTime;
             $schNewSubArray["allDay"] = 0;
             $schNewSubArray["idUser"] = $_POST['idUser'];
             $schNewSubArray["zoomLink"] = $respTest->join_url;
@@ -153,9 +161,8 @@
                 $modx->log(xPDO::LOG_LEVEL_ERROR, "Ошибка сохранения расписания к тарологу: id таролога: {$_POST['idTarot']}");
             }
         }
-        
-        $cnsDateTime = new DateTime($_POST['schTime']);
 
+        $cnsDateTime = new DateTime($_POST['schTime']);
         $arr = array(
             '01' => 'Января',
             '02' => 'Февраля',

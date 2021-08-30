@@ -2,6 +2,7 @@
     require_once '../../core/model/modx/modx.class.php';
     require_once './zoomJWT/jwtTokenGenerator.php';
     require_once './sendMail.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/date/diffTimezoneOffset.php';
 
     $modx = new modX();
     $modx->initialize('web');
@@ -62,6 +63,42 @@
                         $clientEmail = $user["email"];
                     }
 
+                    $diffTimezoneOffset = getDiffTimezoneOffset($modx, $idClient);
+
+                    $timestamp = strtotime(date($startConsult));
+                    $dateFormat = "Y-m-d H:i";
+                    $timezoneTime = date($dateFormat, $timestamp + $diffTimezoneOffset);
+                    
+                    $cnsDateTime = new DateTime($timezoneTime);
+
+                    $arr = array(
+                        '01' => 'Января',
+                        '02' => 'Февраля',
+                        '03' => 'Марта',
+                        '04' => 'Апреля',
+                        '05' => 'Мая',
+                        '06' => 'Июня',
+                        '07' => 'Июля',
+                        '08' => 'Августа',
+                        '09' => 'Сентября',
+                        '10' => 'Октября',
+                        '11' => 'Ноября',
+                        '12' => 'Декабря'
+                    );
+            
+                    $arrData = array(
+                        '1' => 'Понедельник',
+                        '2' => 'Вторник',
+                        '3' => 'Среда',
+                        '4' => 'Четверг',
+                        '5' => 'Пятница',
+                        '6' => 'Суббота',
+                        '7' => 'Воскресенье'
+                    );
+            
+                    $weekDay = $arrData[$cnsDateTime->format('N')];
+                    $dateWithTime = "{$cnsDateTime->format('d')} {$arr[$cnsDateTime->format('m')]} {$cnsDateTime->format('H:i')}";
+
                     // Отправляем письмо на почту клиента
                     $properties = [
                         "clientName"    => $clientUserName,
@@ -73,7 +110,7 @@
                     ];
                     
                     if (filter_var($clientEmail, FILTER_VALIDATE_EMAIL)) {
-                        if (sendMail($modx, $clientEmail, "Приглашение на консультацию от таролога {$resource->get('pagetitle')} с сайте Voski", 'consultationNotify', $properties)) {
+                        if (sendMail($modx, $clientEmail, "Приглашение на консультацию от таролога {$resource->get('pagetitle')} на сайте Voski", 'consultationNotify', $properties)) {
                             $currentResource->setTVValue('consultSended', 1);
                             echo "success!";
                         } else {
