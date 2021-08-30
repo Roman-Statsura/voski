@@ -7,7 +7,7 @@
     $payment = $paymentClass->getPaymentInfo($paymentID);
 
     if ($payment) {
-        if (empty($payment->refunded_amount)) {
+        if (empty($payment->refunded_amount) || $payment->refunded_amount->value == 0) {
             switch ($payment->status) {
                 case 'pending':
                     $status = "Ожидает оплаты";
