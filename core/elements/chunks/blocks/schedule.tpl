@@ -54,7 +54,8 @@
                         'name' => 'time['~$worktimeItem.dayweek~']',
                         'attrs' => $worktime[$key]["active"] ? "" : "disabled",
                         'value' => $startTime,
-                        'id' => 'time_'~$key
+                        'id' => 'time_'~$key,
+                        'classesList' => 'timepicker_start'
                     ]}
                     
                     <span class="calendar-date__times--delimeter">-</span>
@@ -67,7 +68,8 @@
                         'name' => 'timeEnd['~$worktimeItem.dayweek~']',
                         'attrs' => $worktime[$key]["active"] ? "" : "disabled",
                         'value' => $endTime,
-                        'id' => 'timeEnd_'~$key
+                        'id' => 'timeEnd_'~$key,
+                        'classesList' => 'timepicker_end'
                     ]}
                 </div>
             </div>
@@ -85,6 +87,7 @@
     let dayweekCheckboxes = document.querySelectorAll(`[name="dayweek[]"]`),
         times = document.querySelectorAll(`[name="time[]"]`),
         timesEnd = document.querySelectorAll(`[name="timeEnd[]"]`),
+        timepickerInput = document.querySelectorAll(`.timepicker_input`),
         submitWorktime = document.querySelector(`#submitWorktime`);
 
     dayweekCheckboxes.forEach(element => {
@@ -104,6 +107,41 @@
         });
     });
 
+    function hideTimepicker(elem) {
+        let currentID = elem.id,
+            idsBlock = currentID.split("_"),
+            detectedTimeInput = document.querySelector(`#time_${idsBlock[1]}`),
+            detectedTimeEndInput = document.querySelector(`#timeEnd_${idsBlock[1]}`),
+            timeInputOption = detectedTimeInput.querySelectorAll(`option`),
+            timeEndInputOption = detectedTimeEndInput.querySelectorAll(`option`);
+
+        for (let item of detectedTimeEndInput.querySelectorAll(`option`)) {
+            item.removeAttribute("disabled", "");
+            item.removeAttribute("hidden", "");
+            item.classList.remove("hidden-option");
+        }
+
+        for (let i = 0; i < timeEndInputOption.length; i++) {
+            timeEndInputOption[i].setAttribute("disabled", "");
+            timeEndInputOption[i].setAttribute("hidden", "");
+            timeEndInputOption[i].classList.add("hidden-option");
+
+            if (timeEndInputOption[i].value === detectedTimeInput.value) {
+                break;
+            }
+        }
+    }
+
+    timepickerInput.forEach(element => {
+        hideTimepicker(element);
+    });
+
+    timepickerInput.forEach(element => {
+        element.addEventListener("change", function() {
+            hideTimepicker(this);
+        });
+    });
+
     submitWorktime.addEventListener("click", function() {
         callbackWorktime(document.forms.worktime);
     });
@@ -115,8 +153,7 @@
         xhr.open("POST", "/assets/php/addWorktime.php", true);
         xhr.onreadystatechange = function() {
             if (this.readyState != 4) return;
-            console.log(this.responseText);
-            
+
             let result = JSON.parse(this.responseText);
             alerts({
                 state: result.state,

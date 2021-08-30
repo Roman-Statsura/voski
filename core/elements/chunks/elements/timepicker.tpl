@@ -1,6 +1,6 @@
 
 <label for="{$id}" class="">
-    <select class="form__input form__input--select login-tpl-form__item--input" name="{$name}" id="{$id}" {$attrs}>
+    <select class="form__input form__input--select login-tpl-form__item--input timepicker_input {$classesList}" name="{$name}" id="{$id}" {$attrs}>
         {set $timepicker = '!timepicker' | snippet}
         {foreach $timepicker as $key => $schItem}
             {set $valueSet = ""}
