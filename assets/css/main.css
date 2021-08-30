@@ -4344,7 +4344,6 @@ th {
   align-items: center;
   letter-spacing: 0.01em;
   color: #2E3133;
-  text-align: right;
 }
 @media only screen and (max-width: 768px) {
   .login-tpl-form__item--label {
@@ -4439,6 +4438,9 @@ th {
   flex-direction: column;
   max-height: 43px;
   margin-right: 24px;
+}
+.login-tpl-form__item--left .login-tpl-form__item--label {
+  text-align: right;
 }
 @media only screen and (max-width: 768px) {
   .login-tpl-form__item--left {

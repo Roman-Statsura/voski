@@ -229,7 +229,6 @@
                     align-items: center;
                     letter-spacing: 0.01em;
                     color: $dark-gray;
-                    text-align: right;
 
                     @media only screen and (max-width: $screen-sm) {
                         font-size: 16px;
@@ -334,6 +333,10 @@
                     flex-direction: column;
                     max-height: 43px;
                     margin-right: 24px;
+
+                    .login-tpl-form__item--label {
+                        text-align: right;
+                    }
 
                     @media only screen and (max-width: $screen-sm) {
                         width: 100%;

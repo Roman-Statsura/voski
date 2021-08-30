@@ -152,11 +152,11 @@
             echo json_encode($payment, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         case "getPaymentInfo":
-            $payment = $paymentClass->getPaymentInfo($_REQUEST["paymentID"]);
+            $payment = $paymentClass->getPaymentInfo($_POST["paymentID"]);
             echo json_encode($payment, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             break;
         case "getReceipts":
-            $receipts = $paymentClass->getReceipts(array('payment_id' => $_REQUEST["paymentID"]));
+            $receipts = $paymentClass->getReceipts(array('payment_id' => $_POST["paymentID"]));
             $receiptArr = [];
             foreach ($receipts->getItems() as $receipt) {
                 $receipt["formattedDate"] = $receipt["registered_at"]->format('d.m.Y H:i:s');
