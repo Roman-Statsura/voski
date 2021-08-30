@@ -382,9 +382,6 @@
                 convertDatetime = xhrTimezone.responseText;
             }
 
-            console.log(newConsult[cnsArray]["tv.consultDatetime"]);
-            console.log(convertDatetime);
-
             if (Number(newConsult[cnsArray]["tv.consultStatusSession"]) === 0) {
                 callbackFunc = "startMeeting";
                 if (usergroup == 2) {

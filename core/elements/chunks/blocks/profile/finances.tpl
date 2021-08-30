@@ -143,7 +143,7 @@
                         'sortby' => 'consultDatetime',
                         'sortdir' => 'ASC',
                         'includeTVs' => 'consultDatetime, consultIDClient, consultIDTarot, consultZoomID, consultZoomLink, consultZoomStartLink, 
-                                        consultDesc, consultStatusSession, consultDuration, consultSended, consultPaymentID',
+                                        consultDesc, consultStatusSession, consultDuration, consultSended, consultPaymentID, consultRefundID',
                         'includeContent' => '1',
                         'return' => 'json',
                         'limit' => 0
@@ -166,8 +166,8 @@
                                         {set $paymentInfo = '@FILE snippets/getPaymentInfo.php' | snippet : [
                                             'paymentID' => $consultItem['tv.consultPaymentID']
                                         ]}
-                                        {if ($_modx->user.extended.usertype == 2 && ($paymentInfo["statusCode"] == "waiting_for_capture" || $paymentInfo["statusCode"] == "succeeded")) ||
-                                            ($_modx->user.extended.usertype == 3 && $paymentInfo["statusCode"] == "succeeded")}
+                                        {if ($_modx->user.extended.usertype == 2 && ($paymentInfo["statusCode"] == "waiting_for_capture" || $paymentInfo["statusCode"] == "succeeded" || $paymentInfo["statusCode"] == "canceled")) ||
+                                            ($_modx->user.extended.usertype == 3 && $paymentInfo["statusCode"] == "succeeded" || $paymentInfo["statusCode"] == "canceled")}
                                             {set $innerCount = $innerCount + 1}
                                             
                                             <div class="login-finances__tab login-tab tab" data-id="2">
@@ -261,7 +261,7 @@
         </div>
         <div class="nModal-header">
             <div>
-                <div class="nModal-header__title">Чек об оплате</div>
+                <div class="nModal-header__title" data-modaltitle="receipt">Чек об оплате</div>
             </div>
             <a href="#" class="nModal-button nModal-button--close" data-nmodal-callback="closeModal">{'@FILE chunks/icons/icon-cross.tpl' | chunk}</a>
         </div>
@@ -332,48 +332,64 @@
         });
     });
 
+    // Получение чека по оплате
     function paymentInfo(formElement, event) {
         document.body.classList.remove("loaded");
 
-        let formData = new FormData(),
-            xhr = new XMLHttpRequest(),
+        let xhr = new XMLHttpRequest(),
             paymentID = formElement.dataset.payment,
-            paymentModalForm = event.querySelector(".nModal-body");
+            paymentModalForm = event.querySelector(".nModal-body"),
+            receiptModalTitle = event.querySelector(`[data-modaltitle="receipt"]`),
+            params = "paymentID=" + paymentID;
 
-        formData.append("paymentID", paymentID);
         xhr.open("POST", "/assets/php/payment.php?action=getReceipts", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
         xhr.onreadystatechange = function() {
             if (xhr.readyState != 4) return;
             if (xhr.status === 200) {
                 document.body.classList.add("loaded");
-                let response = JSON.parse(xhr.responseText);
+                let response = JSON.parse(xhr.responseText),
+                    refundKey = response.findIndex(p => p.type == "refund"),
+                    resultResponse = [];
 
-                if (response.status === "succeeded") {
+                if (refundKey !== -1) {
+                    resultResponse = response[refundKey];
+                    receiptModalTitle.innerHTML = "Чек возврата";
+                } else {
+                    resultResponse = response[0];
+                }
+
+                if (resultResponse.status === "succeeded") {
                     let modalDiv = `
                         <div class="nModal-body__list">
                             <div class="nModal-body__item">
+                                <div class="nModal-body__record">Тип:</div>
+                                <div class="nModal-body__record">${resultResponse.type === "payment" ? "Оплата" : "Возврат"}</div>
+                            </div>
+                            <div class="nModal-body__item">
                                 <div class="nModal-body__record">Дата оплаты:</div>
-                                <div class="nModal-body__record">${response.formattedDate}</div>
+                                <div class="nModal-body__record">${resultResponse.formattedDate}</div>
                             </div>
                             <div class="nModal-body__item flex-direction--column">
                                 <div class="nModal-body__record">Описание:</div>
-                                <div class="nModal-body__record">${response.items[0].description}</div>
+                                <div class="nModal-body__record">${resultResponse.items[0].description}</div>
                             </div>
                             <div class="nModal-body__item">
                                 <div class="nModal-body__record">Стоимость:</div>
-                                <div class="nModal-body__record">${Number(response.items[0].amount.value).toFixed(0)} руб</div>
+                                <div class="nModal-body__record">${Number(resultResponse.items[0].amount.value).toFixed(0)} руб</div>
                             </div>
                             <div class="nModal-body__item">
                                 <div class="nModal-body__record">Номер фискального документа:</div>
-                                <div class="nModal-body__record">${response.fiscal_document_number}</div>
+                                <div class="nModal-body__record">${resultResponse.fiscal_document_number}</div>
                             </div>
                             <div class="nModal-body__item">
                                 <div class="nModal-body__record">Номер фискального накопителя:</div>
-                                <div class="nModal-body__record">${response.fiscal_storage_number}</div>
+                                <div class="nModal-body__record">${resultResponse.fiscal_storage_number}</div>
                             </div>
                             <div class="nModal-body__item">
                                 <div class="nModal-body__record">Фискальный признак:</div>
-                                <div class="nModal-body__record">${response.fiscal_attribute}</div>
+                                <div class="nModal-body__record">${resultResponse.fiscal_attribute}</div>
                             </div>
                         </div>
                     `;
@@ -386,7 +402,8 @@
                 exceptionError("Receipt Request status not 200");
             }
         }
-        xhr.send(formData);
+        
+        xhr.send(params);
     }
 
     // Luhn Algorithm
