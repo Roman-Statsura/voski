@@ -127,6 +127,9 @@
             timeEndInputOption[i].classList.add("hidden-option");
 
             if (timeEndInputOption[i].value === detectedTimeInput.value) {
+                if (timeEndInputOption[i].value >= detectedTimeEndInput.value) {
+                    timeEndInputOption[i + 1].setAttribute("selected", "");
+                }
                 break;
             }
         }
