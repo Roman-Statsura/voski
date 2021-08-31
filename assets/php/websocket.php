@@ -63,13 +63,15 @@
         }
     }
 
+    // "SERVER_IP" - Поставить ip текущего сервера
     $server = IoServer::factory(
         new HttpServer(
             new WsServer(
                 new Chat()
             )
         ),
-        8080
+        8080,
+        "SERVER_IP"
     );
 
     $server->run();

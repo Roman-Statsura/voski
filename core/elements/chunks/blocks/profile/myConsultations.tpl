@@ -242,7 +242,8 @@
         curUserGroup = `'~$_modx->user.extended.usertype~'`,
         intervalId = 0;
 
-    var socket = new WebSocket("ws://localhost:8080");
+    // localhost - domain
+    var socket = new WebSocket("wss://localhost:8080");
 
     socket.onopen = function() {};
 
