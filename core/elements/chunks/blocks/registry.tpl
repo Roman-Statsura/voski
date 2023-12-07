@@ -34,7 +34,7 @@
                             'submitVar' => ''
                             'activationResourceId' => '19'
                             'activationEmailTpl' => 'lgnActivateEmailTpl'
-                            'activationEmailSubject' => 'Вы зарегистрированы на сайте Voski'
+                            'activationEmailSubject' => 'Вы зарегистрированы на сайте ОРАКУЛ'
                             'submittedResourceId' => '20'
                             'placeholderPrefix' => 'reg.'
                             'usergroups' => $sessionUserGroup

@@ -4,9 +4,7 @@
             <div class="footer-content__block">
                 <div class="footer-content__block-item footer-item footer-logo">
                     <a href="/" class="footer-item__link">
-                        {'@FILE chunks/globals/logo.tpl' | chunk : [
-                            'fill' => '#292F36'
-                        ]}
+                        <img class="footer-logo__img" src="/assets/img/blocks/logo-new.png" alt="">
                     </a>
                     <div class="footer-item__socials">
                         <a href="#" class="footer-item__socials--link">
@@ -22,9 +20,8 @@
                 </div>
                 <div class="footer-content__block-item footer-item footer-menu">
                     <div class="footer-item__list">
-                        <a href="/{$_modx->makeUrl(2)}" class="footer-item__list--item">Каталог тарологов</a>
-                        <a href="/{$_modx->makeUrl(3)}" class="footer-item__list--item">Тарологам</a>
-                        <a href="/{$_modx->makeUrl(4)}" class="footer-item__list--item">О таро</a>
+                        <a href="/{$_modx->makeUrl(2)}" class="footer-item__list--item">Каталог астрологов</a>
+                        <a href="/{$_modx->makeUrl(3)}" class="footer-item__list--item">Астрологам</a>
                     </div>
                     <div class="footer-item__list">
                         <a href="/{$_modx->makeUrl(22)}" class="footer-item__list--item">Личный кабинет</a>
@@ -39,7 +36,7 @@
                     <div class="footer-item__list">
                         <a href="/{$_modx->makeUrl(10)}" class="footer-item__list--item">Контакты</a>
                         <a href="tel:" class="footer-item__list--item">+7 (900) 123-23-23</a>
-                        <a href="mailto:support@voski.com" class="footer-item__list--item">support@voski.com</a>
+                        <a href="mailto:support@orakul.com" class="footer-item__list--item">support@orakul.com</a>
                     </div>
                 </div>
             </div>
@@ -47,7 +44,7 @@
                 <div class="footer-content__block-item footer-item">
                     <p class="footer-item__paragraph">
                         Настоящий сайт носит исключительно информационный характер.<br>
-                        Все права на публикуемые на сайте материалы принадлежат "Voski" © 2021.
+                        Все права на публикуемые на сайте материалы принадлежат "ОРАКУЛ" © {$.php.date('Y')}.
                     </p>
                 </div>
                 <div class="footer-content__block-item footer-item">

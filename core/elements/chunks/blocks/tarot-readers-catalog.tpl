@@ -31,9 +31,9 @@
     <div class="tarot-container container">
         <div class="tarot-container__content tarot-content">
             <div class="tarot-content__header">
-                <h2 class="tarot-content__header--title">Тарологи Voski</h2>
+                <h2 class="tarot-content__header--title">Астрологи ОРАКУЛА</h2>
                 <div class="tarot-content__header--subtitle">
-                    Мы предоставляем персонализированный подбор тарологов. На нашем сайте Вы найдете только людей, 
+                    Мы предоставляем персонализированный подбор астрологов. На нашем сайте Вы найдете только людей, 
                     прошедших курсы и подтвердивших свою квалификацию
                 </div>
             </div>
@@ -70,7 +70,7 @@
                                 </select>
                             </div>
                             <div class="tarot-content-filter__col">
-                                <label for="gender" class="tarot-content-filter__label">Пол таролога</label>
+                                <label for="gender" class="tarot-content-filter__label">Пол астррлога</label>
                                 <select class="form__input form__input--select login-tpl-form__item--input" name="gender" id="gender">
                                     <option value="0">Любой</option>
                                     <option value="male">Мужской</option>
@@ -114,7 +114,7 @@
     <div class="button-sticky container">
         {'@FILE chunks/elements/button.tpl' | chunk : [
             'type' => 'link'
-            'buttonTitle' => 'Подберите мне таролога'
+            'buttonTitle' => 'Подберите мне астролога'
             'link' => 'select-tarot'
             'classes' => ''
         ]}

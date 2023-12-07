@@ -201,7 +201,7 @@
 
         <div class="tarot-readers-content__block tarot-readers-block">
             <h2 class="tarot-readers-block__title">
-                Наши тарологи
+                Наши астрологи
             </h2>
             <div class="tarot-readers-block__list">
                 {set $tarotList = '!pdoResources' | snippet : [

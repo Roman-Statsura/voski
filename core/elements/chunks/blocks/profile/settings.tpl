@@ -16,7 +16,7 @@
                 <h2 class="login-content__header--title">Настройки</h2>
                 <div class="login-content__header--subtitle">
                     Пожалуйста укажите полные данные о себе, чтобы сделать 
-                    работу таролога более эффективной. 
+                    работу астролога более эффективной. 
                 </div>
             </div>
             <div class="login-content__body">

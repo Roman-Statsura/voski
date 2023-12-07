@@ -1,13 +1,13 @@
-{set $imageField = '/assets/img/blocks/videocall-new.png'}
+{set $imageField = '/assets/img/blocks/intro-block.png'}
 
 {set $thumbFromPhoto = '@FILE snippets/pThumb/pthumb.php' | snippet : [
     'input' => $imageField,
-    'options' => 'w=603&h=552&zc=C&q=85'
+    'options' => 'w=603&h=603&zc=C&q=85'
 ]}
 
 {set $thumbFromPhotoWebP = '@FILE snippets/pThumb/pthumb.php' | snippet : [
     'input' => $imageField,
-    'options' => 'w=603&h=552&zc=C&q=85&f=webp'
+    'options' => 'w=603&h=603&zc=C&q=85&f=webp'
 ]}
 
 <div class="main-header">
@@ -16,7 +16,7 @@
             <div class="main-header-content__block">
                 <div class="main-header-content__block_item">
                     <h1 class="main-header-content__block_title">
-                        Подберите лучшего таролога удалённо: 
+                        Подберите лучшего астролога удалённо: 
                         <span class="text-color--mint">задайте нужный для себя вопрос</span>
                     </h1>
                 </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="main-header-content__block_item">
                     {'@FILE chunks/elements/button.tpl' | chunk : [
-                        'buttonTitle' => 'Подобрать таролога'
+                        'buttonTitle' => 'Подобрать астролога'
                         'type' => 'link'
                         'link' => 'select-tarot'
                     ]}

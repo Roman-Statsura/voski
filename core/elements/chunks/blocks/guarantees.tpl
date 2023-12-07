@@ -26,11 +26,11 @@
                         <div class="swiper-wrapper guarantees-swiper__wrapper">
                             {'@FILE chunks/elements/card-icons.tpl' | chunk : [
                                 'icon' => '@FILE chunks/icons/icon-offer.tpl'
-                                'text' => 'Мы предоставляем персонализированный подбор тарологов'
+                                'text' => 'Мы предоставляем персонализированный подбор астрологов'
                             ]}
                             {'@FILE chunks/elements/card-icons.tpl' | chunk : [
                                 'icon' => '@FILE chunks/icons/icon-edu.tpl'
-                                'text' => 'Наши тарологи - прошедшие курсы и подтвердившие квалификацию'
+                                'text' => 'Наши астрологи - прошедшие курсы и подтвердившие квалификацию'
                             ]}
                             {'@FILE chunks/elements/card-icons.tpl' | chunk : [
                                 'icon' => '@FILE chunks/icons/icon-offer-sec.tpl'

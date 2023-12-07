@@ -10,9 +10,10 @@
 /core/config/config.inc.php
 !/core/config/example.config.inc.php
 
-/manager/*
+!/manager/*
 /manager/config.core.php
 !/manager/example.config.core.php
+/manager/.htaccess
 
 /vendor/
 composer.phar

@@ -12,7 +12,7 @@
     <div class="tarolog-container container">
         <div class="tarolog-container__content tarolog-content">
             <div class="tarolog-content__header">
-                <h2 class="tarolog-content__header--title">В нашей базе [[+total]] лучших таргологов</h2>
+                <h2 class="tarolog-content__header--title">В нашей базе [[+total]] лучших астрологов</h2>
             </div>
             <div class="tarolog-content__body">
                 <div class="tarolog-content__block tarolog-content__items">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="tarolog-content__block">
                     {'@FILE chunks/elements/button.tpl' | chunk : [
-                        'buttonTitle' => 'Подобрать своего таролога'
+                        'buttonTitle' => 'Подобрать своего астролога'
                         'type' => 'link'
                         'link' => 'select-tarot'
                     ]}

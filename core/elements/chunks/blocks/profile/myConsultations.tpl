@@ -69,7 +69,7 @@
                 <div class="table-flex table-consultation">
                     <div class="table-flex--row table-flex--head">
                         <div class="table-flex--col">Дата</div>
-                        <div class="table-flex--col">{if $_modx->user.extended.usertype == 3}Клиент{else}Таролог{/if}</div>
+                        <div class="table-flex--col">{if $_modx->user.extended.usertype == 3}Клиент{else}Астролог{/if}</div>
                         <div class="table-flex--col">Описание</div>
                         <div class="table-flex--col">Статус сеанса</div>
                         <div class="table-flex--col">Продолжительность</div>
@@ -466,7 +466,7 @@
                             <div class="nModal-body__record">${convertDatetime}</div>
                         </div>
                         <div class="nModal-body__item">
-                            <div class="nModal-body__record">${usergroup == 2 ? "Таролог:" : "Клиент:"}</div>
+                            <div class="nModal-body__record">${usergroup == 2 ? "Астролог:" : "Клиент:"}</div>
                             <div class="nModal-body__record">${fullname}</div>
                         </div>
                         <div class="nModal-body__item flex-direction--column">

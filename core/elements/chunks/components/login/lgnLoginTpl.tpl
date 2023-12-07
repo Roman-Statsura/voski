@@ -28,7 +28,7 @@
                     <div class="login-tpl-form__group--item">
                         <input id="tarologist" class="form__radio login-tpl-form__item--input" type="radio" name="user-group" value="3" />
                         <label for="tarologist" class="form__label login-tpl-form__item--label">
-                            Таролог
+                            Астролог
                         </label>
                     </div>
                 </div>

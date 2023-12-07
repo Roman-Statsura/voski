@@ -217,7 +217,7 @@
                             <label for="price_2" class="form__label login-tpl-form__item--label">
                                 <div class="form__label--group">
                                     <div class="form__label--title">3 000 – 7 000 ₽</div>
-                                    <div class="form__label--text">1-3 года частной практики, тарологи с потенциалом. Помогут с переживанием кризисных ситуаций, тревогой.</div>
+                                    <div class="form__label--text">1-3 года частной практики, астрологи с потенциалом. Помогут с переживанием кризисных ситуаций, тревогой.</div>
                                 </div>
                             </label>
                         </div>
@@ -282,10 +282,10 @@
                             <div class="tarot-readers-block__item ajax-item">
                                 <div class="tarot-readers-block__info justify-content--center">
                                     <h3 class="tarot-readers-block__name">
-                                        Каталог тарологов
+                                        Каталог астрологов
                                     </h3>
                                     <div class="tarot-readers-block__text">
-                                        Не нашли подходящего тарголога через анкету? Посмотрите в каталоге
+                                        Не нашли подходящего астролога через анкету? Посмотрите в каталоге
                                     </div>
                             
                                     <div class="tarot-readers-block__buttons">
@@ -326,7 +326,7 @@
             subtitle: "Выберите 2-4 запроса, которые вас интересуют. Так мы сможем наиболее точно подобрать специалистов",
             container: ""
         }, {
-            title: "Выбор пола таролога",
+            title: "Выбор пола астролога",
             subtitle: "Выберите пол тпролога, с которым вы хотели бы провести занятие. Так мы сможем наиболее точно подобрать специалистов",
             container: ""
         }, {
@@ -334,7 +334,7 @@
             subtitle: "Количество часов для каждого клиента определяется индивидуально: в зависимости от проблемы, которую предстоит решать, и метода, в котором работает специалист.<br>Цена указана за сессию.",
             container: ""
         }, {
-            title: "Выбор таролога",
+            title: "Выбор астролога",
             subtitle: "",
             container: "login-container--full"
         }];

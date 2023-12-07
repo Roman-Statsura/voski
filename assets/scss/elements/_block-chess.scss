@@ -46,7 +46,8 @@
         margin-right: 25px;
 
         @media screen and (max-width: $screen-md) {
-            margin: 0;
+            margin-right: 0;
+            margin-bottom: 15px;
         }
     }
 

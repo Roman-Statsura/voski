@@ -20,7 +20,7 @@
                         2
                     </div>
                     <div class="login-steps-content__step--title">
-                        Пол таролога
+                        Пол астролога
                     </div>
                 </div>
                 <div class="login-steps-content__step" data-id="3" data-parent="1" type-form="price-tarot">
@@ -36,7 +36,7 @@
                         4
                     </div>
                     <div class="login-steps-content__step--title">
-                        Выбор таролога
+                        Выбор астролога
                     </div>
                 </div>
             </div>

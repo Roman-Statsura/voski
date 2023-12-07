@@ -13,10 +13,6 @@
                         'title' => 'Telegram'
                     ]}
                     {'@FILE chunks/elements/social.tpl' | chunk : [
-                        'icon' => '@FILE chunks/icons/icon-viber.tpl'
-                        'title' => 'Viber'
-                    ]}
-                    {'@FILE chunks/elements/social.tpl' | chunk : [
                         'icon' => '@FILE chunks/icons/icon-whatsapp.tpl'
                         'title' => 'Whatsapp'
                     ]}

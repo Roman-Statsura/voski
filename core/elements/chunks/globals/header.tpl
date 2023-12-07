@@ -3,7 +3,7 @@
         <div class="header-container__block header-block">
             <div class="header-block__logo">
                 <a href="/" class="header-block__logo-link">
-                    {'@FILE chunks/globals/logo.tpl' | chunk} 
+                    <img class="header-block__logo__img" src="/assets/img/blocks/logo-new.png" alt="">
                 </a>
             </div>
             <div class="header-block__menu header-menu">

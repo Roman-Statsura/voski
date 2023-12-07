@@ -39,6 +39,10 @@
     &-logo {
         flex-direction: column;
 
+        &__img {
+            width: 86px;
+        }
+
         @media screen and (max-width: $screen-md) {
             flex-direction: row;
             width: 100%;            

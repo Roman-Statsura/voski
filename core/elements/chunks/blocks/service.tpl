@@ -7,15 +7,15 @@
             <div class="service-content__body">
                 <div class="service-content__block">
                     {'@FILE chunks/elements/block-chess.tpl' | chunk : [
-                        'image' => '/assets/img/blocks/img_videochat.png'
+                        'image' => '/assets/img/blocks/img_videochat_new.png'
                         'title' => 'Защищённый видеочат'
                         'desc' => '
                             На нашей платформе видеоконсультации проходят в защищенном личном кабинете. 
-                            Конфиденциальные сессии с вашим таргологом доступны из любой точки мира.
+                            Конфиденциальные сессии с вашим астрологам доступны из любой точки мира.
                         '
                     ]}
                     {'@FILE chunks/elements/block-chess.tpl' | chunk : [
-                        'image' => '/assets/img/blocks/img_session.png'
+                        'image' => '/assets/img/blocks/img_session_new.png'
                         'title' => 'Простое расписание'
                         'desc' => '
                             Назначайте и переносите, если ваши планы изменились. 
@@ -23,10 +23,10 @@
                         '
                     ]}
                     {'@FILE chunks/elements/block-chess.tpl' | chunk : [
-                        'image' => '/assets/img/blocks/img_chat.png'
+                        'image' => '/assets/img/blocks/img_chat_new.png'
                         'title' => 'Сопровождение на всех этапах'
                         'desc' => '
-                            Ответим на вопросы о сервисе или таргологии, поможем, поддержим, объясним, направим.
+                            Ответим на вопросы о сервисе или астрологии, поможем, поддержим, объясним, направим.
                         '
                     ]}
                 </div>

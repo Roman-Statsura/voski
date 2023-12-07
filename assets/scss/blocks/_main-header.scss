@@ -10,6 +10,8 @@
         }
 
         &__block {
+            flex: 1;
+
             &_title {
                 font-family: $nunito-font;
                 font-style: normal;
@@ -64,10 +66,17 @@
             }
 
             &.image-block {
-                width: 589px;
+                width: 525px;
+                margin-left: 25px;
+                flex: unset;
+
+                img {
+                    width: 100%;
+                }
 
                 @media screen and (max-width: $screen-md) {
                     width: 100%;
+                    margin-left: 0;
                     margin-bottom: 30px;
                 }
             }
