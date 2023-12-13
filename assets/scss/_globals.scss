@@ -816,6 +816,18 @@ li {
             user-select: none;
             cursor: pointer;
 
+            &:hover {
+                &::before {
+                    border-color: $light-green;
+                }
+            }
+
+            &:active {
+                &::before {
+                    border-color: $mint-turquoise;
+                }
+            }
+
             &::before {
                 content: '';
                 display: inline-block;
@@ -848,12 +860,24 @@ li {
                 user-select: none;
                 cursor: pointer;
                 text-align: left;
+
+                &:hover {
+                    &::before {
+                        border-color: $light-green;
+                    }
+                }
+    
+                &:active {
+                    &::before {
+                        border-color: $mint-turquoise;
+                    }
+                }
     
                 &::before {
                     content: '';
                     display: inline-block;
                     width: 24px;
-                    height: 24px;
+                    height: 24px; 
                     flex-shrink: 0;
                     flex-grow: 0;
                     background: $white;
@@ -862,6 +886,7 @@ li {
                     margin-right: 9px;
                     background-repeat: no-repeat;
                     background-position: center center;
+                    transition: .3s;
                 }
 
                 .form__label--text {
@@ -878,6 +903,12 @@ li {
                 + label {
                     .form__label--title {
                         color: $mint;
+                    }
+
+                    &:hover {
+                        &::before {
+                            border-color: $light-grey;
+                        }
                     }
 
                     &::before {
@@ -917,6 +948,18 @@ li {
             align-items: center;
             user-select: none;
             cursor: pointer;
+
+            &:hover {
+                &::before {
+                    border-color: $light-green;
+                }
+            }
+
+            &:active {
+                &::before {
+                    border-color: $mint-turquoise;
+                }
+            }
 
             &::before {
                 content: '';
@@ -1335,6 +1378,15 @@ li {
 
     &-handle {
         background: $mint !important;
+        transition: .3s;
+
+        &:hover {
+            background: $light-green !important;
+        }
+        
+        &:active {
+            background: $mint-turquoise !important;
+        }
 
         &::after, &::before {
             content: "";
