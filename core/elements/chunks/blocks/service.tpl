@@ -15,7 +15,7 @@
                         '
                     ]}
                     {'@FILE chunks/elements/block-chess.tpl' | chunk : [
-                        'image' => '/assets/img/blocks/img_session_new.png'
+                        'image' => '/assets/img/blocks/img_session_new-3.png'
                         'title' => 'Простое расписание'
                         'desc' => '
                             Назначайте и переносите, если ваши планы изменились. 
@@ -23,7 +23,7 @@
                         '
                     ]}
                     {'@FILE chunks/elements/block-chess.tpl' | chunk : [
-                        'image' => '/assets/img/blocks/img_chat_new.png'
+                        'image' => '/assets/img/blocks/img_chat_new-2.png'
                         'title' => 'Сопровождение на всех этапах'
                         'desc' => '
                             Ответим на вопросы о сервисе или астрологии, поможем, поддержим, объясним, направим.

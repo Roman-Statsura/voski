@@ -1,10 +1,10 @@
 {set $thumbFromPhoto = '@FILE snippets/pThumb/pthumb.php' | snippet : [
-    'input' => $preview == '' ? '/assets/img/blocks/article-empty_icon--big.png' : $preview,
+    'input' => $preview == '' ? '/assets/img/blocks/article-empty_icon--big-new.png' : $preview,
     'options' => $optionThumb == '' ? 'w=772&h=490&zc=C&q=85' : $optionThumb
 ]}
 
 {set $thumbFromPhotoWebp = '@FILE snippets/pThumb/pthumb.php' | snippet : [
-    'input' => $preview == '' ? '/assets/img/blocks/article-empty_icon--big.png' : $preview,
+    'input' => $preview == '' ? '/assets/img/blocks/article-empty_icon--big-new.png' : $preview,
     'options' => $optionThumb == '' ? 'w=772&h=490&zc=C&q=85&f=webp' : $optionThumb ~ '&f=webp'
 ]}
 

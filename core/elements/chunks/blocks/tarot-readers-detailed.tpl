@@ -302,7 +302,7 @@
 
 <div id="signUpSuccess" class="nModal">
     {'@FILE chunks/blocks/success.tpl' | chunk : [
-        'image' => '/assets/img/blocks/img_success.png',
+        'image' => '/assets/img/blocks/img_success-new.png',
         'title' => 'Вы записаны!',
         'text' => ''
     ]}

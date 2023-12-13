@@ -14,7 +14,7 @@
 {$swiperBundleJSPreload | htmlToHead: true}
 {$swiperBundle | htmlToHead: true}
 
-{set $imageField = '/assets/img/blocks/why.png'}
+{set $imageField = '/assets/img/blocks/why-new.png'}
 {set $thumbFromPhoto = '@FILE snippets/pThumb/pthumb.php' | snippet : [
     'input' => $imageField,
     'options' => 'w=372&h=280&zc=C&q=100'

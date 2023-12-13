@@ -1,4 +1,4 @@
-{set $image = '/assets/img/blocks/faq.png'}
+{set $image = '/assets/img/blocks/faq-new.png'}
 
 {set $thumbFromPhoto = '@FILE snippets/pThumb/pthumb.php' | snippet : [
     'input' => $image,

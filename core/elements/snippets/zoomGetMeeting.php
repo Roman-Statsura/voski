@@ -1,8 +1,9 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/assets/php/zoomJWT/jwtTokenGenerator.php';
 
-    $jwt = new JWT("MKiwFG0fRCy09jlSdC4eJw", "7p36DPYZ85dLHoKOMs14mH10PCnzZEzyrLET");
-    $jwtToken = $jwt->JWTTokenGenerate();
+    //$jwt = new JWT("MKiwFG0fRCy09jlSdC4eJw", "7p36DPYZ85dLHoKOMs14mH10PCnzZEzyrLET");
+    $jwt = new JWT("8hZhpGokSciGWCsmKCOooA", "y56UyoD64fhHxX9YhBJjP3T9bK7GV8Tw", "eGxKJY2USMWeRrduNF5Cpg", "OAuth");
+    $jwtToken = $jwt->OAuthTokenGenerate();
 
     $resource = $modx->getObject('modResource', 1);
     $consultations = $resource->getTVValue('consultations');

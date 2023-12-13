@@ -6,8 +6,9 @@
     $modx->initialize('web');
     $modx->getService('error','error.modError', '', '');
 
-    $jwt = new JWT("MKiwFG0fRCy09jlSdC4eJw", "7p36DPYZ85dLHoKOMs14mH10PCnzZEzyrLET");
-    $jwtToken = $jwt->JWTTokenGenerate();
+    //$jwt = new JWT("MKiwFG0fRCy09jlSdC4eJw", "7p36DPYZ85dLHoKOMs14mH10PCnzZEzyrLET");
+    $jwt = new JWT("8hZhpGokSciGWCsmKCOooA", "y56UyoD64fhHxX9YhBJjP3T9bK7GV8Tw", "eGxKJY2USMWeRrduNF5Cpg", "OAuth");
+    $jwtToken = $jwt->OAuthTokenGenerate();
 
     $currentUser = $_POST["currentUser"];
     $currentUserGroup = $_POST["curUserGroup"];

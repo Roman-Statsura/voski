@@ -41,7 +41,7 @@
         "theme" => "white",
         "onlytop" => "wawe-container--onlytop",
         "title" => "Почему именно ОРАКУЛ?",
-        "sidebarImage" => "/assets/img/blocks/tarologist-image.png",
+        "sidebarImage" => "/assets/img/blocks/tarologist-image-new.png",
         "content" => "
             <ul>
                 <li><span>У нас дружный коллектив и взаимопомощь</span></li>
