@@ -5,7 +5,7 @@
 
 ## Использование
 1. Склонировать проект
-2. Выгрузить БД с актуального сайта
+2. Выгрузить БД с актуального сайта или с папки db
 3. Переименовать конфигурационные файлы MODX:
     - в корне example.config.core.php -> config.core.php
     - в папке manager example.config.core.php -> config.core.php
