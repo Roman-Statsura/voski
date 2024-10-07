@@ -23,10 +23,3 @@
         $modx->mail->reset();
         return true;
     }
-
-    /*$properties = [
-        "clientName" => "Debug Client Name",
-        "datetime"   => "2021-05-05 13:00",
-        "tarotName"  => "Debug Tarot Name"
-    ];
-    sendMail($modx, "imfurypro@gmail.com", "Вы успешно записаны на, на сайте Voski", 'consultationEmail', $properties);*/

@@ -20,8 +20,8 @@ class SMSService
     private $sadr;
 
     public function __construct() {
-        $this->login = 'ImFuryPro';
-        $this->password = 'oemcwxNGtt';
+        $this->login = 'Login';
+        $this->password = 'Pass';
         $this->sadr = 'WINSERV';
     }
 
